@@ -6,6 +6,7 @@ using TraxAct.Models;
 using TraxAct.Services;
 using Microsoft.Maui.Controls;
 using System.Globalization;
+using TraxAct.Views;
 
 namespace TraxAct.ViewModels
 {
@@ -254,7 +255,6 @@ namespace TraxAct.ViewModels
 
             SaveCommand = new Command(SaveEvent);
         }
-
         private async void SaveEvent()
         {
             try
@@ -262,7 +262,8 @@ namespace TraxAct.ViewModels
                 await _dbContext.Update(SelectedEvent);
                 await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
 
-                await Application.Current.MainPage.Navigation.PopAsync();
+                var timetablePage = new TimetablePage();
+                await Application.Current.MainPage.Navigation.PushAsync(timetablePage);
             }
             catch (Exception ex)
             {

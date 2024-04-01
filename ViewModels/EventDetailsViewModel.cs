@@ -7,6 +7,9 @@ using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
 using TraxAct.Views;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TraxAct.ViewModels
 {
@@ -81,26 +84,26 @@ namespace TraxAct.ViewModels
                 {
                     Debug.WriteLine($"Editing event with ID: {SelectedEvent.EventId}");
 
+                    var viewModel = new EventEditViewModel(_dbContext, SelectedEvent); 
+
+                    var eventEditPage = new EventEditPage(viewModel);
                     
-                    if (App.Current.MainPage is NavigationPage mainPage && mainPage.Navigation != null)
-                    {
-                        var eventEditViewModel = new EventEditViewModel(_dbContext, SelectedEvent);
-                        await mainPage.Navigation.PushAsync(new EventEditPage(eventEditViewModel));
-                    }event
-                    else
-                    {
-                        Debug.WriteLine("MainPage or its Navigation is null or MainPage is not a NavigationPage.");
-                    }
+
+                    await Application.Current.MainPage.Navigation.PushAsync(eventEditPage);
+
+
                 }
                 else
                 {
                     Debug.WriteLine("Cannot edit event details: SelectedEvent is null.");
                 }
+
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error editing event details: {ex.Message}");
             }
+
         }
 
 
