@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TraxAct.Views.CalendarPage"
+             xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
+             xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
+             xmlns:models="clr-namespace:TraxAct.Models"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White"
+             x:Name="CalendarPageViewModel">
+
+    <Grid>
+        <VerticalStackLayout Padding="10,0,10,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0" Source="create.png" HeightRequest="30" 
+                    WidthRequest="30">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCreateTapGestureRecognizerTapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <HorizontalStackLayout VerticalOptions="Center" 
+                                       Spacing="60" Grid.Column="2" HorizontalOptions="EndAndExpand">
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="{Binding CurrentDate, StringFormat='{0:dddd}'}" TextColor="Black" HorizontalOptions="End"/>
+                        <Label Text="{Binding CurrentDate, StringFormat='{0:MMM yyyy}'}" TextColor="Black" HorizontalOptions="End"/>
+                    </VerticalStackLayout>
+                    <DatePicker Date="{Binding CurrentDate}" DateSelected="DatePicker_DateSelected" FontAttributes="Bold" TextColor="Black" 
+                                FontSize="45" Format="dd" HorizontalOptions="End"/>
+                </HorizontalStackLayout>
+            </Grid>
+            <Label Text="Calendar" FontSize="45" HorizontalTextAlignment="End" TextColor="Black"/>
+            <BoxView HeightRequest="1" Color="LightGray" />
+            <Label x:Name="noEventsLabel" Text="No events found" IsVisible="{Binding EventList.Count, Converter={StaticResource ZeroToBoolConverter}}" />
+            <CollectionView ItemsSource="{Binding EventList}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Event">
+                        <Grid Margin="0,5,0,5">
+
+                            <!-- Event Time -->
+                            <VerticalStackLayout Grid.Column="0" WidthRequest="200" HorizontalOptions="StartAndExpand" MinimumHeightRequest="40">
+                                <Label Text="{Binding StartTime, StringFormat='{0:t}'}" TextColor="Black" LineBreakMode="WordWrap"/>
+                                <Label Text="{Binding EndTime, StringFormat='{0:t}'}" TextColor="Black" LineBreakMode="WordWrap"/>
+                            </VerticalStackLayout>
+
+                            <Frame Padding="15" Grid.Column="1" Grid.Row="0" BackgroundColor="#FFA500" HorizontalOptions="EndAndExpand"
+                       WidthRequest="220" HeightRequest="100">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Subject}" TextColor="Black" />
+                                    <Label Text="{Binding ExerciseType}" TextColor="Black"/>
+                                    <Image Grid.Column="0" Source="details.png" HeightRequest="30" 
+                                        WidthRequest="30">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnDetailsTapGestureRecognizerTapped" CommandParameter="{Binding}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

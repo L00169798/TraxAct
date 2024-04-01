@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TraxAct.Views.ExercisePage"
+             xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
+             x:DataType="viewModels:ExerciseViewModel"
+             Title="ExercisePage"
+             BackgroundColor="White">
+
+    <StackLayout>
+        <Label Text="Name" TextColor="Black"/>
+        <Entry Text="{Binding Subject}" TextColor="Black" />
+
+        <Label Text="Start Time" TextColor="Black"/>
+        <Entry Text="{Binding StartTime}" TextColor="Black" />
+
+        <Label Text="Exercise Type" TextColor="Black"/>
+        <Picker SelectedItem="{Binding SelectedExerciseType, Mode=TwoWay}" TextColor="Black">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Walking</x:String>
+                    <x:String>Running</x:String>
+                    <x:String>Cycling</x:String>
+                    <x:String>Swimming</x:String>
+                    <x:String>Yoga</x:String>
+                    <x:String>Pilates</x:String>
+                    <x:String>StrengthTraining</x:String>
+                    <x:String>HIIT</x:String>
+                    <x:String>CircuitTraining</x:String>
+                    <x:String>Other</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <!-- Specific fields for Running exercise -->
+        <Label Text="Distance" TextColor="Black"/>
+        <Entry Text="{Binding Distance}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=Running}" TextColor="Black" />
+
+        <!-- Specific fields for Strength Training exercise -->
+        <Label Text="Sets" TextColor="Black"/>
+        <Entry Text="{Binding Sets}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=StrengthTraining}" TextColor="Black" />
+
+        <Label Text="Reps" TextColor="Black"/>
+        <Entry Text="{Binding Reps}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=StrengthTraining}" TextColor="Black" />
+
+    </StackLayout>
+
+</ContentPage>
+

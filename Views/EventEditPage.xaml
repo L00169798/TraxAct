@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TraxAct.Views.EventEditPage"
+             xmlns:models="clr-namespace:TraxAct.Models"
+             xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
+             x:DataType="viewModels:EventEditViewModel"
+             BackgroundColor="White"
+             Title="Edit Event">
+
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Edit Event" TextColor="Black" HorizontalOptions="CenterAndExpand" />
+        </StackLayout>
+    </NavigationPage.TitleView>
+
+    <ScrollView>
+        <StackLayout Padding="20">
+            <Label Text="Name" TextColor="Black"/>
+            <Entry Text="{Binding Subject}" TextColor="Black"/>
+
+            <Label Text="Exercise" TextColor="Black"/>
+            <Picker Title="Select Exercise" SelectedItem="{Binding SelectedExerciseType}" TextColor="Black">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Walking</x:String>
+                        <x:String>Running</x:String>
+                        <x:String>Cycling</x:String>
+                        <x:String>Swimming</x:String>
+                        <x:String>Yoga</x:String>
+                        <x:String>Pilates</x:String>
+                        <x:String>StrengthTraining</x:String>
+                        <x:String>HIIT</x:String>
+                        <x:String>CircuitTraining</x:String>
+                        <x:String>Other</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <DatePicker x:Name="StartDatePicker" Date="{Binding StartDate}" TextColor="Black"/>
+            <TimePicker Time="{Binding StartTime}" TextColor="Black"/>
+
+            <DatePicker x:Name="EndDatePicker" Date="{Binding EndDate}" TextColor="Black"/>
+            <TimePicker Time="{Binding EndTime}" TextColor="Black"/>
+
+            <Label Text="Distance" IsVisible="{Binding IsDistanceVisible}" TextColor="Black"/>
+            <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" TextColor="Black"/>
+
+            <Label Text="Reps" IsVisible="{Binding IsRepsVisible}" TextColor="Black"/>
+            <Entry Text="{Binding Reps}" IsVisible="{Binding IsRepsVisible}" TextColor="Black"/>
+
+            <Label Text="Sets" IsVisible="{Binding IsSetsVisible}" TextColor="Black"/>
+            <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" TextColor="Black"/>
+            <Button Text="Save" Command="{Binding SaveCommand}" TextColor="Black"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
