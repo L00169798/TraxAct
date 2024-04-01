@@ -99,10 +99,13 @@ namespace TraxAct.ViewModels
                     {
                         Subject = ev.Subject,
                         StartTime = ev.StartTime,
-                        EndTime = ev.EndTime
+                        EndTime = ev.EndTime,
+                        Id = ev.EventId
                     };
                     Events.Add(schedulerAppointment);
 
+
+                    Debug.WriteLine($"Event ID: {schedulerAppointment.Id}");
                     Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
                     Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
                     Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");

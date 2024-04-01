@@ -2,9 +2,8 @@ using System;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
 using TraxAct.ViewModels;
-using TraxAct.Models;
 using Syncfusion.Maui.Scheduler;
-
+using System.Threading.Tasks;
 
 namespace TraxAct.Views
 {
@@ -14,29 +13,31 @@ namespace TraxAct.Views
 
         public TimetablePage()
         {
+            InitializeComponent();
+            this.Appearing += OnPageAppearing;
+        }
+
+        private async void OnPageAppearing(object sender, EventArgs e)
+        {
             try
             {
-                InitializeComponent();
                 viewModel = new TimetableViewModel();
                 BindingContext = viewModel;
 
-                Task.Run(async () =>
+                await viewModel.LoadEventsFromDatabase();
+                Debug.WriteLine($"Events count: {viewModel.Events.Count}");
+                foreach (var evt in viewModel.Events)
                 {
-                    await viewModel.LoadEventsFromDatabase();
-                    Console.WriteLine($"Events count: {viewModel.Events.Count}");
-                    foreach (var evt in viewModel.Events)
-                    {
-                        Console.WriteLine($"Event Subject: {evt.Subject}, Start Time: {evt.StartTime}, End Time: {evt.EndTime}");
-                    }
-                });
+                    Debug.WriteLine($"Event Subject: {evt.Subject}, Start Time: {evt.StartTime}, End Time: {evt.EndTime}");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception in constructor: {ex.Message}");
+                Debug.WriteLine($"Exception while loading events: {ex.Message}");
             }
         }
 
-        private async void OnSchedulerTapped(object sender, Syncfusion.Maui.Scheduler.SchedulerTappedEventArgs e)
+        private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
         {
             if (e.Appointments != null && e.Appointments.Any())
             {
@@ -46,16 +47,12 @@ namespace TraxAct.Views
                 {
                     Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
 
-                    var selectedEvent = new Event
-                    {
-                        Subject = selectedAppointment.Subject,
-                        StartTime = selectedAppointment.StartTime,
-                        EndTime = selectedAppointment.EndTime
-                    };
+                    int eventId = (int)selectedAppointment.Id;
+                    Debug.WriteLine($"Event ID of tapped event: {eventId}");
 
                     if (Shell.Current != null && Shell.Current.Navigation != null)
                     {
-                        await Shell.Current.Navigation.PushAsync(new EventDetailsPage(selectedEvent));
+                        await Shell.Current.Navigation.PushAsync(new EventDetailsPage(eventId));
                         Debug.WriteLine("DetailsCommand execution completed successfully.");
                     }
                     else
@@ -73,8 +70,5 @@ namespace TraxAct.Views
                 Debug.WriteLine("Selected appointment is null. Cannot execute DetailsCommand.");
             }
         }
-
-
-
     }
 }

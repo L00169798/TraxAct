@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace TraxAct.ViewModels
 
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
+        int eventId;
 
         public Event SelectedEvent
         {
@@ -32,7 +34,7 @@ namespace TraxAct.ViewModels
             }
         }
 
-        public EventDetailsViewModel(MyDbContext dbContext, Event eventItem)
+        public EventDetailsViewModel(MyDbContext dbContext, int eventId)
         {
             if (dbContext == null)
             {
@@ -40,7 +42,7 @@ namespace TraxAct.ViewModels
             }
 
             _dbContext = dbContext;
-            SelectedEvent = eventItem;
+            Task.Run(async () => await LoadEventDetails(eventId));
             EditCommand = new Command(EditButton_Clicked);
             DeleteCommand = new Command(async () => await DeleteButton_Clicked());
         }
@@ -79,16 +81,15 @@ namespace TraxAct.ViewModels
                 {
                     Debug.WriteLine($"Editing event with ID: {SelectedEvent.EventId}");
 
-                    var mainPage = App.Current.MainPage as NavigationPage;
-
-                    if (mainPage != null && mainPage.Navigation != null)
+                    
+                    if (App.Current.MainPage is NavigationPage mainPage && mainPage.Navigation != null)
                     {
-
-                        await mainPage.Navigation.PushAsync(new EventEditPage(new EventEditViewModel(_dbContext, SelectedEvent)));
-                    }
+                        var eventEditViewModel = new EventEditViewModel(_dbContext, SelectedEvent);
+                        await mainPage.Navigation.PushAsync(new EventEditPage(eventEditViewModel));
+                    }event
                     else
                     {
-                        Debug.WriteLine("MainPage or its Navigation is null.");
+                        Debug.WriteLine("MainPage or its Navigation is null or MainPage is not a NavigationPage.");
                     }
                 }
                 else
@@ -101,6 +102,7 @@ namespace TraxAct.ViewModels
                 Debug.WriteLine($"Error editing event details: {ex.Message}");
             }
         }
+
 
         private async Task DeleteButton_Clicked()
         {

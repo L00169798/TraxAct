@@ -12,7 +12,7 @@ public partial class EventDetailsPage : ContentPage
     EventDetailsViewModel viewModel;
     private Event eventItem;
 
-    public EventDetailsPage(Event eventId)
+    public EventDetailsPage(int eventId)
     {
         InitializeComponent();
         dbContext = new MyDbContext();
