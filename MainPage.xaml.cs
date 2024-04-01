@@ -1,25 +1,52 @@
-﻿namespace TraxAct
+﻿using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Xaml;
+using TraxAct.Views;
+using TraxAct.Services;
+using Microsoft.EntityFrameworkCore;
+
+namespace TraxAct
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
-        int count = 0;
 
         public MainPage()
         {
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            count++;
+            base.OnAppearing();
+            Console.WriteLine("MainPage is appearing. The button should be interactable.");
+        }
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
+        private async void OnCalendarTapped(object sender, EventArgs e)
+        {
+            if (Navigation != null)
+            {
+                await Navigation.PushAsync(new CalendarPage());
+            }
             else
-                CounterBtn.Text = $"Clicked {count} times";
+            {
+                await DisplayAlert("Error", "Navigation is not available.", "OK");
+            }
+        }
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+        private async void OnTimetableTapped(object sender, EventArgs e)
+        {
+            if (Navigation != null)
+            {
+                await Navigation.PushAsync(new TimetablePage());
+            }
+            else
+            {
+                await DisplayAlert("Error", "Navigation is not available.", "OK");
+            }
+        }
+
+        private void OnCounterClicked(object sender, System.EventArgs e)
+        {
         }
     }
-
 }

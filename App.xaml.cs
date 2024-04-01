@@ -1,9 +1,6 @@
 ﻿using TraxAct.Services;
 using SQLite;
 using Microsoft.EntityFrameworkCore;
-using TraxAct.ViewModels;
-using TraxAct.Models;
-using TraxAct.Views;
 
 namespace TraxAct
 {
