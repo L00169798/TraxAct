@@ -6,6 +6,7 @@ using TraxAct.Models;
 using TraxAct.Services;
 using Microsoft.Maui.Controls;
 using System.Globalization;
+using TraxAct.Views;
 
 namespace TraxAct.ViewModels
 {
@@ -254,12 +255,24 @@ namespace TraxAct.ViewModels
 
             SaveCommand = new Command(SaveEvent);
         }
-
         private async void SaveEvent()
         {
             try
             {
-                await _dbContext.Update(SelectedEvent);
+                
+                DateTime startDateTime = StartDate.Date.Add(StartTime);
+                DateTime endDateTime = EndDate.Date.Add(EndTime);
+
+                SelectedEvent.Subject = Subject;
+                SelectedEvent.ExerciseType = SelectedExerciseType;
+                SelectedEvent.StartTime = startDateTime;
+                SelectedEvent.EndTime = endDateTime;
+                SelectedEvent.Distance = Distance;
+                SelectedEvent.Reps = Reps;
+                SelectedEvent.Sets = Sets;
+
+                _dbContext.Update(SelectedEvent);
+
                 await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
 
                 await Application.Current.MainPage.Navigation.PopAsync();

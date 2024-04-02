@@ -10,12 +10,15 @@
              x:Name="TimetableViewModel"
              BackgroundColor="White">
 
+    <ContentPage.BindingContext>
+        <local:TimetableViewModel />
+    </ContentPage.BindingContext>
 
     <scheduler:SfScheduler
                            View="Week" 
                            ShowWeekNumber="True"
                            FirstDayOfWeek="Monday"
-                           AllowedViews="Day,Week,WorkWeek,Month,TimelineDay,TimelineWeek,TimelineMonth,TimelineWorkWeek"
+                           AllowedViews="Day,Week,WorkWeek,Month"
                            TodayHighlightBrush="Orange"
                            AppointmentsSource="{Binding Events}"
                            Tapped="OnSchedulerTapped">
@@ -27,6 +30,7 @@
                        Background="LightGray">
             </scheduler:SchedulerHeaderView>
         </scheduler:SfScheduler.HeaderView>
+        
 
         <scheduler:SfScheduler.BindingContext >
             <local:TimetableViewModel></local:TimetableViewModel>

@@ -44,9 +44,5 @@ namespace TraxAct
                 await DisplayAlert("Error", "Navigation is not available.", "OK");
             }
         }
-
-        private void OnCounterClicked(object sender, System.EventArgs e)
-        {
-        }
     }
 }

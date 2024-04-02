@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TraxAct.MainPage">
 
+   
 
     <NavigationPage.TitleView>
         <Label Text="Main Page" TextColor="Black" />
     </NavigationPage.TitleView>
-
 
     <ScrollView BackgroundColor="#FFFFFF">
         <VerticalStackLayout
@@ -34,12 +34,6 @@
                 FontSize="18"
                 HorizontalOptions="Center" />
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
 
             <Label
                 Text="Tap here to go to Calendar"
@@ -65,3 +59,4 @@
     </ScrollView>
 
 </ContentPage>
+

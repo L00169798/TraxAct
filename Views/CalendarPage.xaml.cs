@@ -16,6 +16,7 @@ namespace TraxAct.Views
         MyDbContext dbContext;
         CalendarViewModel viewModel;
         private Event eventItem;
+        private int eventId;
 
         public CalendarPage()
         {
@@ -68,11 +69,11 @@ namespace TraxAct.Views
 
                 if (eventItem.EventId != 0)
                 {
-                    var eventDetailsViewModel = new EventDetailsViewModel(dbContext, eventItem);
+                    var eventDetailsViewModel = new EventDetailsViewModel(dbContext, eventId);
 
                     await eventDetailsViewModel.LoadEventDetails(eventItem.EventId);
 
-                    await Navigation.PushAsync(new EventDetailsPage(eventItem));
+                    await Navigation.PushAsync(new EventDetailsPage(eventId));
                 }
                 else
                 {

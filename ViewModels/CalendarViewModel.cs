@@ -67,37 +67,31 @@ namespace TraxAct.ViewModels
 
             _dbContext = dbContext;
             LoadEvents(DateTime.Today);
-            DetailsCommand = new Command<Event>(OnDetailsCommand);
+            DetailsCommand = new Command<int>(OnDetailsCommand);
         }
 
-        private async void OnDetailsCommand(object parameter)
+        private async void OnDetailsCommand(int eventId)
         {
-            if (parameter is Event eventId)
+            try
             {
-                try
-                {
-                    Debug.WriteLine($"Executing DetailsCommand for event: {eventId}");
+                Debug.WriteLine($"Executing DetailsCommand for event with ID: {eventId}");
 
-                    if (Shell.Current != null && Shell.Current.Navigation != null)
-                    {
-                        await Shell.Current.Navigation.PushAsync(new EventDetailsPage(eventId));
-                        Debug.WriteLine("DetailsCommand execution completed successfully.");
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Shell.Current or Shell.Current.Navigation is null. DetailsCommand execution failed.");
-                    }
-                }
-                catch (Exception ex)
+                if (Shell.Current != null && Shell.Current.Navigation != null)
                 {
-                    Debug.WriteLine($"Error executing DetailsCommand: {ex.Message}");
+                    await Shell.Current.Navigation.PushAsync(new EventDetailsPage(eventId));
+                    Debug.WriteLine("DetailsCommand execution completed successfully.");
+                }
+                else
+                {
+                    Debug.WriteLine("Shell.Current or Shell.Current.Navigation is null. DetailsCommand execution failed.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Debug.WriteLine("Event item is null, cannot execute DetailsCommand.");
+                Debug.WriteLine($"Error executing DetailsCommand: {ex.Message}");
             }
         }
+
 
         public async void LoadEvents(DateTime date)
         {

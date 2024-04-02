@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Syncfusion.Maui.Scheduler;
+using System.Linq;
 using System.Threading.Tasks;
 using TraxAct.Models;
 using TraxAct.Services;
-using TraxAct.Views;
+using Syncfusion.Maui.Scheduler;
 
 namespace TraxAct.ViewModels
 {
@@ -44,11 +44,7 @@ namespace TraxAct.ViewModels
             }
         }
 
-
-
-
         private readonly MyDbContext _dbContext;
-
 
         public TimetableViewModel()
         {
@@ -56,7 +52,6 @@ namespace TraxAct.ViewModels
             Events = new ObservableCollection<SchedulerAppointment>();
             LoadEventsFromDatabase();
             AddSampleEvent();
-
         }
 
         private void AddSampleEvent()
@@ -84,11 +79,10 @@ namespace TraxAct.ViewModels
                 Debug.WriteLine($"Loaded {events.Count} events from the database.");
 
                 var filteredEvents = events
-            .Where(e => (e.StartTime >= startOfWeek && e.StartTime < endOfWeek) ||
-                        (e.EndTime > startOfWeek && e.EndTime <= endOfWeek) ||
-                        (e.StartTime < startOfWeek && e.EndTime > endOfWeek))
-            .OrderBy(e => e.StartTime);
-
+                    .Where(e => (e.StartTime >= startOfWeek && e.StartTime < endOfWeek) ||
+                                (e.EndTime > startOfWeek && e.EndTime <= endOfWeek) ||
+                                (e.StartTime < startOfWeek && e.EndTime > endOfWeek))
+                    .OrderBy(e => e.StartTime);
 
                 Debug.WriteLine($"Filtered {filteredEvents.Count()} events for date: {SelectedDate}");
 
@@ -99,23 +93,26 @@ namespace TraxAct.ViewModels
                     {
                         Subject = ev.Subject,
                         StartTime = ev.StartTime,
-                        EndTime = ev.EndTime
+                        EndTime = ev.EndTime,
+                        Id = ev.EventId
                     };
                     Events.Add(schedulerAppointment);
 
+                    Debug.WriteLine($"Event ID: {schedulerAppointment.Id}");
                     Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
                     Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
                     Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");
                 }
-
-
             }
-
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error loading events: {ex.Message}");
             }
+        }
 
+        public async Task ReloadEventsFromDatabase()
+        {
+            await LoadEventsFromDatabase();
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

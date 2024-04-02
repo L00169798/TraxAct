@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -6,6 +7,9 @@ using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
 using TraxAct.Views;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TraxAct.ViewModels
 {
@@ -18,6 +22,7 @@ namespace TraxAct.ViewModels
 
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
+        int eventId;
 
         public Event SelectedEvent
         {
@@ -32,7 +37,7 @@ namespace TraxAct.ViewModels
             }
         }
 
-        public EventDetailsViewModel(MyDbContext dbContext, Event eventItem)
+        public EventDetailsViewModel(MyDbContext dbContext, int eventId)
         {
             if (dbContext == null)
             {
@@ -40,7 +45,7 @@ namespace TraxAct.ViewModels
             }
 
             _dbContext = dbContext;
-            SelectedEvent = eventItem;
+            Task.Run(async () => await LoadEventDetails(eventId));
             EditCommand = new Command(EditButton_Clicked);
             DeleteCommand = new Command(async () => await DeleteButton_Clicked());
         }
@@ -79,28 +84,28 @@ namespace TraxAct.ViewModels
                 {
                     Debug.WriteLine($"Editing event with ID: {SelectedEvent.EventId}");
 
-                    var mainPage = App.Current.MainPage as NavigationPage;
+                    var viewModel = new EventEditViewModel(_dbContext, SelectedEvent); 
 
-                    if (mainPage != null && mainPage.Navigation != null)
-                    {
+                    var eventEditPage = new EventEditPage(viewModel);
+                    
 
-                        await mainPage.Navigation.PushAsync(new EventEditPage(new EventEditViewModel(_dbContext, SelectedEvent)));
-                    }
-                    else
-                    {
-                        Debug.WriteLine("MainPage or its Navigation is null.");
-                    }
+                    await Application.Current.MainPage.Navigation.PushAsync(eventEditPage);
+
+
                 }
                 else
                 {
                     Debug.WriteLine("Cannot edit event details: SelectedEvent is null.");
                 }
+
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error editing event details: {ex.Message}");
             }
+
         }
+
 
         private async Task DeleteButton_Clicked()
         {

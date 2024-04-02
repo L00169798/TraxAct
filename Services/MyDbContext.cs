@@ -93,6 +93,7 @@ namespace TraxAct.Services
             }
         }
 
+
         public async Task Update(Event updatedEvent)
         {
             await Init();
