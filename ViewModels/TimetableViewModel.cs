@@ -56,7 +56,6 @@ namespace TraxAct.ViewModels
             Events = new ObservableCollection<SchedulerAppointment>();
             LoadEventsFromDatabase();
             AddSampleEvent();
-
         }
 
         private void AddSampleEvent()

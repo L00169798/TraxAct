@@ -259,11 +259,23 @@ namespace TraxAct.ViewModels
         {
             try
             {
-                await _dbContext.Update(SelectedEvent);
+                
+                DateTime startDateTime = StartDate.Date.Add(StartTime);
+                DateTime endDateTime = EndDate.Date.Add(EndTime);
+
+                SelectedEvent.Subject = Subject;
+                SelectedEvent.ExerciseType = SelectedExerciseType;
+                SelectedEvent.StartTime = startDateTime;
+                SelectedEvent.EndTime = endDateTime;
+                SelectedEvent.Distance = Distance;
+                SelectedEvent.Reps = Reps;
+                SelectedEvent.Sets = Sets;
+
+                _dbContext.Update(SelectedEvent);
+
                 await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
 
-                var timetablePage = new TimetablePage();
-                await Application.Current.MainPage.Navigation.PushAsync(timetablePage);
+                await Application.Current.MainPage.Navigation.PopAsync();
             }
             catch (Exception ex)
             {

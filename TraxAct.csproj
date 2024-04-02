@@ -90,6 +90,9 @@
 	  <MauiXaml Update="Views\ExercisePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\FlyoutMenuPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\TimetablePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

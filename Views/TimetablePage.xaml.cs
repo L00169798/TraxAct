@@ -70,5 +70,25 @@ namespace TraxAct.Views
                 Debug.WriteLine("Selected appointment is null. Cannot execute DetailsCommand.");
             }
         }
+
+        private async void NavigateToEventFormPage()
+        {
+            try
+            {
+                if (Shell.Current != null && Shell.Current.Navigation != null)
+                {
+                    await Shell.Current.Navigation.PushAsync(new EventFormPage());
+                    Debug.WriteLine("Navigated to EventFormPage successfully.");
+                }
+                else
+                {
+                    Debug.WriteLine("Shell.Current or Shell.Current.Navigation is null. Navigation to EventFormPage failed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error navigating to EventFormPage: {ex.Message}");
+            }
+        }
     }
 }
