@@ -30,6 +30,7 @@
                        Background="LightGray">
             </scheduler:SchedulerHeaderView>
         </scheduler:SfScheduler.HeaderView>
+        
 
         <scheduler:SfScheduler.BindingContext >
             <local:TimetableViewModel></local:TimetableViewModel>

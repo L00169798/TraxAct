@@ -4,12 +4,16 @@ using System.Diagnostics;
 using TraxAct.ViewModels;
 using Syncfusion.Maui.Scheduler;
 using System.Threading.Tasks;
+using TraxAct.Models;
 
 namespace TraxAct.Views
 {
     public partial class TimetablePage : ContentPage
     {
         private TimetableViewModel viewModel;
+        private DateTime selectedDateTime;
+
+        public object Events { get; private set; }
 
         public TimetablePage()
         {
@@ -39,7 +43,12 @@ namespace TraxAct.Views
 
         private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
         {
-            if (e.Appointments != null && e.Appointments.Any())
+            if (e.Appointments == null || !e.Appointments.Any())
+            {
+
+                NavigateToEventFormPage(selectedDateTime);
+            }
+            else
             {
                 var selectedAppointment = e.Appointments.First() as SchedulerAppointment;
 
@@ -65,16 +74,20 @@ namespace TraxAct.Views
                     Debug.WriteLine($"Error executing DetailsCommand: {ex.Message}");
                 }
             }
-            else
-            {
-                Debug.WriteLine("Selected appointment is null. Cannot execute DetailsCommand.");
-            }
         }
 
-        private async void NavigateToEventFormPage()
+
+        private async Task NavigateToEventFormPage(DateTime selectedDateTime)
         {
             try
             {
+                if (viewModel.Events.Any(evt => evt.StartTime <= selectedDateTime && evt.EndTime > selectedDateTime))
+
+                {
+                    Debug.WriteLine("There are existing appointments in the selected timeslot. EventFormPage will not be opened.");
+                    return;
+                }
+
                 if (Shell.Current != null && Shell.Current.Navigation != null)
                 {
                     await Shell.Current.Navigation.PushAsync(new EventFormPage());
@@ -90,5 +103,7 @@ namespace TraxAct.Views
                 Debug.WriteLine($"Error navigating to EventFormPage: {ex.Message}");
             }
         }
+    
+
     }
 }
