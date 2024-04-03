@@ -21,6 +21,7 @@ namespace TraxAct.Views
             this.Appearing += OnPageAppearing;
         }
 
+
         private async void OnPageAppearing(object sender, EventArgs e)
         {
             try
@@ -28,7 +29,7 @@ namespace TraxAct.Views
                 viewModel = new TimetableViewModel();
                 BindingContext = viewModel;
 
-                await viewModel.LoadEventsFromDatabase();
+                viewModel?.ReloadEventsFromDatabase().ConfigureAwait(false);
                 Debug.WriteLine($"Events count: {viewModel.Events.Count}");
                 foreach (var evt in viewModel.Events)
                 {
@@ -41,40 +42,45 @@ namespace TraxAct.Views
             }
         }
 
-        private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
+		private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
+		{
+			try
+			{
+				if (e.Appointments != null && e.Appointments.Any())
+				{
+					var selectedAppointment = e.Appointments.First() as SchedulerAppointment;
+
+					if (selectedAppointment != null)
+					{
+						Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
+
+						int eventId = (int)selectedAppointment.Id;
+						Debug.WriteLine($"Event ID of tapped event: {eventId}");
+
+						if (Shell.Current != null && Shell.Current.Navigation != null)
+						{
+							await Shell.Current.Navigation.PushAsync(new EventDetailsPage(eventId));
+							Debug.WriteLine("DetailsCommand execution completed successfully.");
+						}
+						else
+						{
+							Debug.WriteLine("Shell.Current or Shell.Current.Navigation is null. DetailsCommand execution failed.");
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error executing DetailsCommand: {ex.Message}");
+			}
+		}
+
+
+		private async void OnCreateEventButtonClicked(object sender, EventArgs e)
         {
-            if (e.Appointments == null || !e.Appointments.Any())
-            {
-
-                NavigateToEventFormPage(selectedDateTime);
-            }
-            else
-            {
-                var selectedAppointment = e.Appointments.First() as SchedulerAppointment;
-
-                try
-                {
-                    Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
-
-                    int eventId = (int)selectedAppointment.Id;
-                    Debug.WriteLine($"Event ID of tapped event: {eventId}");
-
-                    if (Shell.Current != null && Shell.Current.Navigation != null)
-                    {
-                        await Shell.Current.Navigation.PushAsync(new EventDetailsPage(eventId));
-                        Debug.WriteLine("DetailsCommand execution completed successfully.");
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Shell.Current or Shell.Current.Navigation is null. DetailsCommand execution failed.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Error executing DetailsCommand: {ex.Message}");
-                }
-            }
+            await NavigateToEventFormPage(selectedDateTime);
         }
+    
 
 
         private async Task NavigateToEventFormPage(DateTime selectedDateTime)

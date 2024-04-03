@@ -15,6 +15,7 @@ namespace TraxAct.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+
         private DateTime _selectedDate = DateTime.Today;
         public DateTime SelectedDate
         {

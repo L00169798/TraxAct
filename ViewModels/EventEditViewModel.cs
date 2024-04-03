@@ -275,7 +275,7 @@ namespace TraxAct.ViewModels
 
                 await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
 
-                await Application.Current.MainPage.Navigation.PopAsync();
+                await Application.Current.MainPage.Navigation.PopToRootAsync();
             }
             catch (Exception ex)
             {

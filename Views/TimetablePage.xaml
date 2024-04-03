@@ -2,39 +2,50 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TraxAct.Views.TimetablePage"
-             xmlns:models="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
              xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
              xmlns:local="clr-namespace:TraxAct.ViewModels"
-             x:Name="TimetableViewModel"
              BackgroundColor="White">
 
     <ContentPage.BindingContext>
         <local:TimetableViewModel />
     </ContentPage.BindingContext>
 
-    <scheduler:SfScheduler
-                           View="Week" 
-                           ShowWeekNumber="True"
-                           FirstDayOfWeek="Monday"
-                           AllowedViews="Day,Week,WorkWeek,Month"
-                           TodayHighlightBrush="Orange"
-                           AppointmentsSource="{Binding Events}"
-                           Tapped="OnSchedulerTapped">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
+        <scheduler:SfScheduler
+            x:Name="scheduler"
+            Grid.Row="0"
+            ShowWeekNumber="True"
+            FirstDayOfWeek="Monday"
+            AllowedViews="Day,Week,WorkWeek,Month"
+            TodayHighlightBrush="Orange"
+            AppointmentsSource="{Binding Events}"
+            AllowAppointmentDrag="false"
+            Tapped="OnSchedulerTapped">
+            <scheduler:SfScheduler.HeaderView>
+                <scheduler:SchedulerHeaderView 
+                           TextFormat="MMM yy"
+                           Background="LightBlue">
+                </scheduler:SchedulerHeaderView>
+            </scheduler:SfScheduler.HeaderView>
+        </scheduler:SfScheduler>
 
-        <scheduler:SfScheduler.HeaderView>
-            <scheduler:SchedulerHeaderView 
-                       TextFormat="MMM yy"
-                       Background="LightGray">
-            </scheduler:SchedulerHeaderView>
-        </scheduler:SfScheduler.HeaderView>
-        
-
-        <scheduler:SfScheduler.BindingContext >
-            <local:TimetableViewModel></local:TimetableViewModel>
-        </scheduler:SfScheduler.BindingContext>
-    </scheduler:SfScheduler>
-
+        <Button 
+            Grid.Row="1"
+            Text="Create Exercise"
+            Clicked="OnCreateEventButtonClicked"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="Center"
+            Background="LightBlue"
+            TextColor="Black"
+            Padding="20"/>
+    </Grid>
 </ContentPage>
+
+
+
