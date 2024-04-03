@@ -3,60 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TraxAct.MainPage">
 
-   
-
     <NavigationPage.TitleView>
         <Label Text="Main Page" TextColor="Black" />
     </NavigationPage.TitleView>
 
     <ScrollView BackgroundColor="#FFFFFF">
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
-
+        <AbsoluteLayout>
             <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+                Source="activity.jpg"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                Aspect="Fill" />
 
             <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
+                Text="TraxAct"
+                FontSize="36"
+                TextColor="Black"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Margin="0,300,0,0"
+                AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
+                AbsoluteLayout.LayoutFlags="PositionProportional" />
 
 
             <Label
-                Text="Tap here to go to Calendar"
+                Text="View Timetable"
+                Margin="0,380,0,0"
                 FontSize="16"
-                TextColor="Blue"
-                HorizontalOptions="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnCalendarTapped" />
-                </Label.GestureRecognizers>
-            </Label>
-
-            <Label
-                Text="Tap here to go to Timetable"
-                FontSize="16"
-                TextColor="Blue"
-                HorizontalOptions="Center">
+                TextColor="Black"
+                HorizontalOptions="Center"
+                AbsoluteLayout.LayoutBounds="0.5,0.85,AutoSize,AutoSize"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                Padding="20">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnTimetableTapped" />
                 </Label.GestureRecognizers>
             </Label>
-
-        </VerticalStackLayout>
+        </AbsoluteLayout>
     </ScrollView>
 
 </ContentPage>
-

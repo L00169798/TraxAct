@@ -21,18 +21,7 @@ namespace TraxAct
             Console.WriteLine("MainPage is appearing. The button should be interactable.");
         }
 
-        private async void OnCalendarTapped(object sender, EventArgs e)
-        {
-            if (Navigation != null)
-            {
-                await Navigation.PushAsync(new CalendarPage());
-            }
-            else
-            {
-                await DisplayAlert("Error", "Navigation is not available.", "OK");
-            }
-        }
-
+       
         private async void OnTimetableTapped(object sender, EventArgs e)
         {
             if (Navigation != null)

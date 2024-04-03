@@ -42,7 +42,41 @@ namespace TraxAct.Views
             }
         }
 
-        private async void OnCreateEventButtonClicked(object sender, EventArgs e)
+		private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
+		{
+			try
+			{
+				if (e.Appointments != null && e.Appointments.Any())
+				{
+					var selectedAppointment = e.Appointments.First() as SchedulerAppointment;
+
+					if (selectedAppointment != null)
+					{
+						Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
+
+						int eventId = (int)selectedAppointment.Id;
+						Debug.WriteLine($"Event ID of tapped event: {eventId}");
+
+						if (Shell.Current != null && Shell.Current.Navigation != null)
+						{
+							await Shell.Current.Navigation.PushAsync(new EventDetailsPage(eventId));
+							Debug.WriteLine("DetailsCommand execution completed successfully.");
+						}
+						else
+						{
+							Debug.WriteLine("Shell.Current or Shell.Current.Navigation is null. DetailsCommand execution failed.");
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error executing DetailsCommand: {ex.Message}");
+			}
+		}
+
+
+		private async void OnCreateEventButtonClicked(object sender, EventArgs e)
         {
             await NavigateToEventFormPage(selectedDateTime);
         }

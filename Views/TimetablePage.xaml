@@ -24,9 +24,9 @@
             FirstDayOfWeek="Monday"
             AllowedViews="Day,Week,WorkWeek,Month"
             TodayHighlightBrush="Orange"
-            Background="LightSlateGrey"
             AppointmentsSource="{Binding Events}"
-            AllowAppointmentDrag="false">
+            AllowAppointmentDrag="false"
+            Tapped="OnSchedulerTapped">
             <scheduler:SfScheduler.HeaderView>
                 <scheduler:SchedulerHeaderView 
                            TextFormat="MMM yy"
