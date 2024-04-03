@@ -22,8 +22,8 @@ jobs:
 
     - name: Build and test
       run: |
-        dotnet build --configuration Release
-        dotnet test --configuration Release --logger "trx;LogFileName=test_results.trx"
+        dotnet build --configuration Debug
+        dotnet test --configuration Debug --logger "trx;LogFileName=test_results.trx"
       env:
         DOTNET_CLI_TELEMETRY_OPTOUT: true
 
