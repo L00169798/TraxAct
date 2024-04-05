@@ -3,13 +3,13 @@ using TraxAct.ViewModels;
 
 namespace TraxAct.Views
 {
-	public partial class SignUpPage : ContentPage
+	public partial class SignInPage : ContentPage
 	{
-		public SignUpPage()
+		public SignInPage()
 		{
 			InitializeComponent();
 
-			BindingContext = new SignUpViewModel();
+			BindingContext = new SignInViewModel();
 		}
 	}
 }

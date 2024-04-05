@@ -3,7 +3,6 @@ using TraxAct.Services;
 using Syncfusion.Maui.Core.Hosting;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
-using TraxAct.SignUp;
 using TraxAct.ViewModels;
 
 namespace TraxAct
@@ -23,8 +22,7 @@ namespace TraxAct
                 });
 
             //builder.Services.AddTransient<MainPage>();
-			builder.Services.AddTransient<SignUpViewModel>();
-			builder.Services.AddTransient<SignUpFormViewModel>();
+			builder.Services.AddTransient<SignInViewModel>();
 			//builder.Services.AddTransient<signup>(s => new signup(s.GetRequiredService<SignUpViewModel>()));
 
 			builder.Services.AddSingleton(new FirebaseAuthClient(new FirebaseAuthConfig()
