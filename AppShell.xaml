@@ -3,8 +3,19 @@
     x:Class="TraxAct.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:TraxAct"
+    xmlns:local="clr-namespace:TraxAct.Views"
     Shell.FlyoutBehavior="Disabled">
+
+   
+    <ShellContent
+        Title="Sign In"
+        ContentTemplate="{DataTemplate local:SignInPage}"
+        Route="SignIn" />
+
+    <ShellContent
+     Title="Sign Up"
+     ContentTemplate="{DataTemplate local:SignUpPage}"
+     Route="SignUp" />
 
     <ShellContent
         Title="Home"

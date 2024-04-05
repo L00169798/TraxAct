@@ -4,7 +4,7 @@ using TraxAct.Views;
 using TraxAct.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace TraxAct
+namespace TraxAct.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
