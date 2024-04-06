@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TraxAct.Views;
+using TraxAct.Services;
+using FirebaseAdmin.Auth;
 
 namespace TraxAct.ViewModels
 {
@@ -75,10 +77,34 @@ namespace TraxAct.ViewModels
 					return;
 				}
 
-				var user = await _authClient.CreateUserWithEmailAndPasswordAsync(Email, Password);
+				var userCredential = await _authClient.CreateUserWithEmailAndPasswordAsync(Email, Password);
 
-				await Application.Current.MainPage.DisplayAlert("Success", "Successfully signed up", "OK");
-				await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+				if (userCredential?.User != null && !string.IsNullOrEmpty(userCredential.User.Uid))
+				{
+					SaveUserId(userCredential.User.Uid);
+
+					await Application.Current.MainPage.DisplayAlert("Welcome", "Registration Successful!", "OK");
+					await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+				}
+				else
+				{
+					Debug.WriteLine("User or UID is null.");
+					await Application.Current.MainPage.DisplayAlert("Error", "Failed to sign up. Please try again later", "OK");
+				}
+			}
+			catch (Firebase.Auth.FirebaseAuthException ex)
+			{
+				Debug.WriteLine($"Firebase authentication error: {ex.Message}");
+
+				if (ex.Message.Contains("email address is already in use"))
+				{
+					Debug.WriteLine("Email is already in use.");
+					await Application.Current.MainPage.DisplayAlert("Error", "Email is already in use", "OK");
+				}
+				else
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", "Failed to sign up. Please try again later", "OK");
+				}
 			}
 			catch (Exception ex)
 			{
@@ -87,6 +113,23 @@ namespace TraxAct.ViewModels
 			}
 
 			Debug.WriteLine("ExecuteSignUpAsync method completed.");
+		}
+
+
+
+
+		private void SaveUserId(string firebaseUid)
+		{
+			try
+			{
+				var dbContext = new MyDbContext();
+				dbContext.SaveUserId(firebaseUid);
+				Debug.WriteLine("Firebase UID saved to SQLite database successfully.");
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error saving Firebase UID to SQLite database: {ex.Message}");
+			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

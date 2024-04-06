@@ -22,7 +22,6 @@ namespace TraxAct.ViewModels
 
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
-        int eventId;
 
         public Event SelectedEvent
         {

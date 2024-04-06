@@ -17,19 +17,23 @@ namespace TraxAct.ViewModels
 
 
         private DateTime _selectedDate = DateTime.Today;
-        public DateTime SelectedDate
+		private string _userId;
+		public DateTime SelectedDate
         {
             get { return _selectedDate; }
-            set
-            {
-                if (_selectedDate != value)
-                {
-                    _selectedDate = value;
-                    OnPropertyChanged(nameof(SelectedDate));
-                    LoadEventsFromDatabase();
-                }
-            }
-        }
+			set
+			{
+				if (_selectedDate != value)
+				{
+					_selectedDate = value;
+					OnPropertyChanged(nameof(SelectedDate));
+					if (!string.IsNullOrEmpty(_userId))
+					{
+						LoadEventsFromDatabase(_userId);
+					}
+				}
+			}
+		}
 
         private ObservableCollection<SchedulerAppointment> _events;
         public ObservableCollection<SchedulerAppointment> Events
@@ -47,15 +51,17 @@ namespace TraxAct.ViewModels
 
         private readonly MyDbContext _dbContext;
 
-        public TimetableViewModel()
-        {
-            _dbContext = new MyDbContext();
-            Events = new ObservableCollection<SchedulerAppointment>();
-            LoadEventsFromDatabase();
-            AddSampleEvent();
-        }
+		public TimetableViewModel(string userId)
+		{
+			_dbContext = new MyDbContext();
+			Events = new ObservableCollection<SchedulerAppointment>();
 
-        private void AddSampleEvent()
+			LoadEventsFromDatabase(userId);
+			AddSampleEvent();
+		}
+
+
+		private void AddSampleEvent()
         {
             var sampleEvent = new SchedulerAppointment
             {
@@ -67,54 +73,52 @@ namespace TraxAct.ViewModels
             Events.Add(sampleEvent);
         }
 
-        public async Task LoadEventsFromDatabase()
-        {
-            try
-            {
-                Events.Clear();
+		public async Task LoadEventsFromDatabase(string userId)
+		{
+			try
+			{
+				Events.Clear();
 
-                DateTime startOfWeek = SelectedDate;
-                DateTime endOfWeek = startOfWeek.AddDays(7);
+				DateTime startOfWeek = SelectedDate;
+				DateTime endOfWeek = startOfWeek.AddDays(7);
 
-                var events = await _dbContext.GetEvents();
-                Debug.WriteLine($"Loaded {events.Count} events from the database.");
+				var events = await _dbContext.GetEventsByUserId(userId);
+				Debug.WriteLine($"Loaded {events.Count} events from the database for user ID: {userId}");
 
-                var filteredEvents = events
-                    .Where(e => (e.StartTime >= startOfWeek && e.StartTime < endOfWeek) ||
-                                (e.EndTime > startOfWeek && e.EndTime <= endOfWeek) ||
-                                (e.StartTime < startOfWeek && e.EndTime > endOfWeek))
-                    .OrderBy(e => e.StartTime);
+				var filteredEvents = events
+					.Where(e => (e.StartTime >= startOfWeek && e.StartTime < endOfWeek) ||
+								(e.EndTime > startOfWeek && e.EndTime <= endOfWeek) ||
+								(e.StartTime < startOfWeek && e.EndTime > endOfWeek))
+					.OrderBy(e => e.StartTime);
 
-                Debug.WriteLine($"Filtered {filteredEvents.Count()} events for date: {SelectedDate}");
+				Debug.WriteLine($"Filtered {filteredEvents.Count()} events for date: {SelectedDate}");
 
-                Debug.WriteLine("Filtered Events:");
-                foreach (var ev in filteredEvents)
-                {
-                    var schedulerAppointment = new SchedulerAppointment
-                    {
-                        Subject = ev.Subject,
-                        StartTime = ev.StartTime,
-                        EndTime = ev.EndTime,
-                        Id = ev.EventId
-                    };
-                    Events.Add(schedulerAppointment);
+				Debug.WriteLine("Filtered Events:");
+				foreach (var ev in filteredEvents)
+				{
+					var schedulerAppointment = new SchedulerAppointment
+					{
+						Subject = ev.Subject,
+						StartTime = ev.StartTime,
+						EndTime = ev.EndTime,
+						Id = ev.EventId
+					};
+					Events.Add(schedulerAppointment);
 
-                    Debug.WriteLine($"Event ID: {schedulerAppointment.Id}");
-                    Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
-                    Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
-                    Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error loading events: {ex.Message}");
-            }
-        }
+					Debug.WriteLine($"Event ID: {schedulerAppointment.Id}");
+					Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
+					Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
+					Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error loading events: {ex.Message}");
+			}
+		}
 
-        public async Task ReloadEventsFromDatabase()
-        {
-            await LoadEventsFromDatabase();
-        }
+
+	
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

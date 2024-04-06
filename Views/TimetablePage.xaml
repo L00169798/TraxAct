@@ -7,9 +7,6 @@
              xmlns:local="clr-namespace:TraxAct.ViewModels"
              BackgroundColor="White">
 
-    <ContentPage.BindingContext>
-        <local:TimetableViewModel />
-    </ContentPage.BindingContext>
 
     <Grid>
         <Grid.RowDefinitions>

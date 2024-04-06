@@ -9,7 +9,10 @@ namespace TraxAct.Models
         [Column("event_id")]
         public int EventId { get; set; }
 
-        [Column("event_subject")]
+		[Column("user_id")]
+		public string UserId { get; set; }
+
+		[Column("event_subject")]
         public string Subject { get; set; }
 
         [Column("exercise_type")]
@@ -29,5 +32,7 @@ namespace TraxAct.Models
 
         [Column("reps")]
         public int Reps { get; set; }
+
+
     }
 }

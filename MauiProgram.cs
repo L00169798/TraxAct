@@ -27,7 +27,7 @@ namespace TraxAct
 
 			builder.Services.AddSingleton(new FirebaseAuthClient(new FirebaseAuthConfig()
             {
-                ApiKey = "\r\nAIzaSyBCmctzgS7IOUNUKnorKAEpezbSaWrRL_Y",
+                ApiKey = "AIzaSyBCmctzgS7IOUNUKnorKAEpezbSaWrRL_Y",
                 AuthDomain = "traxact-c3d95.firebaseapp.com",
 				Providers = new FirebaseAuthProvider[]
                 {

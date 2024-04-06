@@ -1,46 +1,56 @@
 using System;
-using Microsoft.Maui.Controls;
 using System.Diagnostics;
-using TraxAct.ViewModels;
+using Microsoft.Maui.Controls;
 using Syncfusion.Maui.Scheduler;
-using System.Threading.Tasks;
 using TraxAct.Models;
+using TraxAct.ViewModels;
+using Firebase.Auth;
+using FirebaseAdmin.Auth;
 
 namespace TraxAct.Views
 {
-    public partial class TimetablePage : ContentPage
-    {
-        private TimetableViewModel viewModel;
-        private DateTime selectedDateTime;
+	public partial class TimetablePage : ContentPage
+	{
+		private TimetableViewModel viewModel;
+		private DateTime selectedDateTime;
+		private FirebaseServices _firebaseServices;
 
-        public object Events { get; private set; }
+		public TimetablePage()
+		{
+			InitializeComponent();
+			_firebaseServices = new FirebaseServices();
+			//this.Appearing += OnPageAppearing;
+		}
 
-        public TimetablePage()
-        {
-            InitializeComponent();
-            this.Appearing += OnPageAppearing;
-        }
+		//private async void OnPageAppearing(object sender, EventArgs e)
+		//{
+		//	try
+		//	{
+		//		if 
+		//		{
+		//			UserIdentifier = 
 
+		//			viewModel = new TimetableViewModel(userId);
+		//			BindingContext = viewModel;
 
-        private async void OnPageAppearing(object sender, EventArgs e)
-        {
-            try
-            {
-                viewModel = new TimetableViewModel();
-                BindingContext = viewModel;
+		//			await viewModel.LoadEventsFromDatabase(userId);
 
-                viewModel?.ReloadEventsFromDatabase().ConfigureAwait(false);
-                Debug.WriteLine($"Events count: {viewModel.Events.Count}");
-                foreach (var evt in viewModel.Events)
-                {
-                    Debug.WriteLine($"Event Subject: {evt.Subject}, Start Time: {evt.StartTime}, End Time: {evt.EndTime}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Exception while loading events: {ex.Message}");
-            }
-        }
+		//			Debug.WriteLine($"Events count: {viewModel.Events.Count}");
+		//			foreach (var evt in viewModel.Events)
+		//			{
+		//				Debug.WriteLine($"Event Subject: {evt.Subject}, Start Time: {evt.StartTime}, End Time: {evt.EndTime}");
+		//			}
+		//		}
+		//		else
+		//		{
+		//			Debug.WriteLine("No user is currently signed in.");
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		Debug.WriteLine($"Exception while loading events: {ex.Message}");
+		//	}
+		//}
 
 		private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
 		{
@@ -57,14 +67,14 @@ namespace TraxAct.Views
 						int eventId = (int)selectedAppointment.Id;
 						Debug.WriteLine($"Event ID of tapped event: {eventId}");
 
-						if (Shell.Current != null && Shell.Current.Navigation != null)
+						if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
 						{
-							await Shell.Current.Navigation.PushAsync(new EventDetailsPage(eventId));
+							await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventDetailsPage(eventId));
 							Debug.WriteLine("DetailsCommand execution completed successfully.");
 						}
 						else
 						{
-							Debug.WriteLine("Shell.Current or Shell.Current.Navigation is null. DetailsCommand execution failed.");
+							Debug.WriteLine("Shell navigation is not available. DetailsCommand execution failed.");
 						}
 					}
 				}
@@ -75,41 +85,35 @@ namespace TraxAct.Views
 			}
 		}
 
-
 		private async void OnCreateEventButtonClicked(object sender, EventArgs e)
-        {
-            await NavigateToEventFormPage(selectedDateTime);
-        }
-    
+		{
+			await NavigateToEventFormPage(selectedDateTime);
+		}
 
+		private async Task NavigateToEventFormPage(DateTime selectedDateTime)
+		{
+			try
+			{
+				if (viewModel?.Events?.Any(evt => evt.StartTime <= selectedDateTime && evt.EndTime > selectedDateTime) ?? false)
+				{
+					Debug.WriteLine("There are existing appointments in the selected timeslot. EventFormPage will not be opened.");
+					return;
+				}
 
-        private async Task NavigateToEventFormPage(DateTime selectedDateTime)
-        {
-            try
-            {
-                if (viewModel.Events.Any(evt => evt.StartTime <= selectedDateTime && evt.EndTime > selectedDateTime))
-
-                {
-                    Debug.WriteLine("There are existing appointments in the selected timeslot. EventFormPage will not be opened.");
-                    return;
-                }
-
-                if (Shell.Current != null && Shell.Current.Navigation != null)
-                {
-                    await Shell.Current.Navigation.PushAsync(new EventFormPage());
-                    Debug.WriteLine("Navigated to EventFormPage successfully.");
-                }
-                else
-                {
-                    Debug.WriteLine("Shell.Current or Shell.Current.Navigation is null. Navigation to EventFormPage failed.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error navigating to EventFormPage: {ex.Message}");
-            }
-        }
-    
-
-    }
+				if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
+				{
+					await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventFormPage());
+					Debug.WriteLine("Navigated to EventFormPage successfully.");
+				}
+				else
+				{
+					Debug.WriteLine("Shell navigation is not available. Navigation to EventFormPage failed.");
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error navigating to EventFormPage: {ex.Message}");
+			}
+		}
+	}
 }

@@ -9,7 +9,6 @@ namespace TraxAct.ViewModels
 {
     public class ExerciseViewModel : INotifyPropertyChanged
     {
-        private readonly MyDbContext _dbContext;
 
         private string _subject;
         public string Subject
