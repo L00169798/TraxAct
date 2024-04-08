@@ -277,8 +277,8 @@ namespace TraxAct.ViewModels
 
 				string currentUserUid = UserService.Instance.GetCurrentUserUid();
 
-				DateTime startDateTime = DateTime.Today; 
-				DateTime endDateTime = DateTime.Today;   
+				DateTime startDateTime = StartDate.Date.Add(StartTime);
+				DateTime endDateTime = EndDate.Date.Add(EndTime);
 
 				Event newEvent = new Event
 				{

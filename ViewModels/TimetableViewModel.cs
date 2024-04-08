@@ -12,71 +12,72 @@ using TraxAct.Views;
 
 namespace TraxAct.ViewModels
 {
-    public class TimetableViewModel : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
+	public class TimetableViewModel : INotifyPropertyChanged
+	{
+		public event PropertyChangedEventHandler PropertyChanged;
 
-
-        private DateTime _selectedDate = DateTime.Today;
-		private DateTime selectedDateTime;
 		private string _userId;
+		public string UserId
+		{
+			get { return _userId; }
+			set
+			{
+				if (_userId != value)
+				{
+					_userId = value;
+					OnPropertyChanged(nameof(UserId));
+					LoadEventsFromDatabase();
+				}
+			}
+		}
+
+		private DateTime _selectedDate = DateTime.Today;
 		public DateTime SelectedDate
-        {
-            get { return _selectedDate; }
+		{
+			get { return _selectedDate; }
 			set
 			{
 				if (_selectedDate != value)
 				{
 					_selectedDate = value;
 					OnPropertyChanged(nameof(SelectedDate));
-					if (!string.IsNullOrEmpty(_userId))
-					{
-						LoadEventsFromDatabase(_userId);
-					}
+					LoadEventsFromDatabase();
 				}
 			}
 		}
 
-        private ObservableCollection<SchedulerAppointment> _events;
-        public ObservableCollection<SchedulerAppointment> Events
-        {
-            get { return _events; }
-            set
-            {
-                if (_events != value)
-                {
-                    _events = value;
-                    OnPropertyChanged(nameof(Events));
-                }
-            }
-        }
+		private ObservableCollection<SchedulerAppointment> _events;
+		public ObservableCollection<SchedulerAppointment> Events
+		{
+			get { return _events; }
+			set
+			{
+				if (_events != value)
+				{
+					_events = value;
+					OnPropertyChanged(nameof(Events));
+				}
+			}
+		}
 
-        private readonly MyDbContext _dbContext;
+		private readonly MyDbContext _dbContext;
 
 		public TimetableViewModel(string userId)
 		{
 			_dbContext = new MyDbContext();
 			Events = new ObservableCollection<SchedulerAppointment>();
-
-			LoadEventsFromDatabase(userId);
-			AddSampleEvent();
+			UserId = userId; 
 		}
 
-
-		private void AddSampleEvent()
-        {
-            var sampleEvent = new SchedulerAppointment
-            {
-                Subject = "Sample Event",
-                StartTime = DateTime.Today.AddHours(10),
-                EndTime = DateTime.Today.AddHours(12)
-            };
-
-            Events.Add(sampleEvent);
-        }
-
-		public async Task LoadEventsFromDatabase(string userId)
+		public async void LoadEventsFromDatabase()
 		{
+			Debug.WriteLine("Load Events executed..");
+			if (string.IsNullOrEmpty(UserId))
+			{
+				Debug.WriteLine("UserId is null or empty. Cannot load events.");
+				return;
+			}
+
 			try
 			{
 				Events.Clear();
@@ -84,18 +85,24 @@ namespace TraxAct.ViewModels
 				DateTime startOfWeek = SelectedDate;
 				DateTime endOfWeek = startOfWeek.AddDays(7);
 
-				var events = await _dbContext.GetEventsByUserId(userId);
-				Debug.WriteLine($"Loaded {events.Count} events from the database for user ID: {userId}");
+				var events = await _dbContext.GetEventsByUserId(UserId);
+				if (events == null)
+				{
+					Debug.WriteLine("No events found for the specified UserId.");
+					return;
+				}
+
+				Debug.WriteLine($"Loaded {events.Count} events from the database for user ID: {UserId}");
 
 				var filteredEvents = events
 					.Where(e => (e.StartTime >= startOfWeek && e.StartTime < endOfWeek) ||
 								(e.EndTime > startOfWeek && e.EndTime <= endOfWeek) ||
 								(e.StartTime < startOfWeek && e.EndTime > endOfWeek))
-					.OrderBy(e => e.StartTime);
+					.OrderBy(e => e.StartTime)
+					.ToList();
 
-				Debug.WriteLine($"Filtered {filteredEvents.Count()} events for date: {SelectedDate}");
+				Debug.WriteLine($"Filtered {filteredEvents.Count} events for date: {SelectedDate}");
 
-				Debug.WriteLine("Filtered Events:");
 				foreach (var ev in filteredEvents)
 				{
 					var schedulerAppointment = new SchedulerAppointment
@@ -119,13 +126,12 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		
 
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            Debug.WriteLine($"PropertyChanged event invoked for property: {propertyName}");
-        }
-    }
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			Debug.WriteLine($"PropertyChanged event invoked for property: {propertyName}");
+		}
+	}
 }

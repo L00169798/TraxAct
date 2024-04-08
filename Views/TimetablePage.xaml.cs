@@ -6,6 +6,7 @@ using TraxAct.Models;
 using TraxAct.ViewModels;
 using Firebase.Auth;
 using FirebaseAdmin.Auth;
+using TraxAct.Services;
 
 namespace TraxAct.Views
 {
@@ -19,43 +20,46 @@ namespace TraxAct.Views
 		{
 			InitializeComponent();
 			_firebaseServices = new FirebaseServices();
-			//this.Appearing += OnPageAppearing;
+			this.Appearing += OnPageAppearing;
 		}
 
-		//private async void OnPageAppearing(object sender, EventArgs e)
-		//{
-		//	try
-		//	{
-		//		if 
-		//		{
-		//			UserIdentifier = 
+		private async void OnPageAppearing(object sender, EventArgs e)
+		{
+			try
+			{
+				// Retrieve the user ID from UserService
+				string userId = UserService.Instance.GetCurrentUserUid();
 
-		//			viewModel = new TimetableViewModel(userId);
-		//			BindingContext = viewModel;
+				if (!string.IsNullOrEmpty(userId))
+				{
+					viewModel = new TimetableViewModel(userId);
+					BindingContext = viewModel;
 
-		//			await viewModel.LoadEventsFromDatabase(userId);
+					viewModel.LoadEventsFromDatabase();
 
-		//			Debug.WriteLine($"Events count: {viewModel.Events.Count}");
-		//			foreach (var evt in viewModel.Events)
-		//			{
-		//				Debug.WriteLine($"Event Subject: {evt.Subject}, Start Time: {evt.StartTime}, End Time: {evt.EndTime}");
-		//			}
-		//		}
-		//		else
-		//		{
-		//			Debug.WriteLine("No user is currently signed in.");
-		//		}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		Debug.WriteLine($"Exception while loading events: {ex.Message}");
-		//	}
-		//}
+					Debug.WriteLine($"Events count: {viewModel.Events.Count}");
+					foreach (var evt in viewModel.Events)
+					{
+						Debug.WriteLine($"Event Subject: {evt.Subject}, Start Time: {evt.StartTime}, End Time: {evt.EndTime}");
+					}
+				}
+				else
+				{
+					Debug.WriteLine("No user ID available from UserService.");
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Exception while loading events: {ex.Message}");
+			}
+		}
+
 
 		private async void OnCreateEventButtonClicked(object sender, EventArgs e)
 		{
 			await NavigateToEventFormPage(selectedDateTime);
 		}
+
 
 		private async Task NavigateToEventFormPage(DateTime selectedDateTime)
 		{
@@ -82,6 +86,9 @@ namespace TraxAct.Views
 				Debug.WriteLine($"Error navigating to EventFormPage: {ex.Message}");
 			}
 		}
+
+
+
 
 		private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
 		{
@@ -117,3 +124,4 @@ namespace TraxAct.Views
 		}
 	}
 }
+
