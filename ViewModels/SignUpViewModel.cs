@@ -84,7 +84,8 @@ namespace TraxAct.ViewModels
 					SaveUserId(userCredential.User.Uid);
 
 					await Application.Current.MainPage.DisplayAlert("Welcome", "Registration Successful!", "OK");
-					await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+
+					await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
 				}
 				else
 				{
@@ -114,6 +115,7 @@ namespace TraxAct.ViewModels
 
 			Debug.WriteLine("ExecuteSignUpAsync method completed.");
 		}
+
 
 
 
