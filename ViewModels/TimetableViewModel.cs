@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TraxAct.Models;
 using TraxAct.Services;
 using Syncfusion.Maui.Scheduler;
+using TraxAct.Views;
 
 namespace TraxAct.ViewModels
 {
@@ -17,6 +18,7 @@ namespace TraxAct.ViewModels
 
 
         private DateTime _selectedDate = DateTime.Today;
+		private DateTime selectedDateTime;
 		private string _userId;
 		public DateTime SelectedDate
         {
@@ -117,10 +119,10 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		
 
-	
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             Debug.WriteLine($"PropertyChanged event invoked for property: {propertyName}");

@@ -52,6 +52,37 @@ namespace TraxAct.Views
 		//	}
 		//}
 
+		private async void OnCreateEventButtonClicked(object sender, EventArgs e)
+		{
+			await NavigateToEventFormPage(selectedDateTime);
+		}
+
+		private async Task NavigateToEventFormPage(DateTime selectedDateTime)
+		{
+			try
+			{
+				if (viewModel?.Events?.Any(evt => evt.StartTime <= selectedDateTime && evt.EndTime > selectedDateTime) ?? false)
+				{
+					Debug.WriteLine("There are existing appointments in the selected timeslot. EventFormPage will not be opened.");
+					return;
+				}
+
+				if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
+				{
+					await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventFormPage());
+					Debug.WriteLine("Navigated to EventFormPage successfully.");
+				}
+				else
+				{
+					Debug.WriteLine("Shell navigation is not available. Navigation to EventFormPage failed.");
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error navigating to EventFormPage: {ex.Message}");
+			}
+		}
+
 		private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
 		{
 			try
@@ -82,37 +113,6 @@ namespace TraxAct.Views
 			catch (Exception ex)
 			{
 				Debug.WriteLine($"Error executing DetailsCommand: {ex.Message}");
-			}
-		}
-
-		private async void OnCreateEventButtonClicked(object sender, EventArgs e)
-		{
-			await NavigateToEventFormPage(selectedDateTime);
-		}
-
-		private async Task NavigateToEventFormPage(DateTime selectedDateTime)
-		{
-			try
-			{
-				if (viewModel?.Events?.Any(evt => evt.StartTime <= selectedDateTime && evt.EndTime > selectedDateTime) ?? false)
-				{
-					Debug.WriteLine("There are existing appointments in the selected timeslot. EventFormPage will not be opened.");
-					return;
-				}
-
-				if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
-				{
-					await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventFormPage());
-					Debug.WriteLine("Navigated to EventFormPage successfully.");
-				}
-				else
-				{
-					Debug.WriteLine("Shell navigation is not available. Navigation to EventFormPage failed.");
-				}
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine($"Error navigating to EventFormPage: {ex.Message}");
 			}
 		}
 	}

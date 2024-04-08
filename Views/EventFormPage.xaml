@@ -4,10 +4,10 @@
              x:Class="TraxAct.Views.EventFormPage"
              xmlns:models="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             x:DataType="viewModels:EventFormViewModel"
              BackgroundColor="White"
              Title="Event Form">
 
+  
     <ScrollView>
         <StackLayout Padding="20">
             <Label Text="Name" TextColor="Black"/>

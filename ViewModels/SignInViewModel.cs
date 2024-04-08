@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TraxAct.Views;
+using TraxAct.Services;
 
 namespace TraxAct.ViewModels
 {
@@ -61,9 +62,14 @@ namespace TraxAct.ViewModels
 			{
 				var user = await _authClient.SignInWithEmailAndPasswordAsync(Email, Password);
 
-				Debug.WriteLine($"User signed in successfully: {Email}");
+				if (user != null)
+				{
+					string userUid = user.User.Uid;
+					Debug.WriteLine($"User signed in successfully: {Email}, UID: {userUid}");
+					UserService.Instance.SetCurrentUserUid(userUid);
 
-				await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+					await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+				}
 			}
 			catch (FirebaseAuthException ex)
 			{
