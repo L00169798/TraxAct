@@ -55,6 +55,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FirebaseAdmin" Version="2.4.1" />
 		<PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.17">
 		  <PrivateAssets>all</PrivateAssets>
@@ -69,18 +70,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\CalendarPage.xaml.cs">
-	    <DependentUpon>CalendarPage.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Views\SignUpPage.xaml.cs">
 	    <DependentUpon>SignUpPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\CalendarPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\EventDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

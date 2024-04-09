@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TraxAct.Views;
+using TraxAct.Services;
+using FirebaseAdmin.Auth;
 
 namespace TraxAct.ViewModels
 {
@@ -25,6 +27,7 @@ namespace TraxAct.ViewModels
 			_authClient = new FirebaseAuthClient(authConfig);
 
 			SignUpCommand = new Command(async () => await ExecuteSignUpAsync());
+			SignInCommand = new Command(async () => await ExecuteSignInAsync());
 		}
 
 		private string _email;
@@ -61,6 +64,7 @@ namespace TraxAct.ViewModels
 		}
 
 		public ICommand SignUpCommand { get; }
+		public ICommand SignInCommand { get; }
 
 		private async Task ExecuteSignUpAsync()
 		{
@@ -75,10 +79,35 @@ namespace TraxAct.ViewModels
 					return;
 				}
 
-				var user = await _authClient.CreateUserWithEmailAndPasswordAsync(Email, Password);
+				var userCredential = await _authClient.CreateUserWithEmailAndPasswordAsync(Email, Password);
 
-				await Application.Current.MainPage.DisplayAlert("Success", "Successfully signed up", "OK");
-				await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+				if (userCredential?.User != null && !string.IsNullOrEmpty(userCredential.User.Uid))
+				{
+					SaveUserId(userCredential.User.Uid);
+
+					await Application.Current.MainPage.DisplayAlert("Welcome", "Registration Successful!", "OK");
+
+					await Shell.Current.GoToAsync("//SignIn");
+				}
+				else
+				{
+					Debug.WriteLine("User or UID is null.");
+					await Application.Current.MainPage.DisplayAlert("Error", "Failed to sign up. Please try again later", "OK");
+				}
+			}
+			catch (Firebase.Auth.FirebaseAuthException ex)
+			{
+				Debug.WriteLine($"Firebase authentication error: {ex.Message}");
+
+				if (ex.Message.Contains("EmailExists"))
+				{
+					Debug.WriteLine("Account already exists");
+					await Application.Current.MainPage.DisplayAlert("Error", "Account already exists, return to sign in page", "OK");
+				}
+				else
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", "Failed to sign up. Please try again later", "OK");
+				}
 			}
 			catch (Exception ex)
 			{
@@ -87,6 +116,34 @@ namespace TraxAct.ViewModels
 			}
 
 			Debug.WriteLine("ExecuteSignUpAsync method completed.");
+		}
+
+		private async Task ExecuteSignInAsync()
+		{
+			try
+			{
+				await Shell.Current.GoToAsync("//SignIn");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error navigating to sign-in page: {ex.Message}");
+				await Application.Current.MainPage.DisplayAlert("Error", "Failed to navigate to sign-in page", "OK");
+			}
+		}
+
+
+		private void SaveUserId(string firebaseUid)
+		{
+			try
+			{
+				var dbContext = new MyDbContext();
+				dbContext.SaveUserId(firebaseUid);
+				Debug.WriteLine("Firebase UID saved to SQLite database successfully.");
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error saving Firebase UID to SQLite database: {ex.Message}");
+			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

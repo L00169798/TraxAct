@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TraxAct.Models;
 using System.Diagnostics;
+using Firebase.Auth.Repository;
 
 namespace TraxAct.Services
 {
@@ -34,7 +35,8 @@ namespace TraxAct.Services
                 Debug.WriteLine($"Database file does not exist at path: {DatabasePath}");
                 Database = new SQLiteAsyncConnection(DatabasePath, Flags);
                 await Database.CreateTableAsync<Event>();
-                Debug.WriteLine($"Database created at path: {DatabasePath}");
+				await Database.CreateTableAsync<User>();
+				Debug.WriteLine($"Database created at path: {DatabasePath}");
             }
             else
             {
@@ -42,11 +44,15 @@ namespace TraxAct.Services
                 Database = new SQLiteAsyncConnection(DatabasePath, Flags);
             }
         }
-        public async Task<List<Event>> GetEvents()
+        public async Task<List<Event>> GetEventsByUserId(string userId)
         {
             await Init();
-            return await Database.Table<Event>().ToListAsync();
-        }
+			var events = await Database.Table<Event>()
+							   .Where(e => e.UserId == userId)
+							   .ToListAsync();
+
+			return events;
+		}
 
         public async Task<Event> GetById(int id)
         {
@@ -120,5 +126,24 @@ namespace TraxAct.Services
             var events = await Database.Table<Event>().ToListAsync();
             return events.FindAll(e => e.StartTime >= startDate && e.StartTime <= endDate);
         }
-    }
+
+		public async Task SaveUserId(string userId)
+		{
+			try
+			{
+				await Init();
+
+				var user = new User { UserId = userId };
+				await Database.InsertOrReplaceAsync(user);
+
+				Debug.WriteLine($"User ID '{userId}' saved to SQLite database.");
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error saving user ID to SQLite database: {ex.Message}");
+				throw;
+			}
+		}
+
+	}
 }
