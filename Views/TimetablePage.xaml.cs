@@ -27,7 +27,6 @@ namespace TraxAct.Views
 		{
 			try
 			{
-				// Retrieve the user ID from UserService
 				string userId = UserService.Instance.GetCurrentUserUid();
 
 				if (!string.IsNullOrEmpty(userId))

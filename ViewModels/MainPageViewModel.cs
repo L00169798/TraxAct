@@ -11,7 +11,7 @@ namespace TraxAct.ViewModels
 
 		public MainPageViewModel()
 		{
-			_userService = new UserService();
+			_userService = UserService.Instance;
 		}
 
 		public async Task OnLogoutButtonClickedAsync()
@@ -22,37 +22,35 @@ namespace TraxAct.ViewModels
 
 				if (confirmLogout)
 				{
-					var currentUserUid = _userService.GetCurrentUserUid();
+					bool signOutSuccess = _userService.SignOut();
 
-					if (!string.IsNullOrEmpty(currentUserUid))
+					if (signOutSuccess)
 					{
-					
-						bool signOutSuccess = _userService.SignOut();
+						
+						_userService.SetCurrentUserUid(null);
 
-						if (signOutSuccess)
-						{
-							
-							await Application.Current.MainPage.DisplayAlert("Logged Out", "You have been successfully logged out.", "OK");
-							await Shell.Current.GoToAsync("//SignInPage");
-						}
-						else
-						{
-							
-							await Application.Current.MainPage.DisplayAlert("Error", "Failed to log out.", "OK");
-						}
+					
+						await Application.Current.MainPage.DisplayAlert("Logged Out", "You have been successfully logged out.", "OK");
+
+						
+						await Shell.Current.GoToAsync("//SignIn");
 					}
 					else
 					{
-						
-						await Application.Current.MainPage.DisplayAlert("Error", "No user is currently signed in.", "OK");
+						await Application.Current.MainPage.DisplayAlert("Error", "Failed to log out.", "OK");
 					}
 				}
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine($"Error during logout: {ex.Message}");
-				await Application.Current.MainPage.DisplayAlert("Error", "Failed to log out.", "OK");
+				await Application.Current.MainPage.DisplayAlert("Error", "An error occurred during logout.", "OK");
 			}
+		}
+
+		public string GetCurrentUserId()
+		{
+			return _userService.GetCurrentUserUid();
 		}
 	}
 }

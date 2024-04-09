@@ -1,5 +1,6 @@
 ﻿using Firebase.Auth;
 using Firebase.Auth.Providers;
+using FirebaseAdmin;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -24,6 +25,8 @@ namespace TraxAct.ViewModels
 			};
 
 			_authClient = new FirebaseAuthClient(authConfig);
+
+			ClearForm();
 
 			SignInCommand = new Command(async () => await ExecuteSignInAsync());
 			SignUpCommand = new Command(async () => await ExecuteSignUpAsync());
@@ -68,21 +71,46 @@ namespace TraxAct.ViewModels
 					Debug.WriteLine($"User signed in successfully: {Email}, UID: {userUid}");
 					UserService.Instance.SetCurrentUserUid(userUid);
 
+					Debug.WriteLine($"Current User ID: {UserService.Instance.GetCurrentUserUid()}");
+
 					await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+
+					ClearForm();
 				}
 			}
 			catch (FirebaseAuthException ex)
 			{
 				Debug.WriteLine($"Error during sign in: {ex.Message}");
-				await Application.Current.MainPage.DisplayAlert("Error", "Failed to sign in", "OK");
+
+				if (ex.Message.Contains("INVALID_LOGIN_CREDENTIALS"))
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", "Invalid credentials. Please check your credentials or sign up.", "OK");
+				}
+				else
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", "Failed to sign in. Please try again later.", "OK");
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Unexpected error during sign in: {ex.Message}");
+				await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
 			}
 
 			Debug.WriteLine("ExecuteSignInAsync method completed.");
 		}
 
+
+
 		private async Task ExecuteSignUpAsync()
 		{
 			await Shell.Current.GoToAsync($"//SignUp");
+		}
+
+		private void ClearForm()
+		{
+			Email = string.Empty;
+			Password = string.Empty;
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

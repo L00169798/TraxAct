@@ -22,6 +22,21 @@ namespace TraxAct.Services
 		{
 			_currentUserUid = uid;
 		}
+
+		public bool SignOut()
+		{
+			try
+			{
+				_currentUserUid = null;
+				Console.WriteLine("User signed out successfully.");
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error during sign out: {ex.Message}");
+				return false; 
+			}
+		}
 	}
 }
 

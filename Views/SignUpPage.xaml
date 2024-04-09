@@ -23,6 +23,8 @@
             </StackLayout>
 
             <Button Text="Sign Up" Command="{Binding SignUpCommand}" Margin="0,25,0,0" HorizontalOptions="Start"/>
+
+            <Button Text="Back to Sign In" Command="{Binding SignInCommand}" Margin="0,25,0,0" HorizontalOptions="Start"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -27,6 +27,7 @@ namespace TraxAct.ViewModels
 			_authClient = new FirebaseAuthClient(authConfig);
 
 			SignUpCommand = new Command(async () => await ExecuteSignUpAsync());
+			SignInCommand = new Command(async () => await ExecuteSignInAsync());
 		}
 
 		private string _email;
@@ -63,6 +64,7 @@ namespace TraxAct.ViewModels
 		}
 
 		public ICommand SignUpCommand { get; }
+		public ICommand SignInCommand { get; }
 
 		private async Task ExecuteSignUpAsync()
 		{
@@ -85,7 +87,7 @@ namespace TraxAct.ViewModels
 
 					await Application.Current.MainPage.DisplayAlert("Welcome", "Registration Successful!", "OK");
 
-					await Shell.Current.GoToAsync($"//{nameof(SignInPage)}");
+					await Shell.Current.GoToAsync("//SignIn");
 				}
 				else
 				{
@@ -97,10 +99,10 @@ namespace TraxAct.ViewModels
 			{
 				Debug.WriteLine($"Firebase authentication error: {ex.Message}");
 
-				if (ex.Message.Contains("email address is already in use"))
+				if (ex.Message.Contains("EmailExists"))
 				{
-					Debug.WriteLine("Email is already in use.");
-					await Application.Current.MainPage.DisplayAlert("Error", "Email is already in use", "OK");
+					Debug.WriteLine("Account already exists");
+					await Application.Current.MainPage.DisplayAlert("Error", "Account already exists, return to sign in page", "OK");
 				}
 				else
 				{
@@ -116,8 +118,18 @@ namespace TraxAct.ViewModels
 			Debug.WriteLine("ExecuteSignUpAsync method completed.");
 		}
 
-
-
+		private async Task ExecuteSignInAsync()
+		{
+			try
+			{
+				await Shell.Current.GoToAsync("//SignIn");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error navigating to sign-in page: {ex.Message}");
+				await Application.Current.MainPage.DisplayAlert("Error", "Failed to navigate to sign-in page", "OK");
+			}
+		}
 
 
 		private void SaveUserId(string firebaseUid)
