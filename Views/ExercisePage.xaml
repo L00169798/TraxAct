@@ -32,11 +32,9 @@
             </Picker.ItemsSource>
         </Picker>
 
-        <!-- Specific fields for Running exercise -->
-        <Label Text="Distance" TextColor="Black"/>
+        <Label Text="Distance (km)" TextColor="Black"/>
         <Entry Text="{Binding Distance}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=Running}" TextColor="Black" />
 
-        <!-- Specific fields for Strength Training exercise -->
         <Label Text="Sets" TextColor="Black"/>
         <Entry Text="{Binding Sets}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=StrengthTraining}" TextColor="Black" />
 

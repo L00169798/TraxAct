@@ -2,6 +2,8 @@ using System;
 using System.Diagnostics;
 using Microsoft.Maui.Controls;
 using Syncfusion.Maui.Scheduler;
+using Syncfusion.Maui.Core;
+using Microsoft.Maui.Controls;
 using TraxAct.Models;
 using TraxAct.ViewModels;
 using Firebase.Auth;
@@ -27,11 +29,11 @@ namespace TraxAct.Views
 		{
 			try
 			{
-				string userId = UserService.Instance.GetCurrentUserUid();
+				var userService = UserService.Instance;
 
-				if (!string.IsNullOrEmpty(userId))
+				if (userService != null)
 				{
-					viewModel = new TimetableViewModel(userId);
+					viewModel = new TimetableViewModel(userService);
 					BindingContext = viewModel;
 
 					viewModel.LoadEventsFromDatabase();
@@ -44,7 +46,7 @@ namespace TraxAct.Views
 				}
 				else
 				{
-					Debug.WriteLine("No user ID available from UserService.");
+					Debug.WriteLine("UserService instance is null.");
 				}
 			}
 			catch (Exception ex)
@@ -93,34 +95,49 @@ namespace TraxAct.Views
 		{
 			try
 			{
+				
 				if (e.Appointments != null && e.Appointments.Any())
 				{
+					
 					var selectedAppointment = e.Appointments.First() as SchedulerAppointment;
 
 					if (selectedAppointment != null)
 					{
 						Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
 
-						int eventId = (int)selectedAppointment.Id;
-						Debug.WriteLine($"Event ID of tapped event: {eventId}");
-
-						if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
-						{
-							await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventDetailsPage(eventId));
-							Debug.WriteLine("DetailsCommand execution completed successfully.");
-						}
-						else
-						{
-							Debug.WriteLine("Shell navigation is not available. DetailsCommand execution failed.");
-						}
+						
+						await NavigateToEventDetails((int)selectedAppointment.Id);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Error executing DetailsCommand: {ex.Message}");
+				Debug.WriteLine($"Error handling SchedulerTapped event: {ex.Message}");
+			}
+		}
+
+		private async Task NavigateToEventDetails(int eventId)
+		{
+			try
+			{
+				if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
+				{
+					await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventDetailsPage(eventId));
+					Debug.WriteLine($"Navigated to EventDetailsPage for event ID: {eventId}");
+				}
+				else
+				{
+					Debug.WriteLine("Shell navigation is not available. Navigation to EventDetailsPage failed.");
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error navigating to EventDetailsPage: {ex.Message}");
 			}
 		}
 	}
 }
+
+
+
 

@@ -17,7 +17,7 @@
             HorizontalOptions="Center"
             TextColor="Black" />
         <Label 
-            Text="{Binding SelectedEvent.Subject}"
+            Text="{Binding SelectedEvent.Title}"
             VerticalOptions="CenterAndExpand" 
             HorizontalOptions="CenterAndExpand"
             TextColor="Black" />
@@ -40,7 +40,6 @@
             HorizontalOptions="CenterAndExpand"
             TextColor="Black" />
 
-        <!-- Reps label -->
         <Label 
             Text="{Binding SelectedEvent.Reps, StringFormat='Reps: {0}'}"
             VerticalOptions="CenterAndExpand" 
@@ -53,7 +52,7 @@
             </Label.Triggers>
         </Label>
 
-        <!-- Sets label -->
+      
         <Label 
             Text="{Binding SelectedEvent.Sets, StringFormat='Sets: {0}'}"
             VerticalOptions="CenterAndExpand" 
@@ -66,9 +65,9 @@
             </Label.Triggers>
         </Label>
 
-        <!-- Distance label -->
+       
         <Label 
-            Text="{Binding SelectedEvent.Distance, StringFormat='Distance: {0}'}"
+            Text="{Binding SelectedEvent.Distance, StringFormat='Distance: {0} km'}"
             VerticalOptions="CenterAndExpand" 
             HorizontalOptions="CenterAndExpand"
             TextColor="Black">

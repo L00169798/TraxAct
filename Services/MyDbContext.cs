@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using TraxAct.Models;
 using System.Diagnostics;
 using Firebase.Auth.Repository;
+using Syncfusion.Maui.Scheduler;
+using TraxAct.Services;
 
 namespace TraxAct.Services
 {
@@ -22,7 +24,14 @@ namespace TraxAct.Services
 
         SQLiteAsyncConnection Database;
 
-        async Task Init()
+		private readonly UserService _userService;
+
+		public MyDbContext()
+		{
+		
+		}
+
+		async Task Init()
         {
             if (Database != null)
             {
@@ -47,14 +56,54 @@ namespace TraxAct.Services
         public async Task<List<Event>> GetEventsByUserId(string userId)
         {
             await Init();
-			var events = await Database.Table<Event>()
-							   .Where(e => e.UserId == userId)
-							   .ToListAsync();
+            var events = await Database.Table<Event>()
+                               .Where(e => e.UserId == userId)
+                               .ToListAsync();
 
-			return events;
+            return events;
+        }
+
+		public async Task LoadEventsForCurrentUser()
+		{
+			try
+			{
+				string userId = _userService.GetCurrentUserUid();
+				if (string.IsNullOrEmpty(userId))
+				{
+					Debug.WriteLine("User ID is null or empty. Cannot load events.");
+					return;
+				}
+
+				List<Event> events = await GetEventsByUserId(userId);
+				if (events == null || events.Count == 0)
+				{
+					Debug.WriteLine("No events found for the specified user.");
+					return;
+				}
+
+				List<SchedulerAppointment> Events = new List<SchedulerAppointment>();
+
+				foreach (var ev in events)
+				{
+					var schedulerAppointment = new SchedulerAppointment
+					{
+						Subject = ev.ExerciseType,
+						StartTime = ev.StartTime,
+						EndTime = ev.EndTime,
+						Id = ev.EventId
+					};
+					Events.Add(schedulerAppointment);
+				}
+
+				Debug.WriteLine($"Loaded {Events.Count} events for user ID: {userId}");
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"Error loading events: {ex.Message}");
+			}
 		}
 
-        public async Task<Event> GetById(int id)
+		public async Task<Event> GetById(int id)
         {
             await Init();
             return await Database.Table<Event>().Where(x => x.EventId == id).FirstOrDefaultAsync();

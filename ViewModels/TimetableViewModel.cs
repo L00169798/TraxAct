@@ -9,27 +9,20 @@ using TraxAct.Models;
 using TraxAct.Services;
 using Syncfusion.Maui.Scheduler;
 using TraxAct.Views;
+using System.Windows.Input;
 
 namespace TraxAct.ViewModels
 {
 	public class TimetableViewModel : INotifyPropertyChanged
+
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		private string _userId;
-		public string UserId
-		{
-			get { return _userId; }
-			set
-			{
-				if (_userId != value)
-				{
-					_userId = value;
-					OnPropertyChanged(nameof(UserId));
-					LoadEventsFromDatabase();
-				}
-			}
-		}
+		private readonly UserService _userService;
+		public string UserId { get; }
+		public DateTime MinimumDateTime { get; set; }
+		public bool ShowNavigationArrows { get; set; }
+		public ICommand QueryAppointmentsCommand { get; set; }
+		public bool ShowBusyIndicator { get; set; }
 
 		private DateTime _selectedDate = DateTime.Today;
 		public DateTime SelectedDate
@@ -43,6 +36,17 @@ namespace TraxAct.ViewModels
 					OnPropertyChanged(nameof(SelectedDate));
 					LoadEventsFromDatabase();
 				}
+			}
+		}
+
+		private DataTemplate _customAppointmentViewTemplate;
+		public DataTemplate CustomAppointmentViewTemplate
+		{
+			get { return _customAppointmentViewTemplate; }
+			private set
+			{
+				_customAppointmentViewTemplate = value;
+				OnPropertyChanged(nameof(CustomAppointmentViewTemplate));
 			}
 		}
 
@@ -60,18 +64,23 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		public object userService { get; }
+
 		private readonly MyDbContext _dbContext;
 
-		public TimetableViewModel(string userId)
+		public TimetableViewModel(UserService userService)
 		{
+			_userService = userService;
 			_dbContext = new MyDbContext();
 			Events = new ObservableCollection<SchedulerAppointment>();
-			UserId = userId; 
+			UserId = _userService.GetCurrentUserUid();
+			MinimumDateTime = new DateTime(2024, 01, 01);
 		}
+
 
 		public async void LoadEventsFromDatabase()
 		{
-			Debug.WriteLine("Load Events executed..");
+			Debug.WriteLine("Loading events for User ID: " + UserId);
 			if (string.IsNullOrEmpty(UserId))
 			{
 				Debug.WriteLine("UserId is null or empty. Cannot load events.");
@@ -80,10 +89,6 @@ namespace TraxAct.ViewModels
 
 			try
 			{
-				Events.Clear();
-
-				DateTime startOfWeek = SelectedDate;
-				DateTime endOfWeek = startOfWeek.AddDays(7);
 
 				var events = await _dbContext.GetEventsByUserId(UserId);
 				if (events == null)
@@ -94,20 +99,11 @@ namespace TraxAct.ViewModels
 
 				Debug.WriteLine($"Loaded {events.Count} events from the database for user ID: {UserId}");
 
-				var filteredEvents = events
-					.Where(e => (e.StartTime >= startOfWeek && e.StartTime < endOfWeek) ||
-								(e.EndTime > startOfWeek && e.EndTime <= endOfWeek) ||
-								(e.StartTime < startOfWeek && e.EndTime > endOfWeek))
-					.OrderBy(e => e.StartTime)
-					.ToList();
-
-				Debug.WriteLine($"Filtered {filteredEvents.Count} events for date: {SelectedDate}");
-
-				foreach (var ev in filteredEvents)
+				foreach (var ev in events)
 				{
 					var schedulerAppointment = new SchedulerAppointment
 					{
-						Subject = ev.Subject,
+						Subject = ev.ExerciseType, 
 						StartTime = ev.StartTime,
 						EndTime = ev.EndTime,
 						Id = ev.EventId
@@ -118,6 +114,7 @@ namespace TraxAct.ViewModels
 					Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
 					Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
 					Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");
+					Debug.WriteLine($"ExerciseType: {schedulerAppointment.Location}");
 				}
 			}
 			catch (Exception ex)
@@ -125,9 +122,6 @@ namespace TraxAct.ViewModels
 				Debug.WriteLine($"Error loading events: {ex.Message}");
 			}
 		}
-
-		
-
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{

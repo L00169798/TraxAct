@@ -14,6 +14,7 @@ namespace TraxAct.ViewModels
 	public class SignUpViewModel : INotifyPropertyChanged
 	{
 		private readonly FirebaseAuthClient _authClient;
+		private readonly UserService _userService;
 
 		public SignUpViewModel()
 		{
@@ -25,6 +26,7 @@ namespace TraxAct.ViewModels
 			};
 
 			_authClient = new FirebaseAuthClient(authConfig);
+			
 
 			SignUpCommand = new Command(async () => await ExecuteSignUpAsync());
 			SignInCommand = new Command(async () => await ExecuteSignInAsync());
