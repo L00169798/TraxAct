@@ -245,7 +245,7 @@ namespace TraxAct.ViewModels
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             SelectedEvent = selectedEvent ?? throw new ArgumentNullException(nameof(selectedEvent));
 
-            Subject = selectedEvent.Subject;
+            Subject = selectedEvent.Title;
             SelectedExerciseType = selectedEvent.ExerciseType;
             StartDate = selectedEvent.StartTime;
             EndDate = selectedEvent.EndTime;
@@ -263,7 +263,7 @@ namespace TraxAct.ViewModels
                 DateTime startDateTime = StartDate.Date.Add(StartTime);
                 DateTime endDateTime = EndDate.Date.Add(EndTime);
 
-                SelectedEvent.Subject = Subject;
+                SelectedEvent.Title = Subject;
                 SelectedEvent.ExerciseType = SelectedExerciseType;
                 SelectedEvent.StartTime = startDateTime;
                 SelectedEvent.EndTime = endDateTime;

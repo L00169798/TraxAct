@@ -50,7 +50,7 @@
                 Margin="20,500,20,20"
                 HorizontalOptions="Fill"     
                 FontSize="10" 
-                HeightRequest="20"
+                HeightRequest="40"
                 AbsoluteLayout.LayoutBounds="0.5,0.95,AutoSize,AutoSize"
                 AbsoluteLayout.LayoutFlags="PositionProportional" />
         </AbsoluteLayout>

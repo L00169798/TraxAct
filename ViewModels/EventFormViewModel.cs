@@ -238,7 +238,7 @@ namespace TraxAct.ViewModels
 		public List<string> ExerciseTypes { get; } = new List<string>
 		{
 			"Walking", "Running", "Cycling", "Swimming", "Yoga",
-			"Pilates", "StrengthTraining", "HIIT", "CircuitTraining", "Other"
+			"Pilates", "Strength Training", "HIIT", "Circuit Training", "Other"
 		};
 
 		public ICommand SaveCommand { get; }
@@ -282,7 +282,7 @@ namespace TraxAct.ViewModels
 
 				Event newEvent = new Event
 				{
-					Subject = Subject,
+					Title = Subject,
 					UserId = currentUserUid,
 					StartTime = startDateTime,
 					EndTime = endDateTime,

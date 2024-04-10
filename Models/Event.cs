@@ -12,8 +12,8 @@ namespace TraxAct.Models
 		[Column("user_id")]
 		public string UserId { get; set; }
 
-		[Column("event_subject")]
-        public string Subject { get; set; }
+		[Column("event_title")]
+        public string Title { get; set; } 
 
         [Column("exercise_type")]
         public string ExerciseType { get; set; }

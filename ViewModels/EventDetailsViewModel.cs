@@ -45,9 +45,10 @@ namespace TraxAct.ViewModels
 
             _dbContext = dbContext;
             Task.Run(async () => await LoadEventDetails(eventId));
-            EditCommand = new Command(EditButton_Clicked);
-            DeleteCommand = new Command(async () => await DeleteButton_Clicked());
-        }
+			EditCommand = new Command(() => EditButton_Clicked());
+
+			DeleteCommand = new Command(async () => await DeleteButton_Clicked());
+		}
 
         public async Task<bool> LoadEventDetails(int eventId)
         {

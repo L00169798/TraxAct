@@ -12,11 +12,11 @@ public partial class EventDetailsPage : ContentPage
     EventDetailsViewModel viewModel;
     private Event eventItem;
 
-    public EventDetailsPage(int eventId)
-    {
-        InitializeComponent();
-        dbContext = new MyDbContext();
-        viewModel = new EventDetailsViewModel(dbContext, eventId);
-        BindingContext = viewModel;
-    }
+	public EventDetailsPage(int eventId)
+	{
+		InitializeComponent();
+		dbContext = new MyDbContext();
+		viewModel = new EventDetailsViewModel(dbContext, eventId);
+		BindingContext = viewModel;
+	}
 }

@@ -101,7 +101,9 @@ namespace TraxAct.ViewModels
         }
 
         private INavigation _navigation;
-        public INavigation Navigation
+		private readonly UserService userService;
+
+		public INavigation Navigation
         {
             get { return _navigation; }
             set
