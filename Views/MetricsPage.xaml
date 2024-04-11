@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             x:Class="TraxAct.Views.MetricsPage"
+             xmlns:model="clr-namespace:TraxAct"
+             xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
+             x:DataType="viewModels:MetricsViewModel"
+             BackgroundColor="White"
+             Title="Analysis">
+
+
+    <chart:SfCartesianChart>
+
+        <chart:ColumnSeries ItemsSource="{Binding ExerciseHours}"
+                            ShowDataLabels="True"
+                            XBindingPath="Key"
+                            YBindingPath="Value">
+        </chart:ColumnSeries>
+
+        <chart:SfCartesianChart.Legend>
+            <chart:ChartLegend/>
+        </chart:SfCartesianChart.Legend>
+
+        <chart:SfCartesianChart.XAxes>
+            <chart:CategoryAxis/>
+        </chart:SfCartesianChart.XAxes>
+
+        <chart:SfCartesianChart.YAxes>
+            <chart:NumericalAxis/>
+        </chart:SfCartesianChart.YAxes>
+    </chart:SfCartesianChart>
+    
+</ContentPage>

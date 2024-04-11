@@ -80,8 +80,8 @@ namespace TraxAct.ViewModels
 		private void UpdateVisibility()
 		{
 			IsDistanceVisible = SelectedExerciseType == "Running";
-			IsRepsVisible = SelectedExerciseType == "StrengthTraining";
-			IsSetsVisible = SelectedExerciseType == "StrengthTraining";
+			IsRepsVisible = SelectedExerciseType == "Strength Training";
+			IsSetsVisible = SelectedExerciseType == "Strength Training";
 		}
 
 		private DateTime _startDate = DateTime.Today;

@@ -21,9 +21,7 @@ namespace TraxAct
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            //builder.Services.AddTransient<MainPage>();
 			builder.Services.AddTransient<SignInViewModel>();
-			//builder.Services.AddTransient<signup>(s => new signup(s.GetRequiredService<SignUpViewModel>()));
 
 			builder.Services.AddSingleton(new FirebaseAuthClient(new FirebaseAuthConfig()
             {
