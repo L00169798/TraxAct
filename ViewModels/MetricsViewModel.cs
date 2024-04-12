@@ -31,6 +31,17 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		private ObservableCollection<ExerciseByDayOfWeek> _totalExerciseByDayOfWeek;
+		public ObservableCollection<ExerciseByDayOfWeek> TotalExerciseByDayOfWeek
+		{
+			get { return _totalExerciseByDayOfWeek; }
+			set
+			{
+				_totalExerciseByDayOfWeek = value;
+				OnPropertyChanged();
+			}
+		}
+
 		public MetricsViewModel()
 		{
 			Console.WriteLine("MetricsViewModel instantiated.");
@@ -70,6 +81,10 @@ namespace TraxAct.ViewModels
 
 				ExerciseHours = ConvertToExerciseHours(events);
 				LogExerciseHours(ExerciseHours);
+
+				// Calculate and populate TotalExerciseByDayOfWeek
+				CalculateTotalExerciseByDayOfWeek(events);
+				LogTotalExerciseByDayOfWeek();
 			}
 			catch (Exception ex)
 			{
@@ -136,9 +151,49 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		private void CalculateTotalExerciseByDayOfWeek(List<Event> events)
+		{
+			var groupedByDayOfWeek = events.GroupBy(ev => ev.StartTime.DayOfWeek);
+
+			TotalExerciseByDayOfWeek = new ObservableCollection<ExerciseByDayOfWeek>();
+
+			foreach (var group in groupedByDayOfWeek)
+			{
+				var totalHours = group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours);
+
+				TotalExerciseByDayOfWeek.Add(new ExerciseByDayOfWeek
+				{
+					DayOfWeek = group.Key,
+					ExerciseCount = totalHours
+				});
+			}
+		}
+
+		private void LogTotalExerciseByDayOfWeek()
+		{
+			if (TotalExerciseByDayOfWeek == null || TotalExerciseByDayOfWeek.Count == 0)
+			{
+				Console.WriteLine("TotalExerciseByDayOfWeek collection is null or empty.");
+				return;
+			}
+
+			Console.WriteLine("Total Exercise Count by Day of Week:");
+
+			foreach (var item in TotalExerciseByDayOfWeek)
+			{
+				Console.WriteLine($"{item.DayOfWeek}: {item.ExerciseCount} hours");
+			}
+		}
+
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		public class ExerciseByDayOfWeek
+		{
+			public DayOfWeek DayOfWeek { get; set; }
+			public double ExerciseCount { get; set; }
 		}
 	}
 }

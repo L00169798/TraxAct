@@ -8,9 +8,9 @@
              x:DataType="viewModels:MetricsViewModel"
              BackgroundColor="White"
              Title="Analysis">
-
-
-    <chart:SfCartesianChart>
+    <ScrollView>
+        <StackLayout>
+        <chart:SfCartesianChart>
 
         <chart:ColumnSeries ItemsSource="{Binding ExerciseHours}"
                             ShowDataLabels="True"
@@ -30,5 +30,28 @@
             <chart:NumericalAxis/>
         </chart:SfCartesianChart.YAxes>
     </chart:SfCartesianChart>
-    
+
+    <chart:SfCartesianChart>
+        <chart:SfCartesianChart.Series>
+            <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDayOfWeek}"
+                                    XBindingPath="DayOfWeek"
+                                    YBindingPath="ExerciseCount" />
+        </chart:SfCartesianChart.Series>
+
+        <chart:SfCartesianChart.Legend>
+            <chart:ChartLegend/>
+        </chart:SfCartesianChart.Legend>
+
+        <chart:SfCartesianChart.XAxes>
+            <chart:CategoryAxis/>
+        </chart:SfCartesianChart.XAxes>
+
+        <chart:SfCartesianChart.YAxes>
+            <chart:NumericalAxis/>
+        </chart:SfCartesianChart.YAxes>
+    </chart:SfCartesianChart>
+    </StackLayout>
+        </ScrollView>
+
+
 </ContentPage>
