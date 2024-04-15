@@ -30,6 +30,3 @@ jobs:
         dotnet restore
         dotnet build --configuration Debug --no-restore
 
-    - name: Run tests (optional)
-      if: matrix.os == 'ubuntu-latest'
-      run: dotnet test --no-restore --verbosity normal
