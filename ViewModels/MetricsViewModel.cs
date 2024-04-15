@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,6 +8,8 @@ using System.Threading.Tasks;
 using TraxAct.Models;
 using TraxAct.Services;
 using TraxAct.Views;
+using System.Windows.Input;
+using Microsoft.EntityFrameworkCore;
 
 namespace TraxAct.ViewModels
 {
@@ -27,135 +28,107 @@ namespace TraxAct.ViewModels
 			set
 			{
 				_exerciseHours = value;
-				OnPropertyChanged();
 			}
 		}
 
-		private ObservableCollection<ExerciseByDayOfWeek> _totalExerciseByDayOfWeek;
-		public ObservableCollection<ExerciseByDayOfWeek> TotalExerciseByDayOfWeek
+		private DateTime _startDate;
+		public DateTime StartDate
 		{
-			get { return _totalExerciseByDayOfWeek; }
+			get => _startDate;
 			set
 			{
-				_totalExerciseByDayOfWeek = value;
-				OnPropertyChanged();
+				if (_startDate != value)
+				{
+					_startDate = value;
+					OnPropertyChanged();
+				}
 			}
 		}
+
+		private DateTime _endDate;
+		public DateTime EndDate
+		{
+			get => _endDate;
+			set
+			{
+				if (_endDate != value)
+				{
+					_endDate = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		public ObservableCollection<KeyValuePair<string, double>> FilteredExerciseHours { get; private set; }
+		public ObservableCollection<ExerciseByDayOfWeek> TotalExerciseByDayOfWeek { get; private set; }
 
 		public MetricsViewModel()
 		{
-			Console.WriteLine("MetricsViewModel instantiated.");
-			try
-			{
-				_dbContext = new MyDbContext();
-				_userService = new UserService();
-				LoadData();
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Error initializing MetricsViewModel: {ex.Message}");
-			}
+			_dbContext = new MyDbContext();
+			_userService = new UserService();
+
+			StartDate = DateTime.Today.AddDays(-7);
+			EndDate = DateTime.Today;
 		}
 
-		private async void LoadData()
+		public ICommand ApplyCommand => new Command(ExecuteApplyCommand, CanExecuteApplyCommand);
+
+		private bool CanExecuteApplyCommand(object parameter)
+		{
+			return StartDate <= EndDate;
+		}
+
+		private async void ExecuteApplyCommand(object parameter)
 		{
 			try
 			{
-				Console.WriteLine("LoadData method called.");
-				string currentUserUid = UserService.Instance.GetCurrentUserUid();
-				if (string.IsNullOrEmpty(currentUserUid))
-				{
-					Console.WriteLine("Current user ID is null or empty. Data loading aborted.");
-					return;
-				}
+				string userId = _userService.GetCurrentUserUid();
 
-				Console.WriteLine($"Loading events for user ID: {currentUserUid}");
+				var filteredEvents = await _dbContext.GetEventsByTimeAsync(StartDate, EndDate);
 
-				var events = await _dbContext.GetEventsByUserId(currentUserUid);
+				FilteredExerciseHours = ConvertToExerciseHours(filteredEvents);
+				CalculateTotalExerciseByDayOfWeek(filteredEvents);
 
-				if (events == null || events.Count == 0)
-				{
-					Console.WriteLine("No events found for the specified user.");
-					return;
-				}
-
-				ExerciseHours = ConvertToExerciseHours(events);
-				LogExerciseHours(ExerciseHours);
-
-				// Calculate and populate TotalExerciseByDayOfWeek
-				CalculateTotalExerciseByDayOfWeek(events);
-				LogTotalExerciseByDayOfWeek();
+				OnPropertyChanged(nameof(FilteredExerciseHours));
+				OnPropertyChanged(nameof(TotalExerciseByDayOfWeek));
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Error loading events: {ex.Message}");
+				Console.WriteLine($"Error applying filter: {ex.Message}");
 			}
 		}
 
-		private Dictionary<string, double> ConvertToExerciseHours(List<Event> events)
+
+		private ObservableCollection<KeyValuePair<string, double>> ConvertToExerciseHours(List<Event> events)
 		{
-			Dictionary<string, double> exerciseHours = new Dictionary<string, double>();
+			var exerciseHours = new ObservableCollection<KeyValuePair<string, double>>();
 
-			try
+			if (events == null || !events.Any())
 			{
-				if (events == null)
-				{
-					Console.WriteLine("The events list is null or empty.");
-					return exerciseHours;
-				}
-
-				foreach (var ev in events)
-				{
-					if (ev == null)
-					{
-						Console.WriteLine("Encountered a null event object.");
-						continue;
-					}
-
-					TimeSpan duration = ev.EndTime - ev.StartTime;
-					double durationHours = duration.TotalHours;
-
-					if (exerciseHours.ContainsKey(ev.ExerciseType))
-					{
-						exerciseHours[ev.ExerciseType] += durationHours;
-					}
-					else
-					{
-						exerciseHours[ev.ExerciseType] = durationHours;
-					}
-				}
-
-				Console.WriteLine($"Converted {events.Count} events to ExerciseHours.");
+				Console.WriteLine("No events found in the specified date range.");
+				return exerciseHours;
 			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Error converting events to ExerciseHours: {ex.Message}");
-			}
+
+			var groupedExerciseHours = events.GroupBy(ev => ev.ExerciseType)
+				.Select(group => new KeyValuePair<string, double>(group.Key, group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours)))
+				.ToList();
+
+			exerciseHours = new ObservableCollection<KeyValuePair<string, double>>(groupedExerciseHours);
 
 			return exerciseHours;
 		}
 
-		private void LogExerciseHours(Dictionary<string, double> exerciseHours)
+		private void CalculateTotalExerciseByDayOfWeek(List<Event> events)
 		{
-			if (exerciseHours == null || exerciseHours.Count == 0)
+			TotalExerciseByDayOfWeek = new ObservableCollection<ExerciseByDayOfWeek>();
+
+			if (events == null || !events.Any())
 			{
-				Console.WriteLine("ExerciseHours dictionary is null or empty.");
+				Console.WriteLine("No events found in the specified date range.");
 				return;
 			}
 
-			Console.WriteLine("ExerciseHours Summary:");
-
-			foreach (var kvp in exerciseHours)
-			{
-				Console.WriteLine($"Exercise: {kvp.Key}, Total Hours: {kvp.Value}");
-			}
-		}
-
-		private void CalculateTotalExerciseByDayOfWeek(List<Event> events)
-		{
 			var groupedByDayOfWeek = events.GroupBy(ev => ev.StartTime.DayOfWeek);
-
-			TotalExerciseByDayOfWeek = new ObservableCollection<ExerciseByDayOfWeek>();
 
 			foreach (var group in groupedByDayOfWeek)
 			{
@@ -169,31 +142,15 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		private void LogTotalExerciseByDayOfWeek()
+		public class ExerciseByDayOfWeek
 		{
-			if (TotalExerciseByDayOfWeek == null || TotalExerciseByDayOfWeek.Count == 0)
-			{
-				Console.WriteLine("TotalExerciseByDayOfWeek collection is null or empty.");
-				return;
-			}
-
-			Console.WriteLine("Total Exercise Count by Day of Week:");
-
-			foreach (var item in TotalExerciseByDayOfWeek)
-			{
-				Console.WriteLine($"{item.DayOfWeek}: {item.ExerciseCount} hours");
-			}
+			public DayOfWeek DayOfWeek { get; set; }
+			public double ExerciseCount { get; set; }
 		}
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		public class ExerciseByDayOfWeek
-		{
-			public DayOfWeek DayOfWeek { get; set; }
-			public double ExerciseCount { get; set; }
 		}
 	}
 }

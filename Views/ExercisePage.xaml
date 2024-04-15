@@ -24,9 +24,9 @@
                     <x:String>Swimming</x:String>
                     <x:String>Yoga</x:String>
                     <x:String>Pilates</x:String>
-                    <x:String>StrengthTraining</x:String>
+                    <x:String>Strength</x:String>
                     <x:String>HIIT</x:String>
-                    <x:String>CircuitTraining</x:String>
+                    <x:String>Circuit</x:String>
                     <x:String>Other</x:String>
                 </x:Array>
             </Picker.ItemsSource>
@@ -36,10 +36,10 @@
         <Entry Text="{Binding Distance}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=Running}" TextColor="Black" />
 
         <Label Text="Sets" TextColor="Black"/>
-        <Entry Text="{Binding Sets}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=StrengthTraining}" TextColor="Black" />
+        <Entry Text="{Binding Sets}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=Strength}" TextColor="Black" />
 
         <Label Text="Reps" TextColor="Black"/>
-        <Entry Text="{Binding Reps}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=StrengthTraining}" TextColor="Black" />
+        <Entry Text="{Binding Reps}" IsVisible="{Binding SelectedExerciseType, Converter={StaticResource ExerciseTypeToVisibilityConverter}, ConverterParameter=Strength}" TextColor="Black" />
 
     </StackLayout>
 

@@ -3,55 +3,76 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              x:Class="TraxAct.Views.MetricsPage"
-             xmlns:model="clr-namespace:TraxAct"
+             xmlns:model="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
              x:DataType="viewModels:MetricsViewModel"
              BackgroundColor="White"
              Title="Analysis">
-    <ScrollView>
-        <StackLayout>
-        <chart:SfCartesianChart>
 
-        <chart:ColumnSeries ItemsSource="{Binding ExerciseHours}"
-                            ShowDataLabels="True"
-                            XBindingPath="Key"
-                            YBindingPath="Value">
-        </chart:ColumnSeries>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="10" Padding="20">
 
-        <chart:SfCartesianChart.Legend>
-            <chart:ChartLegend/>
-        </chart:SfCartesianChart.Legend>
+                <Frame HorizontalOptions="FillAndExpand" Margin="5,10" HasShadow="True"
+                       BackgroundColor="#F0F0F0">
+                    <StackLayout>
+                        <Label Text="Select Date Range:" HorizontalOptions="Center" TextColor="Black"/>
+                        <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *">
+                            <Label Text="From:" Grid.Row="0" Grid.Column="0" VerticalOptions="Center" TextColor="Black"/>
+                            <DatePicker Date="{Binding StartDate}" MaximumWidthRequest="80" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" TextColor="Black"/>
+                            <Label Text="To:" Grid.Row="1" Grid.Column="0" VerticalOptions="Center" TextColor="Black"/>
+                            <DatePicker Date="{Binding EndDate}" MaximumWidthRequest="80" Grid.Row="1" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" TextColor="Black"/>
+                        </Grid>
+                        <Button Text="Apply" Command="{Binding ApplyCommand}" MaximumWidthRequest="110" BackgroundColor="#0366d6" TextColor="Black"/>
+                    </StackLayout>
+                </Frame>
 
-        <chart:SfCartesianChart.XAxes>
-            <chart:CategoryAxis/>
-        </chart:SfCartesianChart.XAxes>
+                <chart:SfCartesianChart>
+                    <chart:SfCartesianChart.Series>
+                        <chart:ColumnSeries ItemsSource="{Binding FilteredExerciseHours}"
+                                            XBindingPath="Key"
+                                            YBindingPath="Value"
+                                            Fill="MediumPurple"
+                                            Label="Hours of Exercise">
+                        </chart:ColumnSeries>
+                    </chart:SfCartesianChart.Series>
 
-        <chart:SfCartesianChart.YAxes>
-            <chart:NumericalAxis/>
-        </chart:SfCartesianChart.YAxes>
-    </chart:SfCartesianChart>
+                    <chart:SfCartesianChart.Legend>
+                        <chart:ChartLegend/>
+                    </chart:SfCartesianChart.Legend>
 
-    <chart:SfCartesianChart>
-        <chart:SfCartesianChart.Series>
-            <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDayOfWeek}"
-                                    XBindingPath="DayOfWeek"
-                                    YBindingPath="ExerciseCount" />
-        </chart:SfCartesianChart.Series>
+                    <chart:SfCartesianChart.XAxes>
+                        <chart:CategoryAxis/>
+                    </chart:SfCartesianChart.XAxes>
 
-        <chart:SfCartesianChart.Legend>
-            <chart:ChartLegend/>
-        </chart:SfCartesianChart.Legend>
+                    <chart:SfCartesianChart.YAxes>
+                        <chart:NumericalAxis/>
+                    </chart:SfCartesianChart.YAxes>
+                </chart:SfCartesianChart>
 
-        <chart:SfCartesianChart.XAxes>
-            <chart:CategoryAxis/>
-        </chart:SfCartesianChart.XAxes>
+                <chart:SfCartesianChart>
+                    <chart:SfCartesianChart.Series>
+                        <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDayOfWeek}"
+                                            XBindingPath="DayOfWeek"
+                                            YBindingPath="ExerciseCount"
+                                            Fill="MediumPurple"
+                                            Label="Exercise per Day"/>
+                    </chart:SfCartesianChart.Series>
 
-        <chart:SfCartesianChart.YAxes>
-            <chart:NumericalAxis/>
-        </chart:SfCartesianChart.YAxes>
-    </chart:SfCartesianChart>
-    </StackLayout>
+                    <chart:SfCartesianChart.Legend>
+                        <chart:ChartLegend/>
+                    </chart:SfCartesianChart.Legend>
+
+                    <chart:SfCartesianChart.XAxes>
+                        <chart:CategoryAxis/>
+                    </chart:SfCartesianChart.XAxes>
+
+                    <chart:SfCartesianChart.YAxes>
+                        <chart:NumericalAxis/>
+                    </chart:SfCartesianChart.YAxes>
+                </chart:SfCartesianChart>
+
+            </StackLayout>
         </ScrollView>
-
-
+    </ContentPage.Content>
 </ContentPage>

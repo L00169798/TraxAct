@@ -77,33 +77,57 @@ namespace TraxAct.ViewModels
 			MinimumDateTime = new DateTime(2024, 01, 01);
 		}
 
-
-		public async void LoadEventsFromDatabase()
+		public async Task<List<Event>> GetEventsFilteredByDateRange(DateTime startDate, DateTime endDate)
 		{
-			Debug.WriteLine("Loading events for User ID: " + UserId);
-			if (string.IsNullOrEmpty(UserId))
-			{
-				Debug.WriteLine("UserId is null or empty. Cannot load events.");
-				return;
-			}
+			List<Event> filteredEvents = new List<Event>();
 
 			try
 			{
-
 				var events = await _dbContext.GetEventsByUserId(UserId);
-				if (events == null)
+
+				if (events == null || !events.Any())
+				{
+					Console.WriteLine("No events found in the database.");
+					return filteredEvents;
+				}
+
+
+				Console.WriteLine($"Filtered {filteredEvents.Count} events based on date range.");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error filtering events by date range: {ex.Message}");
+			}
+
+			return filteredEvents;
+		}
+
+		private DateTime ConvertFromBigInt(long ticksValue)
+		{
+			DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+				.AddTicks(ticksValue); 
+			return dateTime.ToLocalTime();
+		}
+
+
+		public async void LoadEventsFromDatabase()
+		{
+			try
+			{
+				var events = await _dbContext.GetEventsByUserId(UserId);
+
+				if (events == null || !events.Any())
 				{
 					Debug.WriteLine("No events found for the specified UserId.");
 					return;
 				}
 
-				Debug.WriteLine($"Loaded {events.Count} events from the database for user ID: {UserId}");
-
+				Events.Clear();
 				foreach (var ev in events)
 				{
 					var schedulerAppointment = new SchedulerAppointment
 					{
-						Subject = ev.ExerciseType, 
+						Subject = ev.ExerciseType,
 						StartTime = ev.StartTime,
 						EndTime = ev.EndTime,
 						Id = ev.EventId
@@ -114,14 +138,16 @@ namespace TraxAct.ViewModels
 					Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
 					Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
 					Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");
-					Debug.WriteLine($"ExerciseType: {schedulerAppointment.Location}");
 				}
+
+				Debug.WriteLine($"Loaded {Events.Count} events from the database for user ID: {UserId}");
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Error loading events: {ex.Message}");
+				Debug.WriteLine($"Error loading events from the database: {ex.Message}");
 			}
 		}
+
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
