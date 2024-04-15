@@ -3,14 +3,18 @@ name: PushTest
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
 
     steps:
     - name: Checkout code
@@ -19,18 +23,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '7.0.x' 
+        dotnet-version: '7.0.x'
         
-    - name: Restore workloads
-      run: dotnet workload restore
-      
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Restore dependencies and build
+      run: |
+        dotnet restore
+        dotnet build --configuration Debug --no-restore
 
-    - name: Build
-      run: dotnet build --configuration Debug --no-restore
-
-    - name: Run tests
+    - name: Run tests (optional)
+      if: matrix.os == 'ubuntu-latest'
       run: dotnet test --no-restore --verbosity normal
-
-
