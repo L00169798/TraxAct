@@ -31,7 +31,7 @@
 
             <Label
                 Text="View Timetable"
-                Margin="0,50,0,0"
+                Margin="0,70,0,0"
                 FontSize="16"
                 TextColor="Black"
                 HorizontalOptions="Center"
@@ -42,6 +42,21 @@
                     <TapGestureRecognizer Tapped="OnTimetableTapped" />
                 </Label.GestureRecognizers>
             </Label>
+
+            <Label
+                Text="Analysis"
+                Margin="0,160,0,0"
+                FontSize="14"
+                TextColor="Black"
+                HorizontalOptions="Center"
+                AbsoluteLayout.LayoutBounds="0.5,0.85,AutoSize,AutoSize"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                Padding="20">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnAnalysisTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
             <Button
                 Text="Log Out"
                 Clicked="OnLogoutButtonClicked"

@@ -58,12 +58,12 @@ namespace TraxAct.ViewModels
 
         private void UpdateRepsVisibility()
         {
-            IsRepsVisible = SelectedExerciseType == "StrengthTraining";
+            IsRepsVisible = SelectedExerciseType == "Strength";
         }
 
         private void UpdateSetsVisibility()
         {
-            IsSetsVisible = SelectedExerciseType == "StrengthTraining";
+            IsSetsVisible = SelectedExerciseType == "Strength";
         }
 
         private DateTime _startDate;

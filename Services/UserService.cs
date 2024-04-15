@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TraxAct.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TraxAct.Services
 {
@@ -10,8 +12,10 @@ namespace TraxAct.Services
 	{
 		private static UserService _instance;
 		private string _currentUserUid;
+		private readonly MyDbContext _dbContext;
 
 		public static UserService Instance => _instance ??= new UserService();
+
 
 		public string GetCurrentUserUid()
 		{
@@ -22,6 +26,7 @@ namespace TraxAct.Services
 		{
 			_currentUserUid = uid;
 		}
+
 
 		public bool SignOut()
 		{

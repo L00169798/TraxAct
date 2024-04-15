@@ -48,9 +48,9 @@ namespace TraxAct.ViewModels
         "Swimming",
         "Yoga",
         "Pilates",
-        "StrengthTraining",
+        "Strength",
         "HIIT",
-        "CircuitTraining",
+        "Circuit",
         "Other"
     };
         }

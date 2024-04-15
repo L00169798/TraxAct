@@ -23,9 +23,9 @@
                         <x:String>Swimming</x:String>
                         <x:String>Yoga</x:String>
                         <x:String>Pilates</x:String>
-                        <x:String>StrengthTraining</x:String>
+                        <x:String>Strength</x:String>
                         <x:String>HIIT</x:String>
-                        <x:String>CircuitTraining</x:String>
+                        <x:String>Circuit</x:String>
                         <x:String>Other</x:String>
                     </x:Array>
                 </Picker.ItemsSource>

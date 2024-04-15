@@ -39,6 +39,18 @@ namespace TraxAct.Views
             }
         }
 
+		private async void OnAnalysisTapped(object sender, EventArgs e)
+		{
+			if (Navigation != null)
+			{
+				await Navigation.PushAsync(new MetricsPage());
+			}
+			else
+			{
+				await DisplayAlert("Error", "Navigation is not available.", "OK");
+			}
+		}
+
 		private async void OnLogoutButtonClicked(object sender, EventArgs e)
 		{
 			if (_viewModel != null)

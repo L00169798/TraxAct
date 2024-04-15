@@ -33,6 +33,7 @@ namespace TraxAct.Models
         [Column("reps")]
         public int Reps { get; set; }
 
+		}
 
-    }
-}
+	}
+
