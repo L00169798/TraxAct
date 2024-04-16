@@ -17,20 +17,28 @@
        
         <scheduler:SfScheduler
             x:Name="scheduler"
-            Grid.Row="0"
-            ShowWeekNumber="True"
-            FirstDayOfWeek="Monday"
-            AllowedViews="Day,Week,WorkWeek,Month,Agenda"
-            MinimumDateTime="{Binding MinimumDateTime, Mode=TwoWay}"
-            TodayHighlightBrush="Orange"
-            AppointmentsSource="{Binding Events}"
-            QueryAppointmentsCommand="{Binding QueryAppointmentsCommand}"
-            ShowBusyIndicator="{Binding ShowBusyIndicator}"
-            View="Week"
-            AllowAppointmentDrag="false"
-            Tapped="OnSchedulerTapped">
+    Grid.Row="0"
+    ShowWeekNumber="True"
+    FirstDayOfWeek="Monday"
+    AllowedViews="Day,Week,WorkWeek,Month,Agenda"
+    MinimumDateTime="{Binding MinimumDateTime, Mode=TwoWay}"
+    SelectedDate="{Binding SelectedDate}"
+    TodayHighlightBrush="DarkGrey"
+    AppointmentsSource="{Binding Events}"
+    QueryAppointmentsCommand="{Binding QueryAppointmentsCommand}"
+    ShowBusyIndicator="{Binding ShowBusyIndicator}"
+    View="Week"
+    AllowViewNavigation="True"
+    AllowAppointmentDrag="false"
+    Tapped="OnSchedulerTapped">
+            <scheduler:SfScheduler.HeaderView>
+                <scheduler:SchedulerHeaderView  Background="Gainsboro"/>
+            </scheduler:SfScheduler.HeaderView>
+            <scheduler:SfScheduler.CellSelectionView>
+                <scheduler:SchedulerCellSelectionView  Background="lightsalmon" CornerRadius="2"/>
+            </scheduler:SfScheduler.CellSelectionView>
 
-            
+
 
         </scheduler:SfScheduler>
 
@@ -41,7 +49,7 @@
             Clicked="OnCreateEventButtonClicked"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="Center"
-            BackgroundColor="LightBlue"
+            BackgroundColor="LightSalmon"
             TextColor="Black"
             Padding="20"/>
     </Grid>

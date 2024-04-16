@@ -88,9 +88,6 @@ namespace TraxAct.Views
 			}
 		}
 
-
-
-
 		private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
 		{
 			try
