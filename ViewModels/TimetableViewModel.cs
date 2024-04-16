@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Threading.Tasks;
+using Syncfusion.Maui.Core;
 using TraxAct.Models;
 using TraxAct.Services;
 using Syncfusion.Maui.Scheduler;
@@ -39,14 +40,14 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		private DataTemplate _customAppointmentViewTemplate;
-		public DataTemplate CustomAppointmentViewTemplate
+		private Color _eventBackgroundColor;
+		public Color EventBackgroundColor
 		{
-			get { return _customAppointmentViewTemplate; }
-			private set
+			get { return _eventBackgroundColor; }
+			set
 			{
-				_customAppointmentViewTemplate = value;
-				OnPropertyChanged(nameof(CustomAppointmentViewTemplate));
+				_eventBackgroundColor = value;
+				OnPropertyChanged(nameof(EventBackgroundColor));
 			}
 		}
 
@@ -77,6 +78,21 @@ namespace TraxAct.ViewModels
 			MinimumDateTime = new DateTime(2024, 01, 01);
 		}
 
+	//	private Dictionary<string, Color> ExerciseTypeColors = new Dictionary<string, Color>
+	//{
+	//	{ "Walking", Colors.Green },
+	//	{ "Swimming", Colors.Blue },
+	//	{ "Cycling", Colors.Red },
+	//	{ "Cycling", Colors.PaleTurquoise },
+	//	{ "Yoga", Colors.Orange },
+	//	{ "Pilates", Colors.LightCoral },
+	//	{ "Strength", Colors.DarkCyan },
+	//	{ "HIIT", Colors.Aqua },
+	//	{ "Circuit", Colors.Salmon },
+	//	{ "Other", Colors.BlueViolet }
+	//};
+
+
 		public async Task<List<Event>> GetEventsFilteredByDateRange(DateTime startDate, DateTime endDate)
 		{
 			List<Event> filteredEvents = new List<Event>();
@@ -102,14 +118,6 @@ namespace TraxAct.ViewModels
 			return filteredEvents;
 		}
 
-		private DateTime ConvertFromBigInt(long ticksValue)
-		{
-			DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-				.AddTicks(ticksValue); 
-			return dateTime.ToLocalTime();
-		}
-
-
 		public async void LoadEventsFromDatabase()
 		{
 			try
@@ -125,13 +133,18 @@ namespace TraxAct.ViewModels
 				Events.Clear();
 				foreach (var ev in events)
 				{
+					Color backgroundColor = GetCategoryColor(ev.ExerciseType);
+
 					var schedulerAppointment = new SchedulerAppointment
 					{
 						Subject = ev.ExerciseType,
 						StartTime = ev.StartTime,
 						EndTime = ev.EndTime,
-						Id = ev.EventId
+						Id = ev.EventId,
+						Background = backgroundColor,
+						TextColor = Colors.Black
 					};
+
 					Events.Add(schedulerAppointment);
 
 					Debug.WriteLine($"Event ID: {schedulerAppointment.Id}");
@@ -145,6 +158,43 @@ namespace TraxAct.ViewModels
 			catch (Exception ex)
 			{
 				Debug.WriteLine($"Error loading events from the database: {ex.Message}");
+			}
+		}
+
+		public void OnEventRendered(SchedulerAppointment appointment)
+		{
+			if (appointment != null)
+			{
+				appointment.Background = GetCategoryColor(appointment.Subject);
+			}
+		}
+
+		private Color GetCategoryColor(string subject)
+		{
+			switch (subject)
+			{
+				case "Walking":
+					return Colors.Green;
+				case "Swimming":
+					return Colors.Red;
+				case "Running":
+					return Colors.Orange;
+				case "Cycling":
+					return Colors.IndianRed;
+				case "Yoga":
+					return Colors.DarkCyan;
+				case "Pilates":
+					return Colors.DarkViolet;
+				case "Strength":
+					return Colors.SandyBrown;
+				case "HIIT":
+					return Colors.Aquamarine;
+				case "Circuit":
+					return Colors.Beige;
+				case "Other":
+					return Colors.Gainsboro;
+				default:
+					return Colors.MistyRose;
 			}
 		}
 
