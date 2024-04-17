@@ -26,9 +26,7 @@ jobs:
         dotnet-version: '7.0.x'
    
         
-    - name: Restore dependencies and build
+    - name: Build
       run: |
-        dotnet workload restore
-        dotnet restore
         dotnet build --configuration Debug --no-restore
 
