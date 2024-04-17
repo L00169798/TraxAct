@@ -28,6 +28,7 @@ jobs:
         
     - name: Restore dependencies and build
       run: |
+        dotnet workload restore
         dotnet restore
         dotnet build --configuration Debug --no-restore
 
