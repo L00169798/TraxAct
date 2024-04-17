@@ -27,7 +27,7 @@ jobs:
         
     - name: Restore workloads
       run: |
-        dotnet workload restore
+        dotnet workload restore sindows android
         
     - name: Restore dependencies and build
       run: |
