@@ -28,5 +28,6 @@ jobs:
         
     - name: Build
       run: |
+        dotnet workload install
         dotnet build --configuration Debug --no-restore
 
