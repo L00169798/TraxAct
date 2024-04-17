@@ -27,7 +27,6 @@ jobs:
         
     - name: Restore workloads
       run: |
-        dotnet project - TraxAct/master/TraxAct
         dotnet workload restore windows android
         
         
