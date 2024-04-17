@@ -176,13 +176,13 @@ namespace TraxAct.ViewModels
 				case "Walking":
 					return Colors.Green;
 				case "Swimming":
-					return Colors.Red;
+					return Colors.LightCoral;
 				case "Running":
-					return Colors.Orange;
+					return Colors.Azure;
 				case "Cycling":
-					return Colors.IndianRed;
+					return Colors.BurlyWood;
 				case "Yoga":
-					return Colors.DarkCyan;
+					return Colors.LightGreen;
 				case "Pilates":
 					return Colors.DarkViolet;
 				case "Strength":
@@ -192,7 +192,7 @@ namespace TraxAct.ViewModels
 				case "Circuit":
 					return Colors.Beige;
 				case "Other":
-					return Colors.Gainsboro;
+					return Colors.AliceBlue;
 				default:
 					return Colors.MistyRose;
 			}

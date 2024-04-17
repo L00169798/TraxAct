@@ -13,20 +13,10 @@
     <ScrollView BackgroundColor="#FFFFFF">
         <AbsoluteLayout>
             <Image
-                Source="activity.jpg"
+                Source="traxactlogo.png"
                 AbsoluteLayout.LayoutBounds="0,0,1,1"
                 AbsoluteLayout.LayoutFlags="All"
                 Aspect="Fill" />
-
-            <Label
-                Text="TraxAct"
-                FontSize="36"
-                TextColor="Black"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Margin="0,100,0,0"
-                AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
-                AbsoluteLayout.LayoutFlags="PositionProportional" />
 
 
             <Label
