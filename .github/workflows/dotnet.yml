@@ -19,6 +19,7 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
+           dotnet install android
     - name: Restore workloads
       run: dotnet restore
     - name: Build
