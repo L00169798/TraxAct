@@ -24,10 +24,15 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '7.0.x'
+
+    - name: Project
+      run: |
+        dotnet run --TraxAct
         
     - name: Restore workloads
       run: |
         dotnet workload restore windows android
+        
         
     - name: Restore dependencies and build
       run: |
