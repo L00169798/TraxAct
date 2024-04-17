@@ -27,7 +27,6 @@ jobs:
         
     - name: Restore workloads
       run: |
-        dotnet run --TraxAct
         dotnet workload restore windows android tizen
         
     - name: Restore dependencies and build
