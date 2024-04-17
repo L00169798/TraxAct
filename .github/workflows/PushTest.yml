@@ -31,7 +31,7 @@ jobs:
         
     - name: Restore workloads
       run: |
-        dotnet workload restore windows android
+        dotnet workload restore windows android tizen
         
         
     - name: Restore dependencies and build
