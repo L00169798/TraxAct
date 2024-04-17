@@ -28,6 +28,7 @@ jobs:
         
     - name: Build
       run: |
+        dotnet workload restore
         dotnet restore
         dotnet workload install maui-android maui-windows
         dotnet build --configuration Debug --no-restore
