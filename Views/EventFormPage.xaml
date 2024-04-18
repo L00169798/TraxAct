@@ -4,16 +4,16 @@
              x:Class="TraxAct.Views.EventFormPage"
              xmlns:models="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             BackgroundColor="#F8F8F8"
+             BackgroundColor="darkgray"
              Title="Event Form">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Color x:Key="PrimaryColor">DarkOrange</Color>
-            <Style TargetType="Label">
+            <Color x:Key="PrimaryColor">#FF5722</Color>
+            <Style TargetType="Label" x:Key="HeadingLabelStyle">
                 <Setter Property="TextColor" Value="Black"/>
                 <Setter Property="FontFamily" Value="Arial"/>
-                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="0,10"/>
             </Style>
             <Style TargetType="Entry">
@@ -39,17 +39,19 @@
                 <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
                 <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="Margin" Value="0,20,0,0"/>
+                <Setter Property="CornerRadius" Value="10"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ScrollView>
         <StackLayout Padding="20">
-            <Label Text="Name"/>
-            <Entry Text="{Binding Subject}" Placeholder="Enter event name"/>
+            <Label Text="Name" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Subject}" Style="{StaticResource EntryStyle}"/>
 
-            <Label Text="Exercise"/>
-            <Picker Title="Select Exercise" SelectedItem="{Binding SelectedExerciseType}">
+            <Label Text="Exercise" Style="{StaticResource HeadingLabelStyle}"/>
+            <Picker SelectedItem="{Binding SelectedExerciseType, Mode=TwoWay}" Style="{StaticResource PickerStyle}"
+                    TextColor="Black">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Walking</x:String>
@@ -66,28 +68,28 @@
                 </Picker.ItemsSource>
             </Picker>
 
-            <Label Text="Start Date"/>
-            <DatePicker Date="{Binding StartDate}" />
+            <Label Text="Start Date" Style="{StaticResource HeadingLabelStyle}"/>
+            <DatePicker Date="{Binding StartDate, Mode=TwoWay}" Style="{StaticResource DatePickerStyle}"/>
 
-            <Label Text="Start Time"/>
-            <TimePicker Time="{Binding StartTime}" />
+            <Label Text="Start Time" Style="{StaticResource HeadingLabelStyle}"/>
+            <TimePicker Time="{Binding StartTime, Mode=TwoWay}" Style="{StaticResource TimePickerStyle}"/>
 
-            <Label Text="End Date"/>
-            <DatePicker Date="{Binding EndDate}" />
+            <Label Text="End Date" Style="{StaticResource HeadingLabelStyle}"/>
+            <DatePicker Date="{Binding EndDate, Mode=TwoWay}" Style="{StaticResource DatePickerStyle}"/>
 
-            <Label Text="End Time"/>
-            <TimePicker Time="{Binding EndTime}" />
+            <Label Text="End Time" Style="{StaticResource HeadingLabelStyle}"/>
+            <TimePicker Time="{Binding EndTime, Mode=TwoWay}" Style="{StaticResource TimePickerStyle}"/>
 
-            <Label Text="Distance" IsVisible="{Binding IsDistanceVisible}"/>
-            <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" Placeholder="Enter distance"/>
+            <Label Text="Distance" IsVisible="{Binding IsDistanceVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" Placeholder="Enter distance" Style="{StaticResource EntryStyle}"/>
 
-            <Label Text="Reps" IsVisible="{Binding IsRepsVisible}"/>
-            <Entry Text="{Binding Reps}" IsVisible="{Binding IsRepsVisible}" Placeholder="Enter reps"/>
+            <Label Text="Reps" IsVisible="{Binding IsRepsVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Reps}" IsVisible="{Binding IsRepsVisible}" Placeholder="Enter reps" Style="{StaticResource EntryStyle}"/>
 
-            <Label Text="Sets" IsVisible="{Binding IsSetsVisible}"/>
-            <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" Placeholder="Enter sets"/>
+            <Label Text="Sets" IsVisible="{Binding IsSetsVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" Placeholder="Enter sets" Style="{StaticResource EntryStyle}"/>
 
-            <Button Text="Save" Command="{Binding SaveCommand}" CornerRadius="20" BackgroundColor="DarkOrange" TextColor="White"/>
+            <Button Text="Save" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="DarkOrange" TextColor="White"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>
