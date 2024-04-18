@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TraxAct.Views.MainPage"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             Title="HomePage"
+             Title="TraxAct"
              BackgroundColor="White">
 
     <NavigationPage.TitleView>
@@ -14,49 +14,45 @@
         <AbsoluteLayout>
             <Image
                 Source="traxactlogo.png"
-                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutBounds="0,0,1,0.5"
                 AbsoluteLayout.LayoutFlags="All"
-                Aspect="Fill" />
+                Margin="0,50,0,0"
+                Aspect="AspectFit" />
 
-
-            <Label
+            <Button
                 Text="View Timetable"
-                Margin="0,70,0,0"
+                Margin="0,150,10,0"
                 FontSize="16"
                 TextColor="Black"
                 HorizontalOptions="Center"
-                AbsoluteLayout.LayoutBounds="0.5,0.85,AutoSize,AutoSize"
+                BackgroundColor="DarkOrange"
+                AbsoluteLayout.LayoutBounds="0.25,0.6,AutoSize,AutoSize"
                 AbsoluteLayout.LayoutFlags="PositionProportional"
-                Padding="20">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnTimetableTapped" />
-                </Label.GestureRecognizers>
-            </Label>
+                Clicked="OnTimetableTapped" />
 
-            <Label
+            
+            <Button
                 Text="Analysis"
-                Margin="0,160,0,0"
-                FontSize="14"
+                Margin="50,150,20,0"
+                FontSize="16"
                 TextColor="Black"
                 HorizontalOptions="Center"
-                AbsoluteLayout.LayoutBounds="0.5,0.85,AutoSize,AutoSize"
+                BackgroundColor="DarkOrange"
+                AbsoluteLayout.LayoutBounds="0.75,0.6,AutoSize,AutoSize"
                 AbsoluteLayout.LayoutFlags="PositionProportional"
-                Padding="20">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnAnalysisTapped" />
-                </Label.GestureRecognizers>
-            </Label>
+                Clicked="OnAnalysisTapped" />
 
+            
             <Button
                 Text="Log Out"
                 Clicked="OnLogoutButtonClicked"
                 BackgroundColor="Red"
                 TextColor="White"
-                Margin="20,500,20,20"
-                HorizontalOptions="Fill"     
-                FontSize="10" 
+                Margin="20,400,20,20"
+                HorizontalOptions="FillAndExpand"
+                FontSize="14"
                 HeightRequest="40"
-                AbsoluteLayout.LayoutBounds="0.5,0.95,AutoSize,AutoSize"
+                AbsoluteLayout.LayoutBounds="0.5,0.8,AutoSize,AutoSize"
                 AbsoluteLayout.LayoutFlags="PositionProportional" />
         </AbsoluteLayout>
     </ScrollView>

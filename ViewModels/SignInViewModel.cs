@@ -61,6 +61,13 @@ namespace TraxAct.ViewModels
 		{
 			Debug.WriteLine("ExecuteSignInAsync method started.");
 
+			
+			if (!IsValidEmail(Email))
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", "Invalid email format. Please enter a valid email address.", "OK");
+				return;
+			}
+
 			try
 			{
 				var user = await _authClient.SignInWithEmailAndPasswordAsync(Email, Password);
@@ -98,6 +105,19 @@ namespace TraxAct.ViewModels
 			}
 
 			Debug.WriteLine("ExecuteSignInAsync method completed.");
+		}
+
+		private bool IsValidEmail(string email)
+		{
+			try
+			{
+				var addr = new System.Net.Mail.MailAddress(email);
+				return addr.Address == email;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 
