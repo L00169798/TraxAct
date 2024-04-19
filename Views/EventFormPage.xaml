@@ -82,7 +82,7 @@
             <Label Text="End Time" Style="{StaticResource HeadingLabelStyle}"/>
             <TimePicker Time="{Binding EndTime, Mode=TwoWay}" TextColor="White"/>
 
-            <Label Text="Distance" IsVisible="{Binding IsDistanceVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Label Text="Distance (km)" IsVisible="{Binding IsDistanceVisible}" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" Placeholder="Enter distance" Style="{StaticResource EntryStyle}" TextColor="White"/>
 
             <Label Text="Reps" IsVisible="{Binding IsRepsVisible}" Style="{StaticResource HeadingLabelStyle}"/>

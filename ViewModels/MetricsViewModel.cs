@@ -60,7 +60,7 @@ namespace TraxAct.ViewModels
 		}
 
 		public ObservableCollection<KeyValuePair<string, double>> FilteredExerciseHours { get; private set; }
-		public ObservableCollection<ExerciseByDayOfWeek> TotalExerciseByDayOfWeek { get; private set; }
+		public ObservableCollection<ExerciseByDay> TotalExerciseByDay { get; private set; }
 
 		public MetricsViewModel()
 		{
@@ -87,10 +87,10 @@ namespace TraxAct.ViewModels
 				var filteredEvents = await _dbContext.GetEventsByTimeAsync(StartDate, EndDate);
 
 				FilteredExerciseHours = ConvertToExerciseHours(filteredEvents);
-				CalculateTotalExerciseByDayOfWeek(filteredEvents);
+				CalculateTotalExerciseByDay(filteredEvents);
 
 				OnPropertyChanged(nameof(FilteredExerciseHours));
-				OnPropertyChanged(nameof(TotalExerciseByDayOfWeek));
+				OnPropertyChanged(nameof(TotalExerciseByDay));
 			}
 			catch (Exception ex)
 			{
@@ -118,39 +118,41 @@ namespace TraxAct.ViewModels
 			return exerciseHours;
 		}
 
-		private void CalculateTotalExerciseByDayOfWeek(List<Event> events)
+		private void CalculateTotalExerciseByDay(List<Event> events)
 		{
-			TotalExerciseByDayOfWeek = new ObservableCollection<ExerciseByDayOfWeek>();
+			TotalExerciseByDay = new ObservableCollection<ExerciseByDay>();
 
 			if (events == null || !events.Any())
 			{
 				Console.WriteLine("No events found in the specified date range.");
+				OnPropertyChanged(nameof(TotalExerciseByDay));
 				return;
 			}
 
 			events = events.Where(ev => ev.StartTime.Date >= StartDate.Date && ev.EndTime.Date <= EndDate.Date).ToList();
 
-			var groupedByDayOfWeek = events.GroupBy(ev => ev.StartTime.DayOfWeek);
+		
+			var groupedByDate = events.GroupBy(ev => ev.StartTime.Date);
 
-			foreach (var group in groupedByDayOfWeek)
+			foreach (var group in groupedByDate)
 			{
-				var totalHours = group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours);
+				double totalHours = group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours);
 
-				TotalExerciseByDayOfWeek.Add(new ExerciseByDayOfWeek
+				var exerciseDay = new ExerciseByDay
 				{
-					DayOfWeek = group.Key,
-					ExerciseCount = totalHours
-				});
+					Date = group.Key,
+					TotalExerciseHours = totalHours
+				};
+
+				TotalExerciseByDay.Add(exerciseDay);
+
+				Console.WriteLine($"Exercise on {exerciseDay.Date.ToShortDateString()}: {exerciseDay.TotalExerciseHours} hours");
 			}
+
+			OnPropertyChanged(nameof(TotalExerciseByDay));
 		}
 
 
-
-		public class ExerciseByDayOfWeek
-		{
-			public DayOfWeek DayOfWeek { get; set; }
-			public double ExerciseCount { get; set; }
-		}
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{

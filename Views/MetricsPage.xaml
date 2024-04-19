@@ -26,7 +26,7 @@
                         <DatePicker Date="{Binding EndDate}" MaximumWidthRequest="120" TextColor="Black" Margin="12,0,0,0"/>
                     </StackLayout>
 
-                    <Button Text="Apply" Command="{Binding ApplyCommand}" FontSize="12" BackgroundColor="darkorange" TextColor="White" CornerRadius="20"/>
+                    <Button Text="Apply" Command="{Binding ApplyCommand}" FontSize="12" BackgroundColor="mediumpurple" TextColor="White" CornerRadius="20"/>
                 </StackLayout>
 
 
@@ -54,12 +54,12 @@
              
                 <chart:SfCartesianChart>
                     <chart:SfCartesianChart.Series>
-                        <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDayOfWeek}"
-                                            XBindingPath="DayOfWeek"
-                                            YBindingPath="ExerciseCount"
-                                            Type="Cardinal"
+                        <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDay}"
+                                            XBindingPath="Date"
+                                            YBindingPath="TotalExerciseHours"
+                                            Type="Monotonic"
                                             Label="Exercise per Day"
-                                            Fill="DarkOrange"
+                                            Fill="MediumPurple"
                                             ShowMarkers="True">
                         </chart:SplineSeries>
                     </chart:SfCartesianChart.Series>
@@ -67,7 +67,7 @@
                         <chart:ChartLegend/>
                     </chart:SfCartesianChart.Legend>
                     <chart:SfCartesianChart.XAxes>
-                        <chart:DateTimeAxis />
+                        <chart:DateTimeAxis IntervalType="Days"/>
                     </chart:SfCartesianChart.XAxes>
                     <chart:SfCartesianChart.YAxes>
                         <chart:NumericalAxis/>
