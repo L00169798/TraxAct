@@ -4,57 +4,60 @@
              x:Class="TraxAct.Views.MainPage"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
              Title="TraxAct"
-             BackgroundColor="White">
+             BackgroundColor="black">
 
-    <NavigationPage.TitleView>
-        <Label Text="Main Page" TextColor="Black" />
-    </NavigationPage.TitleView>
-
-    <ScrollView BackgroundColor="#FFFFFF">
-        <AbsoluteLayout>
-            <Image
-                Source="traxactlogo.png"
-                AbsoluteLayout.LayoutBounds="0,0,1,0.5"
-                AbsoluteLayout.LayoutFlags="All"
-                Margin="0,50,0,0"
-                Aspect="AspectFit" />
-
-            <Button
-                Text="View Timetable"
-                Margin="0,150,10,0"
-                FontSize="16"
-                TextColor="Black"
-                HorizontalOptions="Center"
-                BackgroundColor="DarkOrange"
-                AbsoluteLayout.LayoutBounds="0.25,0.6,AutoSize,AutoSize"
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                Clicked="OnTimetableTapped" />
-
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
             
-            <Button
-                Text="Analysis"
-                Margin="50,150,20,0"
-                FontSize="16"
-                TextColor="Black"
-                HorizontalOptions="Center"
-                BackgroundColor="DarkOrange"
-                AbsoluteLayout.LayoutBounds="0.75,0.6,AutoSize,AutoSize"
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                Clicked="OnAnalysisTapped" />
-
             
-            <Button
-                Text="Log Out"
-                Clicked="OnLogoutButtonClicked"
-                BackgroundColor="Red"
-                TextColor="White"
-                Margin="20,400,20,20"
-                HorizontalOptions="FillAndExpand"
-                FontSize="14"
-                HeightRequest="40"
-                AbsoluteLayout.LayoutBounds="0.5,0.8,AutoSize,AutoSize"
-                AbsoluteLayout.LayoutFlags="PositionProportional" />
-        </AbsoluteLayout>
+
+            <Image Source="traxactlogo2.png"
+                   Aspect="Fill"
+                   VerticalOptions="Fill"
+                   HorizontalOptions="Fill"
+                   Margin="0,80,0,0"
+                   Grid.Row="0" />
+
+            <Frame Grid.Row="1"
+                   Padding="20"
+                   CornerRadius="0" 
+                BackgroundColor="black">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            Text="Timetable"
+                            FontSize="16"
+                            BackgroundColor="MediumPurple"
+                            TextColor="Black"
+                            CornerRadius="20"
+                            Clicked="OnTimetableTapped"
+                            FontAttributes="Bold"
+                            Margin="10,0,0,80"
+                            HeightRequest="10"  />
+
+                    <Button Grid.Column="1"
+                            Text="Analysis"
+                            FontSize="16"
+                            BackgroundColor="DarkOrange"
+                            TextColor="Black"
+                            CornerRadius="20"
+                            Clicked="OnAnalysisTapped"
+                            FontAttributes="Bold"
+                            Margin="20,0,0,80"
+                            HeightRequest="10" />
+
+                     
+                </Grid>
+            </Frame>
+        </Grid>
     </ScrollView>
-
 </ContentPage>

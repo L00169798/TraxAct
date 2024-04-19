@@ -6,7 +6,7 @@
              xmlns:model="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
              x:DataType="viewModels:MetricsViewModel"
-             BackgroundColor="DarkGray"
+             BackgroundColor="LightGray"
              Title="Analysis">
 
     <ContentPage.Content>
@@ -57,15 +57,17 @@
                         <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDayOfWeek}"
                                             XBindingPath="DayOfWeek"
                                             YBindingPath="ExerciseCount"
+                                            Type="Cardinal"
                                             Label="Exercise per Day"
-                                            Fill="DarkOrange">
+                                            Fill="DarkOrange"
+                                            ShowMarkers="True">
                         </chart:SplineSeries>
                     </chart:SfCartesianChart.Series>
                     <chart:SfCartesianChart.Legend>
                         <chart:ChartLegend/>
                     </chart:SfCartesianChart.Legend>
                     <chart:SfCartesianChart.XAxes>
-                        <chart:CategoryAxis/>
+                        <chart:DateTimeAxis />
                     </chart:SfCartesianChart.XAxes>
                     <chart:SfCartesianChart.YAxes>
                         <chart:NumericalAxis/>

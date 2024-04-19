@@ -53,6 +53,7 @@
 	  <None Remove="Resources\Images\logout.png" />
 	  <None Remove="Resources\Images\timetable.jpg" />
 	  <None Remove="Resources\Images\traxactlogo.png" />
+	  <None Remove="Resources\Images\traxactlogo2.png" />
 	</ItemGroup>
 
 	<ItemGroup>

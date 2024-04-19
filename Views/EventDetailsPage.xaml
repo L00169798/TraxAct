@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
              x:DataType="viewModels:EventDetailsViewModel"
              Title="Workout Details"
-             BackgroundColor="#F8F8F8">
+             BackgroundColor="lightgray">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -31,7 +31,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <VerticalStackLayout Spacing="20" Padding="20">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
         <Label Text="Workout Details" FontSize="24" FontAttributes="Bold" />
 
         <Label Text="{Binding SelectedEvent.Title}" FontSize="20" />
@@ -48,10 +49,12 @@
 
         <Label Text="{Binding SelectedEvent.Distance, StringFormat='Distance: {0} km'}" IsVisible="{Binding SelectedEvent.Distance}" />
 
-        <Button Text="Edit" Command="{Binding EditCommand}" BackgroundColor="DarkOrange" Padding="10"
-                Margin="0,60,0,0" FontSize="16"/>
-
-        <Button Text="Delete" Command="{Binding DeleteCommand}" BackgroundColor="DarkOrange" Padding="10"
-                Margin="0,0,0,0" FontSize="16"/>
-    </VerticalStackLayout>
+            <Grid ColumnDefinitions="*,*">
+                <Button Text="Edit" Command="{Binding EditCommand}" BackgroundColor="DarkOrange" Padding="10"
+                        FontSize="16" />
+                <Button Text="Delete" Command="{Binding DeleteCommand}" BackgroundColor="Red" Padding="10"
+                        FontSize="16" Grid.Column="1" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

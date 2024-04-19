@@ -79,10 +79,26 @@ namespace TraxAct.ViewModels
 
 		private void UpdateVisibility()
 		{
-			IsDistanceVisible = SelectedExerciseType == "Running";
-			IsRepsVisible = SelectedExerciseType == "Strength";
-			IsSetsVisible = SelectedExerciseType == "Strength";
+			if (SelectedExerciseType == "Running" || SelectedExerciseType == "Walking" || SelectedExerciseType == "Cycling")
+			{
+				IsDistanceVisible = true;
+			}
+			else
+			{
+				IsDistanceVisible = false;
+			}
+			if (SelectedExerciseType == "Strength")
+			{
+				IsRepsVisible = true;
+				IsSetsVisible = true;
+			}
+			else
+			{
+				IsRepsVisible = false;
+				IsSetsVisible = false;
+			}
 		}
+
 
 		private DateTime _startDate = DateTime.Today;
 		public DateTime StartDate

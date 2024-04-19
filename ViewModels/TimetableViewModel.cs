@@ -78,21 +78,6 @@ namespace TraxAct.ViewModels
 			MinimumDateTime = new DateTime(2024, 01, 01);
 		}
 
-	//	private Dictionary<string, Color> ExerciseTypeColors = new Dictionary<string, Color>
-	//{
-	//	{ "Walking", Colors.Green },
-	//	{ "Swimming", Colors.Blue },
-	//	{ "Cycling", Colors.Red },
-	//	{ "Cycling", Colors.PaleTurquoise },
-	//	{ "Yoga", Colors.Orange },
-	//	{ "Pilates", Colors.LightCoral },
-	//	{ "Strength", Colors.DarkCyan },
-	//	{ "HIIT", Colors.Aqua },
-	//	{ "Circuit", Colors.Salmon },
-	//	{ "Other", Colors.BlueViolet }
-	//};
-
-
 		public async Task<List<Event>> GetEventsFilteredByDateRange(DateTime startDate, DateTime endDate)
 		{
 			List<Event> filteredEvents = new List<Event>();
@@ -184,7 +169,7 @@ namespace TraxAct.ViewModels
 				case "Yoga":
 					return Colors.LightGreen;
 				case "Pilates":
-					return Colors.DarkViolet;
+					return Colors.LightBlue;
 				case "Strength":
 					return Colors.SandyBrown;
 				case "HIIT":

@@ -128,6 +128,8 @@ namespace TraxAct.ViewModels
 				return;
 			}
 
+			events = events.Where(ev => ev.StartTime.Date >= StartDate.Date && ev.EndTime.Date <= EndDate.Date).ToList();
+
 			var groupedByDayOfWeek = events.GroupBy(ev => ev.StartTime.DayOfWeek);
 
 			foreach (var group in groupedByDayOfWeek)
@@ -141,6 +143,8 @@ namespace TraxAct.ViewModels
 				});
 			}
 		}
+
+
 
 		public class ExerciseByDayOfWeek
 		{
