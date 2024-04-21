@@ -33,8 +33,16 @@ jobs:
         echo 'export ANDROID_HOME="$HOME/android-sdk"' >> $HOME/.bashrc
         echo 'export PATH="$PATH:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools"' >> $HOME/.bashrc
         source $HOME/.bashrc
-        yes | sdkmanager --licenses
-        sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
+
+     
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        ls -la "$ANDROID_HOME"
+        ls -la "$ANDROID_HOME/cmdline-tools/bin"
+
+     
+        yes | "$ANDROID_HOME/cmdline-tools/bin/sdkmanager" --licenses
+
+        "$ANDROID_HOME/cmdline-tools/bin/sdkmanager" "platform-tools" "platforms;android-31" "build-tools;31.0.0"
 
     - name: Restore dependencies
       run: dotnet restore
