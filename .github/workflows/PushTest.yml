@@ -1,4 +1,4 @@
-name: PushTest
+name: Build and Test
 
 on:
   push:
@@ -12,10 +12,6 @@ jobs:
   build:
     runs-on: windows-latest
 
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -24,12 +20,16 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '7.0.x'
-   
-        
+    
+    - name: Install JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+
     - name: Build
       run: |
         dotnet workload restore
         dotnet restore
         dotnet workload install maui-android maui-windows
         dotnet build --configuration Debug --no-restore
-
