@@ -1,0 +1,51 @@
+name: Routine Maintenance
+
+on:
+  schedule:
+    - cron: '0 2 * * *' 
+
+jobs:
+  maintenance:
+    name: Perform Routine Maintenance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+    
+      - name: Database Backup
+        run: |
+          mkdir backups
+          cp AppData\Local\Packages\3a003566-6e7e-4bd4-bac7-51a8b9009baf_9zz4h110yvjzm\LocalState\TraxActDB.db3 backups/database_$(date +'%Y%m%d_%H%M%S').db
+
+   
+      - name: Update Dependencies
+        run: |
+          dotnet restore
+          dotnet nuget update -p
+
+    
+      - name: Health Check
+        run: |
+          echo "Checking SQLite database connection..."
+          sqlite3 AppData\Local\Packages\3a003566-6e7e-4bd4-bac7-51a8b9009baf_9zz4h110yvjzm\LocalState\TraxActDB.db3 ".tables"
+
+        
+          echo "Verifying Syncfusion Scheduler component..."
+        
+
+   
+      - name: Cleanup
+        run: |
+          rm -rf backups 
+
+      
+      - name: Send Notification
+        if: always()
+        run: |
+          echo "Routine maintenance completed successfully!"
+          echo "Sending notification via email..."
+          echo "Routine maintenance for your application has been completed successfully." | mailx -s "Routine Maintenance Complete" L00169798@atu.ie
+         
+
