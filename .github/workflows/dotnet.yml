@@ -28,9 +28,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y wget unzip
-        mkdir "$HOME"/android-sdk
+        mkdir -p "$HOME/android-sdk/cmdline-tools"
         wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O cmdline-tools.zip
-        unzip -q cmdline-tools.zip -d "$HOME"/android-sdk
+        unzip -q cmdline-tools.zip -d "$HOME/android-sdk/cmdline-tools"
         echo 'export ANDROID_HOME="$HOME/android-sdk"' >> $HOME/.bashrc
         echo 'export PATH="$PATH:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools"' >> $HOME/.bashrc
         source $HOME/.bashrc
@@ -41,7 +41,7 @@ jobs:
 
         yes | "$ANDROID_HOME/cmdline-tools/bin/sdkmanager" --licenses
         "$ANDROID_HOME/cmdline-tools/bin/sdkmanager" "platform-tools" "platforms;android-31" "build-tools;31.0.0"
-
+        
     - name: Restore dependencies
       run: dotnet restore
 
