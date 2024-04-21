@@ -4,27 +4,55 @@
              x:Class="TraxAct.Views.SignUpPage"
              xmlns:local="clr-namespace:TraxAct.ViewModels"
              BackgroundColor="White"
-             Title="SignUp">
+             Title="TraxAct">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button" x:Key="OrangeButtonStyle">
+                <Setter Property="BackgroundColor" Value="DarkOrange" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="30" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="Padding" Value="12,8" />
+            </Style>
+            <Style TargetType="Label" x:Key="HeadingLabelStyle">
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="Margin" Value="0,20,0,10" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+  
     <ContentPage.Content>
-        <StackLayout Spacing="10">
+        <StackLayout Spacing="10" Padding="20">
+            <Label Text="Sign Up" Style="{StaticResource HeadingLabelStyle}" HorizontalOptions="Start" Margin="10,20,40,20"/>
             <StackLayout>
-                <Label FontAttributes="Bold" Text="Email" TextColor="Black"/>
-                <Entry Margin="0,2,0,0" Text="{Binding Email}" TextColor="Black"/>
+                <Label FontAttributes="Bold" Text="Email" TextColor="Black" Margin="0,30,0,0"/>
+                <Entry Margin="0,2,0,0" Text="{Binding Email}" TextColor="Black" />
+            </StackLayout>
+
+          
+            <StackLayout>
+                <Label FontAttributes="Bold" Text="Password" TextColor="Black" />
+                <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding Password}" TextColor="Black" />
             </StackLayout>
 
             <StackLayout>
-                <Label FontAttributes="Bold" Text="Password" TextColor="Black"/>
-                <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding Password}" TextColor="Black"/>
+                <Label FontAttributes="Bold" Text="Confirm Password" TextColor="Black" />
+                <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding ConfirmPassword}" TextColor="Black" />
             </StackLayout>
 
-            <StackLayout>
-                <Label FontAttributes="Bold" Text="Confirm Password" TextColor="Black"/>
-                <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding ConfirmPassword}" TextColor="Black"/>
-            </StackLayout>
+            <Button Text="Sign Up" Command="{Binding SignUpCommand}"
+                    Style="{StaticResource OrangeButtonStyle}" 
+                    Margin="20,20,20,20"/>
 
-            <Button Text="Sign Up" Command="{Binding SignUpCommand}" Margin="0,25,0,0" HorizontalOptions="Start"/>
-
-            <Button Text="Back to Sign In" Command="{Binding SignInCommand}" Margin="0,25,0,0" HorizontalOptions="Start"/>
+            <Button Text="Back to Sign In" Command="{Binding SignInCommand}"
+                    Style="{StaticResource OrangeButtonStyle}"
+                    Margin="20,0,20,20"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

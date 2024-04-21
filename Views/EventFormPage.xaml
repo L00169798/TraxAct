@@ -4,21 +4,60 @@
              x:Class="TraxAct.Views.EventFormPage"
              xmlns:models="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             BackgroundColor="White"
+             BackgroundColor="Black"
              Title="Event Form">
 
-  
+    
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#FF5722</Color>
+            <Style TargetType="Label" x:Key="HeadingLabelStyle">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="0,10"/>
+            </Style>
+            <Style TargetType="Entry" x:Key="EntryStyle">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="PlaceholderColor" Value="#A9A9A9"/>
+                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="Keyboard" Value="Text"/>
+            </Style>
+            <Style TargetType="Picker" x:Key="PickerStyle">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="TitleColor" Value="Black"/>
+            </Style>
+            <Style TargetType="Button" x:Key="ButtonStyle">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="Margin" Value="0,20,0,0"/>
+                <Setter Property="CornerRadius" Value="10"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <StackLayout Padding="20">
-            <Label Text="Name" TextColor="Black"/>
-            <Entry Text="{Binding Subject}" TextColor="Black"/>
+            <Label Text="Name" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Subject}" Style="{StaticResource EntryStyle}"/>
 
-            <Label Text="Exercise" TextColor="Black"/>
-            <Picker Title="Select Exercise" SelectedItem="{Binding SelectedExerciseType}" TextColor="Black">
+            <Label Text="Exercise" Style="{StaticResource HeadingLabelStyle}"/>
+            <Picker SelectedItem="{Binding SelectedExerciseType, Mode=TwoWay}" Style="{StaticResource PickerStyle}">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Walking</x:String>
-                        <x:String>Running</x:String>
+                        <x:String>Running</x:String> 
                         <x:String>Cycling</x:String>
                         <x:String>Swimming</x:String>
                         <x:String>Yoga</x:String>
@@ -31,28 +70,28 @@
                 </Picker.ItemsSource>
             </Picker>
 
-            <Label Text="Start Date" TextColor="Black"/>
-            <DatePicker x:Name="StartDatePicker" Date="{Binding StartDate}" TextColor="Black"/>
+            <Label Text="Start Date" Style="{StaticResource HeadingLabelStyle}"/>
+            <DatePicker Date="{Binding StartDate, Mode=TwoWay}" TextColor="White"/>
 
-            <Label Text="Start Time" TextColor="Black"/>
-            <TimePicker Time="{Binding StartTime}" TextColor="Black"/>
+            <Label Text="Start Time" Style="{StaticResource HeadingLabelStyle}"/>
+            <TimePicker Time="{Binding StartTime, Mode=TwoWay}" TextColor="White"/>
 
-            <Label Text="End Date" TextColor="Black"/>
-            <DatePicker x:Name="EndDatePicker" Date="{Binding EndDate}" TextColor="Black"/>
+            <Label Text="End Date" Style="{StaticResource HeadingLabelStyle}"/>
+            <DatePicker Date="{Binding EndDate, Mode=TwoWay}" TextColor="White"/>
 
-            <Label Text="End Time" TextColor="Black"/>
-            <TimePicker Time="{Binding EndTime}" TextColor="Black"/>
+            <Label Text="End Time" Style="{StaticResource HeadingLabelStyle}"/>
+            <TimePicker Time="{Binding EndTime, Mode=TwoWay}" TextColor="White"/>
 
-            <Label Text="Distance" IsVisible="{Binding IsDistanceVisible}" TextColor="Black"/>
-            <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" TextColor="Black"/>
+            <Label Text="Distance (km)" IsVisible="{Binding IsDistanceVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" Placeholder="Enter distance" Style="{StaticResource EntryStyle}" TextColor="White"/>
 
-            <Label Text="Reps" IsVisible="{Binding IsRepsVisible}" TextColor="Black"/>
-            <Entry Text="{Binding Reps}" IsVisible="{Binding IsRepsVisible}" TextColor="Black"/>
+            <Label Text="Reps" IsVisible="{Binding IsRepsVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Reps}" IsVisible="{Binding IsRepsVisible}" Placeholder="Enter reps" Style="{StaticResource EntryStyle}" TextColor="White"/>
 
-            <Label Text="Sets" IsVisible="{Binding IsSetsVisible}" TextColor="Black"/>
-            <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" TextColor="Black"/>
+            <Label Text="Sets" IsVisible="{Binding IsSetsVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" Placeholder="Enter sets" Style="{StaticResource EntryStyle}" TextColor="White"/>
 
-            <Button Text="Save" Command="{Binding SaveCommand}" TextColor="Black"/>
+            <Button Text="Save" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="DarkOrange" TextColor="White"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

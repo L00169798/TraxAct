@@ -6,67 +6,69 @@
              xmlns:model="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
              x:DataType="viewModels:MetricsViewModel"
-             BackgroundColor="White"
+             BackgroundColor="LightGray"
              Title="Analysis">
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Spacing="10" Padding="20">
+            <StackLayout Spacing="20" Padding="20">
 
-                <Frame HorizontalOptions="FillAndExpand" Margin="5,10" HasShadow="True"
-                       BackgroundColor="#F0F0F0">
-                    <StackLayout>
-                        <Label Text="Select Date Range:" HorizontalOptions="Center" TextColor="Black"/>
-                        <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *">
-                            <Label Text="From:" Grid.Row="0" Grid.Column="0" VerticalOptions="Center" TextColor="Black"/>
-                            <DatePicker Date="{Binding StartDate}" MaximumWidthRequest="80" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" TextColor="Black"/>
-                            <Label Text="To:" Grid.Row="1" Grid.Column="0" VerticalOptions="Center" TextColor="Black"/>
-                            <DatePicker Date="{Binding EndDate}" MaximumWidthRequest="80" Grid.Row="1" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" TextColor="Black"/>
-                        </Grid>
-                        <Button Text="Apply" Command="{Binding ApplyCommand}" MaximumWidthRequest="110" BackgroundColor="#0366d6" TextColor="Black"/>
+
+                <StackLayout BackgroundColor="GhostWhite" Padding="20" Spacing="10">
+                    <Label Text="Select Date Range" TextColor="Black" FontSize="14" HorizontalOptions="Center"/>
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Center">
+                        <Label Text="From:" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Start"/>
+                        <DatePicker Date="{Binding StartDate}" MaximumWidthRequest="120" TextColor="Black"/>
                     </StackLayout>
-                </Frame>
+                    
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Center" HorizontalOptions="Start">
+                        <Label Text="To:" TextColor="Black" VerticalOptions="Center"/>
+                        <DatePicker Date="{Binding EndDate}" MaximumWidthRequest="120" TextColor="Black" Margin="12,0,0,0"/>
+                    </StackLayout>
+
+                    <Button Text="Apply" Command="{Binding ApplyCommand}" FontSize="12" BackgroundColor="mediumpurple" TextColor="White" CornerRadius="20"/>
+                </StackLayout>
+
+
 
                 <chart:SfCartesianChart>
                     <chart:SfCartesianChart.Series>
                         <chart:ColumnSeries ItemsSource="{Binding FilteredExerciseHours}"
                                             XBindingPath="Key"
                                             YBindingPath="Value"
-                                            Fill="MediumPurple"
-                                            Label="Hours of Exercise">
+                                            Label="Hours of Exercise"
+                                            Fill="DarkOrange">
                         </chart:ColumnSeries>
                     </chart:SfCartesianChart.Series>
-
                     <chart:SfCartesianChart.Legend>
                         <chart:ChartLegend/>
                     </chart:SfCartesianChart.Legend>
-
                     <chart:SfCartesianChart.XAxes>
                         <chart:CategoryAxis/>
                     </chart:SfCartesianChart.XAxes>
-
                     <chart:SfCartesianChart.YAxes>
                         <chart:NumericalAxis/>
                     </chart:SfCartesianChart.YAxes>
                 </chart:SfCartesianChart>
 
+             
                 <chart:SfCartesianChart>
                     <chart:SfCartesianChart.Series>
-                        <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDayOfWeek}"
-                                            XBindingPath="DayOfWeek"
-                                            YBindingPath="ExerciseCount"
+                        <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDay}"
+                                            XBindingPath="Date"
+                                            YBindingPath="TotalExerciseHours"
+                                            Type="Monotonic"
+                                            Label="Exercise per Day"
                                             Fill="MediumPurple"
-                                            Label="Exercise per Day"/>
+                                            ShowMarkers="True">
+                        </chart:SplineSeries>
                     </chart:SfCartesianChart.Series>
-
                     <chart:SfCartesianChart.Legend>
                         <chart:ChartLegend/>
                     </chart:SfCartesianChart.Legend>
-
                     <chart:SfCartesianChart.XAxes>
-                        <chart:CategoryAxis/>
+                        <chart:DateTimeAxis IntervalType="Days"/>
                     </chart:SfCartesianChart.XAxes>
-
                     <chart:SfCartesianChart.YAxes>
                         <chart:NumericalAxis/>
                     </chart:SfCartesianChart.YAxes>

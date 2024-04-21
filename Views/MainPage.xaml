@@ -3,72 +3,61 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TraxAct.Views.MainPage"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             Title="HomePage"
-             BackgroundColor="White">
+             Title="TraxAct"
+             BackgroundColor="black">
 
-    <NavigationPage.TitleView>
-        <Label Text="Main Page" TextColor="Black" />
-    </NavigationPage.TitleView>
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            
+            
 
-    <ScrollView BackgroundColor="#FFFFFF">
-        <AbsoluteLayout>
-            <Image
-                Source="activity.jpg"
-                AbsoluteLayout.LayoutBounds="0,0,1,1"
-                AbsoluteLayout.LayoutFlags="All"
-                Aspect="Fill" />
+            <Image Source="traxactlogo2.png"
+                   Aspect="Fill"
+                   VerticalOptions="Fill"
+                   HorizontalOptions="Fill"
+                   Margin="0,80,0,0"
+                   Grid.Row="0" />
 
-            <Label
-                Text="TraxAct"
-                FontSize="36"
-                TextColor="Black"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Margin="0,100,0,0"
-                AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
-                AbsoluteLayout.LayoutFlags="PositionProportional" />
+            <Frame Grid.Row="1"
+                   Padding="20"
+                   CornerRadius="0" 
+                BackgroundColor="black">
 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-            <Label
-                Text="View Timetable"
-                Margin="0,70,0,0"
-                FontSize="16"
-                TextColor="Black"
-                HorizontalOptions="Center"
-                AbsoluteLayout.LayoutBounds="0.5,0.85,AutoSize,AutoSize"
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                Padding="20">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnTimetableTapped" />
-                </Label.GestureRecognizers>
-            </Label>
+                    <Button Grid.Column="0"
+                            Text="Timetable"
+                            FontSize="16"
+                            BackgroundColor="MediumPurple"
+                            TextColor="Black"
+                            CornerRadius="20"
+                            Clicked="OnTimetableTapped"
+                            FontAttributes="Bold"
+                            Margin="10,0,0,80"
+                            HeightRequest="10"  />
 
-            <Label
-                Text="Analysis"
-                Margin="0,160,0,0"
-                FontSize="14"
-                TextColor="Black"
-                HorizontalOptions="Center"
-                AbsoluteLayout.LayoutBounds="0.5,0.85,AutoSize,AutoSize"
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                Padding="20">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnAnalysisTapped" />
-                </Label.GestureRecognizers>
-            </Label>
+                    <Button Grid.Column="1"
+                            Text="Analysis"
+                            FontSize="16"
+                            BackgroundColor="DarkOrange"
+                            TextColor="Black"
+                            CornerRadius="20"
+                            Clicked="OnAnalysisTapped"
+                            FontAttributes="Bold"
+                            Margin="20,0,0,80"
+                            HeightRequest="10" />
 
-            <Button
-                Text="Log Out"
-                Clicked="OnLogoutButtonClicked"
-                BackgroundColor="Red"
-                TextColor="White"
-                Margin="20,500,20,20"
-                HorizontalOptions="Fill"     
-                FontSize="10" 
-                HeightRequest="40"
-                AbsoluteLayout.LayoutBounds="0.5,0.95,AutoSize,AutoSize"
-                AbsoluteLayout.LayoutFlags="PositionProportional" />
-        </AbsoluteLayout>
+                     
+                </Grid>
+            </Frame>
+        </Grid>
     </ScrollView>
-
 </ContentPage>

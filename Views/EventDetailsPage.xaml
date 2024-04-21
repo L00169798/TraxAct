@@ -6,90 +6,55 @@
              xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
              x:DataType="viewModels:EventDetailsViewModel"
              Title="Workout Details"
-             BackgroundColor="White">
+             BackgroundColor="lightgray">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="Margin" Value="0,10"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="Margin" Value="0,20"/>
+                <Setter Property="Padding" Value="20"/>
+                <Setter Property="BackgroundColor" Value="#007BFF"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+        <Label Text="Workout Details" FontSize="24" FontAttributes="Bold" />
 
-    <VerticalStackLayout>
-        <Label 
-            Text="Workout Details"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center"
-            TextColor="Black" />
-        <Label 
-            Text="{Binding SelectedEvent.Title}"
-            VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black" />
+        <Label Text="{Binding SelectedEvent.Title}" FontSize="20" />
 
-        <Label 
-            Text="{Binding SelectedEvent.ExerciseType}"
-            VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black" />
+        <Label Text="{Binding SelectedEvent.ExerciseType}" FontSize="18" />
 
-        <Label 
-            Text="{Binding SelectedEvent.StartTime, StringFormat='Start Date: {0:MM/dd/yyyy HH:mm}'}"
-            VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black" />
+        <Label Text="{Binding SelectedEvent.StartTime, StringFormat='Start Date: {0:dd/MM/yy HH:mm}'}" />
 
-        <Label 
-            Text="{Binding SelectedEvent.EndTime, StringFormat='End Date: {0:MM/dd/yyyy HH:mm}'}"
-            VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black" />
+        <Label Text="{Binding SelectedEvent.EndTime, StringFormat='End Date: {0:dd/MM/yy HH:mm}'}" />
 
-        <Label 
-            Text="{Binding SelectedEvent.Reps, StringFormat='Reps: {0}'}"
-            VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black">
-            <Label.Triggers>
-                <DataTrigger TargetType="Label" Binding="{Binding SelectedEvent.Reps}" Value="0">
-                    <Setter Property="IsVisible" Value="False" />
-                </DataTrigger>
-            </Label.Triggers>
-        </Label>
+        <Label Text="{Binding SelectedEvent.Reps, StringFormat='Reps: {0}'}" IsVisible="{Binding SelectedEvent.Reps}" />
 
-      
-        <Label 
-            Text="{Binding SelectedEvent.Sets, StringFormat='Sets: {0}'}"
-            VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black">
-            <Label.Triggers>
-                <DataTrigger TargetType="Label" Binding="{Binding SelectedEvent.Sets}" Value="0">
-                    <Setter Property="IsVisible" Value="False" />
-                </DataTrigger>
-            </Label.Triggers>
-        </Label>
+        <Label Text="{Binding SelectedEvent.Sets, StringFormat='Sets: {0}'}" IsVisible="{Binding SelectedEvent.Sets}" />
 
-       
-        <Label 
-            Text="{Binding SelectedEvent.Distance, StringFormat='Distance: {0} km'}"
-            VerticalOptions="CenterAndExpand" 
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black">
-            <Label.Triggers>
-                <DataTrigger TargetType="Label" Binding="{Binding SelectedEvent.Distance}" Value="0">
-                    <Setter Property="IsVisible" Value="False" />
-                </DataTrigger>
-            </Label.Triggers>
-        </Label>
+        <Label Text="{Binding SelectedEvent.Distance, StringFormat='Distance: {0} km'}" IsVisible="{Binding SelectedEvent.Distance}" />
 
-        <Button
-            Text="Edit"
-            Command="{Binding EditCommand}"
-            VerticalOptions="CenterAndExpand"
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black" />
-
-        <Button
-            Text="Delete"
-            Command="{Binding DeleteCommand}"
-            VerticalOptions="CenterAndExpand"
-            HorizontalOptions="CenterAndExpand"
-            TextColor="Black" />
-    </VerticalStackLayout>
+            <Grid ColumnDefinitions="*,*">
+                <Button Text="Edit" Command="{Binding EditCommand}" BackgroundColor="DarkOrange" Padding="10"
+                        FontSize="16" />
+                <Button Text="Delete" Command="{Binding DeleteCommand}" BackgroundColor="Red" Padding="10"
+                        FontSize="16" Grid.Column="1" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

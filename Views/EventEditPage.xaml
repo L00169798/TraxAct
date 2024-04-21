@@ -5,22 +5,54 @@
              xmlns:models="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
              x:DataType="viewModels:EventEditViewModel"
-             BackgroundColor="White"
+             BackgroundColor="Black"
              Title="Edit Event">
 
-    <NavigationPage.TitleView>
-        <StackLayout Orientation="Horizontal">
-            <Label Text="Edit Event" TextColor="Black" HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </NavigationPage.TitleView>
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#FF5722</Color>
+            <Style TargetType="Label" x:Key="HeadingLabelStyle">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="0,10"/>
+            </Style>
+            <Style TargetType="Entry" x:Key="EntryStyle">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="PlaceholderColor" Value="#A9A9A9"/>
+                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="Keyboard" Value="Text"/>
+            </Style>
+            <Style TargetType="Picker" x:Key="PickerStyle">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="HeightRequest" Value="40"/>
+            </Style>
+            <Style TargetType="Button" x:Key="ButtonStyle">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="Margin" Value="0,20,0,0"/>
+                <Setter Property="CornerRadius" Value="10"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
-        <StackLayout Padding="20">
-            <Label Text="Name" TextColor="Black"/>
-            <Entry Text="{Binding Subject}" TextColor="Black"/>
+        <StackLayout Padding="20" Spacing="15">
 
-            <Label Text="Exercise" TextColor="Black"/>
-            <Picker Title="Select Exercise" SelectedItem="{Binding SelectedExerciseType}" TextColor="Black">
+            <Label Text="Name" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Subject}" Placeholder="Enter event name" TextColor="White"/>
+
+            <Label Text="Exercise" Style="{StaticResource HeadingLabelStyle}"/>
+            <Picker SelectedItem="{Binding SelectedExerciseType, Mode=TwoWay}" Style="{StaticResource PickerStyle}"
+        TextColor="White">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Walking</x:String>
@@ -36,21 +68,30 @@
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
-            <DatePicker x:Name="StartDatePicker" Date="{Binding StartDate}" TextColor="Black"/>
-            <TimePicker Time="{Binding StartTime}" TextColor="Black"/>
 
-            <DatePicker x:Name="EndDatePicker" Date="{Binding EndDate}" TextColor="Black"/>
-            <TimePicker Time="{Binding EndTime}" TextColor="Black"/>
+            <Label Text="Start Date" Style="{StaticResource HeadingLabelStyle}"/>
+            <DatePicker Date="{Binding StartDate, Mode=TwoWay}" TextColor="White"/>
 
-            <Label Text="Distance" IsVisible="{Binding IsDistanceVisible}" TextColor="Black"/>
-            <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" TextColor="Black"/>
+            <Label Text="Start Time" Style="{StaticResource HeadingLabelStyle}"/>
+            <TimePicker Time="{Binding StartTime, Mode=TwoWay}" TextColor="White"/>
 
-            <Label Text="Reps" IsVisible="{Binding IsRepsVisible}" TextColor="Black"/>
-            <Entry Text="{Binding Reps}" IsVisible="{Binding IsRepsVisible}" TextColor="Black"/>
+            <Label Text="End Date" Style="{StaticResource HeadingLabelStyle}"/>
+            <DatePicker Date="{Binding EndDate, Mode=TwoWay}" TextColor="White"/>
 
-            <Label Text="Sets" IsVisible="{Binding IsSetsVisible}" TextColor="Black"/>
-            <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" TextColor="Black"/>
-            <Button Text="Save" Command="{Binding SaveCommand}" TextColor="Black"/>
+            <Label Text="End Time" Style="{StaticResource HeadingLabelStyle}"/>
+            <TimePicker Time="{Binding EndTime, Mode=TwoWay}" TextColor="White"/>
+
+            <Label Text="Distance (km)" IsVisible="{Binding IsDistanceVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" Placeholder="Enter distance" TextColor="White"/>
+
+            <Label Text="Reps" IsVisible="{Binding IsRepsVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Reps}" IsVisible="{Binding IsRepsVisible}" Placeholder="Enter reps"  TextColor="White"/>
+
+            <Label Text="Sets" IsVisible="{Binding IsSetsVisible}" Style="{StaticResource HeadingLabelStyle}"/>
+            <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" Placeholder="Enter sets"  TextColor="White"/>
+
+
+            <Button Text="Save" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="DarkOrange"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

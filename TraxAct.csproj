@@ -37,7 +37,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -48,8 +47,14 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\Activity.jpg" />
+	  <None Remove="Resources\Images\addexercise.jpg" />
+	  <None Remove="Resources\Images\analysis.jpg" />
 	  <None Remove="Resources\Images\create.png" />
 	  <None Remove="Resources\Images\details.png" />
+	  <None Remove="Resources\Images\logout.png" />
+	  <None Remove="Resources\Images\timetable.jpg" />
+	  <None Remove="Resources\Images\traxactlogo.png" />
+	  <None Remove="Resources\Images\traxactlogo2.png" />
 	</ItemGroup>
 
 	<ItemGroup>
