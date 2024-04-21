@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  code_review_feedback:
+    name: Code Review and Feedback
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Code linting and tests
+        run: |
+        
+      - name: Code scanning
+        run: |
+
+  build_and_test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    needs: code_review_feedback
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build artifacts
+        run: |
+         
+
+  deploy_to_dev:
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    steps:
+      - name: Deploy to development environment
+        run: |
+        
+
+  deploy_to_staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to staging environment
+        run: |
+       
+
+  deploy_to_prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: deploy_to_staging
+    if: github.event_name == 'push' && github.ref == 'refs/tags/*'
+    steps:
+      - name: Deploy to production environment
+        run: |
+       
+
