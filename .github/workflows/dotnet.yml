@@ -24,11 +24,17 @@ jobs:
       with:
         dotnet-version: '7.0.x'
 
-    - name: Install Android SDK and dependencies
+    - name: Install Android SDK
       run: |
         sudo apt-get update
-        sudo apt-get install -y openjdk-11-jdk
-        echo "y" | sdkmanager --install "platform-tools" "platforms;android-31" "build-tools;31.0.0" "extras;google;m2repository" "extras;android;m2repository"
+        sudo apt-get install -y wget unzip
+        wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O cmdline-tools.zip
+        unzip -q cmdline-tools.zip -d "$HOME"/android-sdk
+        echo 'export ANDROID_HOME="$HOME/android-sdk"' >> $HOME/.bashrc
+        echo 'export PATH="$PATH:$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools"' >> $HOME/.bashrc
+        source $HOME/.bashrc
+        yes | sdkmanager --licenses
+        sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
 
     - name: Restore dependencies
       run: dotnet restore
