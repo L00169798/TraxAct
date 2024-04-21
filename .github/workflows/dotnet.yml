@@ -26,7 +26,7 @@ jobs:
 
     - name: Install .NET MAUI workload
       run: |
-        dotnet workload install maui-android --version 7.0.0-preview3.1
+        dotnet workload install maui-android
 
     - name: Restore dependencies
       run: dotnet restore
