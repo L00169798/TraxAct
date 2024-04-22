@@ -30,8 +30,7 @@
                 </StackLayout>
 
 
-
-                <chart:SfCartesianChart>
+                <chart:SfCartesianChart IsTransposed="True">
                     <chart:SfCartesianChart.Series>
                         <chart:ColumnSeries ItemsSource="{Binding FilteredExerciseHours}"
                                             XBindingPath="Key"
@@ -51,7 +50,7 @@
                     </chart:SfCartesianChart.YAxes>
                 </chart:SfCartesianChart>
 
-             
+
                 <chart:SfCartesianChart>
                     <chart:SfCartesianChart.Series>
                         <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDay}"

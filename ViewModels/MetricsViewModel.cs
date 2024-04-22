@@ -94,6 +94,7 @@ namespace TraxAct.ViewModels
 				Debug.WriteLine($"User ID: {userId}");
 
 				var filteredEvents = await _dbContext.GetEventsByTimeAsync(StartDate, EndDate, userId);
+				filteredEvents.Sort((ev1, ev2) => ev1.StartTime.CompareTo(ev2.StartTime));
 
 				FilteredExerciseHours = ConvertToExerciseHours(filteredEvents);
 				CalculateTotalExerciseByDay(filteredEvents);
@@ -118,9 +119,12 @@ namespace TraxAct.ViewModels
 				return exerciseHours;
 			}
 
-			var groupedExerciseHours = events.GroupBy(ev => ev.ExerciseType)
-				.Select(group => new KeyValuePair<string, double>(group.Key, group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours)))
-				.ToList();
+			var groupedExerciseHours = events
+	.Where(ev => !string.IsNullOrEmpty(ev.ExerciseType)) 
+	.GroupBy(ev => ev.ExerciseType)
+	.Select(group => new KeyValuePair<string, double>(group.Key, group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours)))
+	.ToList();
+
 
 			exerciseHours = new ObservableCollection<KeyValuePair<string, double>>(groupedExerciseHours);
 
