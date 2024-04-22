@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using TraxAct.Models;
 using TraxAct.Services;
 using TraxAct.Views;
@@ -82,9 +83,17 @@ namespace TraxAct.ViewModels
 		{
 			try
 			{
-				string userId = _userService.GetCurrentUserUid();
+				string userId = UserService.Instance.GetCurrentUserUid();
 
-				var filteredEvents = await _dbContext.GetEventsByTimeAsync(StartDate, EndDate);
+				if (string.IsNullOrEmpty(userId))
+				{
+					Debug.WriteLine("User ID is null or empty. Skipping filter execution.");
+					return;
+				}
+
+				Debug.WriteLine($"User ID: {userId}");
+
+				var filteredEvents = await _dbContext.GetEventsByTimeAsync(StartDate, EndDate, userId);
 
 				FilteredExerciseHours = ConvertToExerciseHours(filteredEvents);
 				CalculateTotalExerciseByDay(filteredEvents);

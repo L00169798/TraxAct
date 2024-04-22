@@ -194,13 +194,13 @@ namespace TraxAct.Services
 			}
 		}
 
-		public async Task<List<Event>> GetEventsByTimeAsync(DateTime startTime, DateTime endTime)
+		public async Task<List<Event>> GetEventsByTimeAsync(DateTime startTime, DateTime endTime, string userId)
 		{
 			await Init();
 			DateTime adjustedEndTime = endTime.Date.AddDays(1).AddTicks(-1);
 
 			var events = await Database.Table<Event>()
-									   .Where(e => e.StartTime >= startTime && e.StartTime <= adjustedEndTime)
+									   .Where(e => e.StartTime >= startTime && e.StartTime <= adjustedEndTime && e.UserId == userId)
 									   .ToListAsync();
 
 			return events;
