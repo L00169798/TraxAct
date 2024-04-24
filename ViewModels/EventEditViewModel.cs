@@ -7,6 +7,7 @@ using TraxAct.Services;
 using Microsoft.Maui.Controls;
 using System.Globalization;
 using TraxAct.Views;
+using System.Diagnostics;
 
 namespace TraxAct.ViewModels
 {
@@ -15,7 +16,7 @@ namespace TraxAct.ViewModels
         private readonly MyDbContext _dbContext;
         private Event _selectedEvent;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler PropertyChanged;
 
         private string _subject;
         public string Subject
@@ -47,6 +48,8 @@ namespace TraxAct.ViewModels
                     UpdateRepsVisibility();
                     UpdateSetsVisibility();
 
+					((Command)SaveCommand).ChangeCanExecute();
+
                 }
             }
         }
@@ -76,7 +79,7 @@ namespace TraxAct.ViewModels
                 {
                     _startDate = value;
                     OnPropertyChanged();
-                }
+				}
             }
         }
 
@@ -90,7 +93,7 @@ namespace TraxAct.ViewModels
                 {
                     _endDate = value;
                     OnPropertyChanged();
-                }
+				}
             }
         }
 
@@ -104,7 +107,7 @@ namespace TraxAct.ViewModels
                 {
                     _startTime = value;
                     OnPropertyChanged();
-                }
+				}
             }
         }
 
@@ -118,7 +121,7 @@ namespace TraxAct.ViewModels
                 {
                     _endTime = value;
                     OnPropertyChanged();
-                }
+				}
             }
         }
 
@@ -225,27 +228,43 @@ namespace TraxAct.ViewModels
             }
         }
 
-        private DateTime ParseDateTime(string dateTimeString)
-        {
-            if (DateTime.TryParseExact(dateTimeString, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime))
-            {
-                return dateTime;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid date format");
-            }
-        }
+		private bool _isExerciseTypeErrorVisible;
+		public bool IsExerciseTypeErrorVisible
+		{
+			get { return _isExerciseTypeErrorVisible; }
+			set
+			{
+				if (_isExerciseTypeErrorVisible != value)
+				{
+					_isExerciseTypeErrorVisible = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		private bool _isEndDateErrorVisible;
+		public bool IsEndDateErrorVisible
+		{
+			get { return _isEndDateErrorVisible; }
+			set
+			{
+				if (_isEndDateErrorVisible != value)
+				{
+					_isEndDateErrorVisible = value;
+					OnPropertyChanged();
+				}
+			}
+		}
 
 
-        public ICommand SaveCommand { get; }
+		public ICommand SaveCommand { get; }
 
         public EventEditViewModel(MyDbContext dbContext, Event selectedEvent)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             SelectedEvent = selectedEvent ?? throw new ArgumentNullException(nameof(selectedEvent));
 
-            Subject = selectedEvent.Title;
+			Subject = selectedEvent.Title;
             SelectedExerciseType = selectedEvent.ExerciseType;
             StartDate = selectedEvent.StartTime;
             EndDate = selectedEvent.EndTime;
@@ -253,10 +272,41 @@ namespace TraxAct.ViewModels
             Reps = selectedEvent.Reps;
             Sets = selectedEvent.Sets;
 
-            SaveCommand = new Command(SaveEvent);
-        }
-        private async void SaveEvent()
-        {
+			SaveCommand = new Command(async () => ExecuteSaveCommand(), () => CanExecuteSaveCommand());
+
+			PropertyChanged += (sender, args) =>
+			{
+				if (args.PropertyName == nameof(Subject) || args.PropertyName == nameof(SelectedExerciseType))
+				{
+					((Command)SaveCommand).ChangeCanExecute();
+				}
+			};
+		}
+
+		private bool CanExecuteSaveCommand()
+		{
+			DateTime startDateTime = StartDate.Date.Add(StartTime);
+			DateTime endDateTime = EndDate.Date.Add(EndTime);
+
+			bool isValidExerciseType = !string.IsNullOrWhiteSpace(SelectedExerciseType);
+			bool isValidUserUid = !string.IsNullOrWhiteSpace(UserService.Instance.GetCurrentUserUid());
+			bool isEndTimeAfterStartTime = endDateTime >= startDateTime;
+
+			IsExerciseTypeErrorVisible = !isValidExerciseType;
+			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
+
+			bool canExecute = isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
+
+			Debug.WriteLine($"User UID is valid: {isValidUserUid}");
+			Debug.WriteLine($"Start DateTime: {startDateTime}");
+			Debug.WriteLine($"End DateTime: {endDateTime}");
+			Debug.WriteLine($"End DateTime is after Start DateTime: {isEndTimeAfterStartTime}");
+
+			return isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
+		}
+
+		private async void ExecuteSaveCommand()
+		{
             try
             {
                 
@@ -271,7 +321,7 @@ namespace TraxAct.ViewModels
                 SelectedEvent.Reps = Reps;
                 SelectedEvent.Sets = Sets;
 
-                _dbContext.Update(SelectedEvent);
+                await _dbContext.Update(SelectedEvent);
 
                 await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
 

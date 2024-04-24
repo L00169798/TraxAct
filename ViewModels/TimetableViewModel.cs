@@ -103,7 +103,7 @@ namespace TraxAct.ViewModels
 			return filteredEvents;
 		}
 
-		public async void LoadEventsFromDatabase()
+		public async Task LoadEventsFromDatabase()
 		{
 			try
 			{

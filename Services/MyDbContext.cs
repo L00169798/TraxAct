@@ -13,8 +13,22 @@ using TraxAct.Services;
 
 namespace TraxAct.Services
 {
-    public class MyDbContext
-    {
+
+	public interface IDbContext
+	{
+		Task<List<Event>> GetEventsByUserId(string userId);
+		Task<List<Event>> GetEventsByTimeAsync(DateTime startTime, DateTime endTime, string userId);
+		Task SaveUserId(string userId);
+		Task<Event> GetById(int id);
+		Task<bool> Create(Event newEvent);
+		Task Update(Event updatedEvent);
+		Task Delete(Event existingEvent);
+		Task<List<Event>> GetEventsByStartDateAsync(DateTime startDate);
+		Task<List<Event>> GetEventsInRange(DateTime startDate, DateTime endDate);
+		Task LoadEventsForCurrentUser();
+	}
+	public class MyDbContext : IDbContext
+	{
         const string TraxActDB = "TraxActDB.db3";
         static string DatabasePath => Path.Combine(FileSystem.AppDataDirectory, TraxActDB);
         const SQLite.SQLiteOpenFlags Flags =

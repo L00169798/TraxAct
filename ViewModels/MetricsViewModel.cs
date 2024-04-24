@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using TraxAct.Models;
 using TraxAct.Services;
-using TraxAct.Views;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +17,8 @@ namespace TraxAct.ViewModels
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private readonly UserService _userService;
-		private readonly MyDbContext _dbContext;
+		private UserService _userService;
+
 		public string UserId { get; }
 
 		private Dictionary<string, double> _exerciseHours;
@@ -29,6 +28,34 @@ namespace TraxAct.ViewModels
 			set
 			{
 				_exerciseHours = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public UserService UserService
+		{
+			get { return _userService; }
+			set
+			{
+				if (_userService != value)
+				{
+					_userService = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		private IDbContext _dbContext;
+		public IDbContext DbContext
+		{
+			get { return _dbContext; }
+			set
+			{
+				if (_dbContext != value)
+				{
+					_dbContext = value;
+					OnPropertyChanged();
+				}
 			}
 		}
 
@@ -70,9 +97,10 @@ namespace TraxAct.ViewModels
 
 			StartDate = DateTime.Today.AddDays(-7);
 			EndDate = DateTime.Today;
+			ApplyCommand = new Command(ExecuteApplyCommand);
 		}
 
-		public ICommand ApplyCommand => new Command(ExecuteApplyCommand, CanExecuteApplyCommand);
+		public ICommand ApplyCommand { get; private set; }
 
 		private bool CanExecuteApplyCommand(object parameter)
 		{
@@ -108,7 +136,6 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-
 		private ObservableCollection<KeyValuePair<string, double>> ConvertToExerciseHours(List<Event> events)
 		{
 			var exerciseHours = new ObservableCollection<KeyValuePair<string, double>>();
@@ -120,11 +147,10 @@ namespace TraxAct.ViewModels
 			}
 
 			var groupedExerciseHours = events
-	.Where(ev => !string.IsNullOrEmpty(ev.ExerciseType)) 
-	.GroupBy(ev => ev.ExerciseType)
-	.Select(group => new KeyValuePair<string, double>(group.Key, group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours)))
-	.ToList();
-
+				.Where(ev => !string.IsNullOrEmpty(ev.ExerciseType))
+				.GroupBy(ev => ev.ExerciseType)
+				.Select(group => new KeyValuePair<string, double>(group.Key, group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours)))
+				.ToList();
 
 			exerciseHours = new ObservableCollection<KeyValuePair<string, double>>(groupedExerciseHours);
 
@@ -144,7 +170,6 @@ namespace TraxAct.ViewModels
 
 			events = events.Where(ev => ev.StartTime.Date >= StartDate.Date && ev.EndTime.Date <= EndDate.Date).ToList();
 
-		
 			var groupedByDate = events.GroupBy(ev => ev.StartTime.Date);
 
 			foreach (var group in groupedByDate)
@@ -164,8 +189,6 @@ namespace TraxAct.ViewModels
 
 			OnPropertyChanged(nameof(TotalExerciseByDay));
 		}
-
-
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
