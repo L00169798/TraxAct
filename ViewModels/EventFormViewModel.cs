@@ -78,17 +78,6 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		private string _errorMessage;
-		public string ErrorMessage
-		{
-			get { return _errorMessage; }
-			set
-			{
-				_errorMessage = value;
-				OnPropertyChanged();
-			}
-		}
-
 
 		private void UpdateVisibility()
 		{
@@ -315,7 +304,6 @@ namespace TraxAct.ViewModels
 				if (args.PropertyName == nameof(Subject))
 				{
 					((Command)SaveCommand).ChangeCanExecute();
-					ErrorMessage = string.Empty;
 				}
 			};
 		}

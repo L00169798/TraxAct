@@ -36,21 +36,30 @@ namespace TraxAct.ViewModels
             }
         }
 
-        public EventDetailsViewModel(MyDbContext dbContext, int eventId)
-        {
-            if (dbContext == null)
-            {
-                throw new ArgumentNullException(nameof(dbContext), "Database context cannot be null.");
-            }
+		public EventDetailsViewModel(MyDbContext dbContext, int eventId)
+		{
+			if (dbContext == null)
+			{
+				throw new ArgumentNullException(nameof(dbContext), "Database context cannot be null.");
+			}
 
-            _dbContext = dbContext;
-            Task.Run(async () => await LoadEventDetails(eventId));
-			EditCommand = new Command(() => EditButton_Clicked());
+			_dbContext = dbContext;
 
-			DeleteCommand = new Command(async () => await DeleteButton_Clicked());
+			EditCommand = new Command(EditButton_Clicked);DeleteCommand = new Command(async () => await DeleteButton_Clicked());
+
+			Task.Run(async () =>
+			{
+				try
+				{
+					await LoadEventDetails(eventId);
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine($"Error loading event details: {ex.Message}");
+				}
+			});
 		}
-
-        public async Task<bool> LoadEventDetails(int eventId)
+		public async Task<bool> LoadEventDetails(int eventId)
         {
             Console.WriteLine("LoadEventDetails method called.");
 

@@ -8,6 +8,7 @@ using Microsoft.Maui.Controls;
 using System.Globalization;
 using TraxAct.Views;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TraxAct.ViewModels
 {
@@ -48,9 +49,11 @@ namespace TraxAct.ViewModels
                     UpdateRepsVisibility();
                     UpdateSetsVisibility();
 
-					((Command)SaveCommand).ChangeCanExecute();
-
-                }
+					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					{
+						saveCommand.ChangeCanExecute();
+					}
+				}
             }
         }
 
@@ -69,21 +72,27 @@ namespace TraxAct.ViewModels
             IsSetsVisible = SelectedExerciseType == "Strength";
         }
 
-        private DateTime _startDate;
-        public DateTime StartDate
-        {
-            get { return _startDate; }
-            set
-            {
-                if (_startDate != value)
-                {
-                    _startDate = value;
-                    OnPropertyChanged();
-				}
-            }
-        }
+		private DateTime _startDate;
+		public DateTime StartDate
+		{
+			get { return _startDate; }
+			set
+			{
+				if (_startDate != value)
+				{
+					_startDate = value;
+					OnPropertyChanged();
 
-        private DateTime _endDate;
+					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					{
+						saveCommand.ChangeCanExecute();
+					}
+				}
+			}
+		}
+
+
+		private DateTime _endDate;
         public DateTime EndDate
         {
             get { return _endDate; }
@@ -93,6 +102,11 @@ namespace TraxAct.ViewModels
                 {
                     _endDate = value;
                     OnPropertyChanged();
+
+					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					{
+						saveCommand.ChangeCanExecute();
+					}
 				}
             }
         }
@@ -107,6 +121,11 @@ namespace TraxAct.ViewModels
                 {
                     _startTime = value;
                     OnPropertyChanged();
+
+					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					{
+						saveCommand.ChangeCanExecute();
+					}
 				}
             }
         }
@@ -121,6 +140,11 @@ namespace TraxAct.ViewModels
                 {
                     _endTime = value;
                     OnPropertyChanged();
+
+					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					{
+						saveCommand.ChangeCanExecute();
+					}
 				}
             }
         }
@@ -257,7 +281,7 @@ namespace TraxAct.ViewModels
 		}
 
 
-		public ICommand SaveCommand { get; }
+		public ICommand SaveCommand { get; private set; }
 
         public EventEditViewModel(MyDbContext dbContext, Event selectedEvent)
         {
@@ -272,7 +296,7 @@ namespace TraxAct.ViewModels
             Reps = selectedEvent.Reps;
             Sets = selectedEvent.Sets;
 
-			SaveCommand = new Command(async () => ExecuteSaveCommand(), () => CanExecuteSaveCommand());
+			SaveCommand = new Command(ExecuteSaveCommand, CanExecuteSaveCommand);
 
 			PropertyChanged += (sender, args) =>
 			{
@@ -290,7 +314,7 @@ namespace TraxAct.ViewModels
 
 			bool isValidExerciseType = !string.IsNullOrWhiteSpace(SelectedExerciseType);
 			bool isValidUserUid = !string.IsNullOrWhiteSpace(UserService.Instance.GetCurrentUserUid());
-			bool isEndTimeAfterStartTime = endDateTime >= startDateTime;
+			bool isEndTimeAfterStartTime = endDateTime > startDateTime;
 
 			IsExerciseTypeErrorVisible = !isValidExerciseType;
 			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
@@ -307,33 +331,45 @@ namespace TraxAct.ViewModels
 
 		private async void ExecuteSaveCommand()
 		{
-            try
-            {
-                
-                DateTime startDateTime = StartDate.Date.Add(StartTime);
-                DateTime endDateTime = EndDate.Date.Add(EndTime);
+			try
+			{
+				Debug.WriteLine("Executing SaveCommand...");
 
-                SelectedEvent.Title = Subject;
-                SelectedEvent.ExerciseType = SelectedExerciseType;
-                SelectedEvent.StartTime = startDateTime;
-                SelectedEvent.EndTime = endDateTime;
-                SelectedEvent.Distance = Distance;
-                SelectedEvent.Reps = Reps;
-                SelectedEvent.Sets = Sets;
+				DateTime startDateTime = StartDate.Date.Add(StartTime);
+				DateTime endDateTime = EndDate.Date.Add(EndTime);
 
-                await _dbContext.Update(SelectedEvent);
+				Debug.WriteLine($"Start DateTime: {startDateTime}");
+				Debug.WriteLine($"End DateTime: {endDateTime}");
 
-                await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
+				SelectedEvent.Title = Subject;
+				SelectedEvent.ExerciseType = SelectedExerciseType;
+				SelectedEvent.StartTime = startDateTime;
+				SelectedEvent.EndTime = endDateTime;
+				SelectedEvent.Distance = Distance;
+				SelectedEvent.Reps = Reps;
+				SelectedEvent.Sets = Sets;
 
-                await Application.Current.MainPage.Navigation.PopToRootAsync();
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-            }
-        }
+				Debug.WriteLine("Updating SelectedEvent properties...");
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+				await _dbContext.Update(SelectedEvent);
+
+				Debug.WriteLine("Event updated in the database.");
+
+				await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
+
+				TimetablePage timetablePage = new TimetablePage();
+				await Application.Current.MainPage.Navigation.PushAsync(timetablePage);
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+
+				Debug.WriteLine($"Error occurred during SaveCommand execution: {ex}");
+			}
+		}
+
+
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
