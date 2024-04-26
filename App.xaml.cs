@@ -1,22 +1,29 @@
 ﻿using TraxAct.Services;
-using SQLite;
-using Microsoft.EntityFrameworkCore;
+using TraxAct.Views;
 
 
 namespace TraxAct
 {
-    public partial class App : Application
-    {
-        public App()
-        {
+	public partial class App : Application
+	{
 
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcd3VTQmleVEd1W0s=");
-            InitializeComponent();
+		public App()
+		{
+
+			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcd3VTQmleVEd1W0s=");
+			InitializeComponent();
 
 
 			var dbContext = new MyDbContext();
+			var services = new ServiceCollection();
+			services.AddSingleton<UserService>();
 
-            MainPage = new AppShell();
-        }
-    }
+			var serviceProvider = services.BuildServiceProvider();
+
+			var userService = serviceProvider.GetService<UserService>();
+
+			MainPage = new AppShell(userService);
+			MainPage.Navigation.PushAsync(new SignInPage());
+		}
+	}
 }

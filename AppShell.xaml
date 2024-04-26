@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="TraxAct.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:TraxAct.Views"
-    Shell.FlyoutBehavior="Disabled">
+     x:Class="TraxAct.AppShell"
+  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns:local="clr-namespace:TraxAct.Views"
+  Shell.FlyoutBehavior="Flyout"
+  BackgroundColor="Black">
 
-   
-    <ShellContent
-        Title="Sign In"
-        ContentTemplate="{DataTemplate local:SignInPage}"
-        Route="SignIn" />
+
+    <ShellContent Title="Sign In"
+              ContentTemplate="{DataTemplate local:SignInPage}"
+              Route="SignIn"
+              FlyoutItemIsVisible="false"/>
+
+    <ShellContent Title="Sign Up"
+              ContentTemplate="{DataTemplate local:SignUpPage}"
+              Route="SignUp"
+              FlyoutItemIsVisible="false"/>
+
 
     <ShellContent
-     Title="Sign Up"
-     ContentTemplate="{DataTemplate local:SignUpPage}"
-     Route="SignUp" />
+    Title="Home"
+    ContentTemplate="{DataTemplate local:MainPage}"
+    Route="MainPage">
+    </ShellContent>
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    Title="Timetable"
+    ContentTemplate="{DataTemplate local:TimetablePage}"
+    Route="TimetablePage" />
+
+    <ShellContent
+    Title="Analysis"
+    ContentTemplate="{DataTemplate local:MetricsPage}"
+    Route="MetricsPage" />
+
+    <!--<ShellContent Title="Logout" Route="LogoutCommand" Command="{Binding LogoutCommand}">
+    </ShellContent>-->
+
+    <ShellContent
+    Title="Logout"
+    ContentTemplate="{DataTemplate local:SignInPage}"
+    Route="SignInPage" />
 
 </Shell>

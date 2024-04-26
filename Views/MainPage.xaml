@@ -54,8 +54,6 @@
                             FontAttributes="Bold"
                             Margin="20,0,0,80"
                             HeightRequest="10" />
-
-                     
                 </Grid>
             </Frame>
         </Grid>
