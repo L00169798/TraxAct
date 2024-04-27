@@ -18,7 +18,7 @@ namespace TraxAct.Services
 	{
 		Task<List<Event>> GetEventsByUserId(string userId);
 		Task<List<Event>> GetEventsByTimeAsync(DateTime startTime, DateTime endTime, string userId);
-		Task SaveUserId(string userId);
+		Task SaveUserIdAsync(string userId);
 		Task<Event> GetById(int id);
 		Task<bool> Create(Event newEvent);
 		Task Update(Event updatedEvent);
@@ -190,7 +190,7 @@ namespace TraxAct.Services
             return events.FindAll(e => e.StartTime >= startDate && e.StartTime <= endDate);
         }
 
-		public async Task SaveUserId(string userId)
+		public async Task SaveUserIdAsync(string userId)
 		{
 			try
 			{

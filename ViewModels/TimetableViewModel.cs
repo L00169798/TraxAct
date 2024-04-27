@@ -30,7 +30,7 @@ namespace TraxAct.ViewModels
 				{
 					_selectedDate = value;
 					OnPropertyChanged(nameof(SelectedDate));
-					LoadEventsFromDatabase();
+					_ = LoadEventsFromDatabaseAsync();
 				}
 			}
 		}
@@ -98,7 +98,7 @@ namespace TraxAct.ViewModels
 			return filteredEvents;
 		}
 
-		public async Task LoadEventsFromDatabase()
+		public async Task LoadEventsFromDatabaseAsync()
 		{
 			try
 			{

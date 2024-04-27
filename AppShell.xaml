@@ -29,8 +29,8 @@
 
     <ShellContent
     Title="Home"
-    ContentTemplate="{DataTemplate local:MainPage}"
-    Route="MainPage">
+    ContentTemplate="{DataTemplate local:HomePage}"
+    Route="HomePage">
     </ShellContent>
 
     <ShellContent
@@ -40,8 +40,8 @@
 
     <ShellContent
     Title="Analysis"
-    ContentTemplate="{DataTemplate local:MetricsPage}"
-    Route="MetricsPage" />
+    ContentTemplate="{DataTemplate local:AnalysisPage}"
+    Route="AnalysisPage" />
 
     <ShellContent
     Title="Logout"

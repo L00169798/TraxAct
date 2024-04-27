@@ -80,7 +80,7 @@ namespace TraxAct.ViewModels
 
 					Debug.WriteLine($"Current User ID: {UserService.Instance.GetCurrentUserUid()}");
 
-					await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+					await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
 
 					ClearForm();
 				}

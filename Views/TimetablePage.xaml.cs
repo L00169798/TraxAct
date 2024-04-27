@@ -36,7 +36,7 @@ namespace TraxAct.Views
 					viewModel = new TimetableViewModel(userService);
 					BindingContext = viewModel;
 
-					viewModel.LoadEventsFromDatabase();
+					await viewModel.LoadEventsFromDatabaseAsync();
 
 					Debug.WriteLine($"Events count: {viewModel.Events.Count}");
 					foreach (var evt in viewModel.Events)

@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TraxAct.ViewModels
 {
-	public class MetricsViewModel : INotifyPropertyChanged
+	public class AnalysisViewModel : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -90,7 +90,7 @@ namespace TraxAct.ViewModels
 		public ObservableCollection<KeyValuePair<string, double>> FilteredExerciseHours { get; private set; }
 		public ObservableCollection<ExerciseByDay> TotalExerciseByDay { get; private set; }
 
-		public MetricsViewModel()
+		public AnalysisViewModel()
 		{
 			_dbContext = new MyDbContext();
 			_userService = new UserService();

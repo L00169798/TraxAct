@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
-             x:Class="TraxAct.Views.MetricsPage"
+             x:Class="TraxAct.Views.AnalysisPage"
              xmlns:model="clr-namespace:TraxAct.Models"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             x:DataType="viewModels:MetricsViewModel"
+             x:DataType="viewModels:AnalysisViewModel"
              BackgroundColor="LightGray"
              Title="Analysis">
 

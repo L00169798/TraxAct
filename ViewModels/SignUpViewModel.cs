@@ -15,7 +15,6 @@ namespace TraxAct.ViewModels
 	public class SignUpViewModel : INotifyPropertyChanged
 	{
 		private readonly FirebaseAuthClient _authClient;
-		private readonly UserService _userService;
 
 		public SignUpViewModel()
 		{
@@ -73,7 +72,6 @@ namespace TraxAct.ViewModels
 		{
 			Debug.WriteLine("ExecuteSignUpAsync method started.");
 
-			// Perform password validation
 			if (!IsPasswordValid(Password))
 			{
 				Debug.WriteLine("Password validation failed.");
@@ -94,7 +92,7 @@ namespace TraxAct.ViewModels
 
 				if (userCredential?.User != null && !string.IsNullOrEmpty(userCredential.User.Uid))
 				{
-					SaveUserId(userCredential.User.Uid);
+					await SaveUserIdAsync(userCredential.User.Uid);
 
 					await Application.Current.MainPage.DisplayAlert("Welcome", "Registration Successful!", "OK");
 
@@ -143,12 +141,12 @@ namespace TraxAct.ViewModels
 		}
 
 
-		private void SaveUserId(string firebaseUid)
+		private async Task SaveUserIdAsync(string firebaseUid)
 		{
 			try
 			{
 				var dbContext = new MyDbContext();
-				dbContext.SaveUserId(firebaseUid);
+				await dbContext.SaveUserIdAsync(firebaseUid);
 				Debug.WriteLine("Firebase UID saved to SQLite database successfully.");
 			}
 			catch (Exception ex)
@@ -156,6 +154,7 @@ namespace TraxAct.ViewModels
 				Debug.WriteLine($"Error saving Firebase UID to SQLite database: {ex.Message}");
 			}
 		}
+
 
 		private bool IsPasswordValid(string password)
 		{

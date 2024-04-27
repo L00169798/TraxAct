@@ -12,7 +12,6 @@ namespace TraxAct.Services
 	{
 		private static UserService _instance;
 		private string _currentUserUid;
-		private readonly MyDbContext _dbContext;
 
 		public static UserService Instance => _instance ??= new UserService();
 
