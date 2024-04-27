@@ -8,6 +8,7 @@ using System.Windows.Input;
 using TraxAct.Views;
 using TraxAct.Services;
 using FirebaseAdmin.Auth;
+using System.Text.RegularExpressions;
 
 namespace TraxAct.ViewModels
 {
@@ -71,6 +72,14 @@ namespace TraxAct.ViewModels
 		private async Task ExecuteSignUpAsync()
 		{
 			Debug.WriteLine("ExecuteSignUpAsync method started.");
+
+			// Perform password validation
+			if (!IsPasswordValid(Password))
+			{
+				Debug.WriteLine("Password validation failed.");
+				await Application.Current.MainPage.DisplayAlert("Error", "Password does not meet requirements", "OK");
+				return;
+			}
 
 			try
 			{
@@ -146,6 +155,13 @@ namespace TraxAct.ViewModels
 			{
 				Debug.WriteLine($"Error saving Firebase UID to SQLite database: {ex.Message}");
 			}
+		}
+
+		private bool IsPasswordValid(string password)
+		{
+			const string regexPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$";
+
+			return !string.IsNullOrEmpty(password) && Regex.IsMatch(password, regexPattern);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

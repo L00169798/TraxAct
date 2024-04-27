@@ -39,6 +39,8 @@
             <StackLayout>
                 <Label FontAttributes="Bold" Text="Password" TextColor="Black" />
                 <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding Password}" TextColor="Black" />
+                <Label Text="Passwords should be a minimum of 8 characters long with at least one uppercase letter and one lowercase letter.
+                At least one digit (0-9) should be included." Style="{StaticResource HeadingLabelStyle}" IsVisible="{Binding IsExerciseTypeErrorVisible}" TextColor="Red" FontSize="12" />
             </StackLayout>
 
             <StackLayout>
