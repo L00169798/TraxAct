@@ -8,6 +8,14 @@
   BackgroundColor="Black">
 
 
+    <Shell.FlyoutHeader>
+        <Grid RowDefinitions="Auto">
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="10" Margin="0,10,0,0">
+                <Label Text="TraxAct" FontSize="Large" VerticalOptions="Center" TextColor="DarkOrange" />
+            </StackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
     <ShellContent Title="Sign In"
               ContentTemplate="{DataTemplate local:SignInPage}"
               Route="SignIn"
@@ -34,9 +42,6 @@
     Title="Analysis"
     ContentTemplate="{DataTemplate local:MetricsPage}"
     Route="MetricsPage" />
-
-    <!--<ShellContent Title="Logout" Route="LogoutCommand" Command="{Binding LogoutCommand}">
-    </ShellContent>-->
 
     <ShellContent
     Title="Logout"
