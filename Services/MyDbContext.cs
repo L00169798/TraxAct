@@ -67,7 +67,7 @@ namespace TraxAct.Services
                 Database = new SQLiteAsyncConnection(DatabasePath, Flags);
             }
         }
-        public async Task<List<Event>> GetEventsByUserId(string userId)
+        public virtual async Task<List<Event>> GetEventsByUserId(string userId)
         {
             await Init();
             var events = await Database.Table<Event>()

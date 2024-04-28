@@ -8,7 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TraxAct.Services
 {
-	public class UserService
+	public interface IUserService
+	{
+		string GetCurrentUserUid();
+	}
+
+	public class UserService : IUserService
 	{
 		private static UserService _instance;
 		private string _currentUserUid;

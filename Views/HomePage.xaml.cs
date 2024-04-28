@@ -1,4 +1,5 @@
 ﻿using TraxAct.ViewModels;
+using TraxAct.Services;
 
 namespace TraxAct.Views
 {
@@ -6,6 +7,7 @@ namespace TraxAct.Views
 	public partial class HomePage : ContentPage
 	{
 		private HomeViewModel _viewModel;
+		private readonly IUserService _userService;
 
 		public HomePage()
 		{
@@ -37,7 +39,7 @@ namespace TraxAct.Views
 		{
 			if (Navigation != null)
 			{
-				await Navigation.PushAsync(new AnalysisPage());
+				await Navigation.PushAsync(new AnalysisPage(_userService));
 			}
 			else
 			{

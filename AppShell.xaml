@@ -12,6 +12,7 @@
         <Grid RowDefinitions="Auto">
             <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="10" Margin="0,10,0,0">
                 <Label Text="TraxAct" FontSize="Large" VerticalOptions="Center" TextColor="DarkOrange" />
+                <!--<Image Source="traxactlogo2.png" HeightRequest="200" WidthRequest="200" />-->
             </StackLayout>
         </Grid>
     </Shell.FlyoutHeader>
@@ -30,22 +31,27 @@
     <ShellContent
     Title="Home"
     ContentTemplate="{DataTemplate local:HomePage}"
-    Route="HomePage">
+    Route="HomePage"
+    Icon="homeicon.png"
+    Shell.NavBarIsVisible="False">
     </ShellContent>
 
     <ShellContent
     Title="Timetable"
     ContentTemplate="{DataTemplate local:TimetablePage}"
-    Route="TimetablePage" />
+    Route="TimetablePage" 
+    Icon="timetableicon3.png"/>
 
     <ShellContent
     Title="Analysis"
     ContentTemplate="{DataTemplate local:AnalysisPage}"
-    Route="AnalysisPage" />
+    Route="AnalysisPage" 
+    Icon="graphicon2.png"/>
 
     <ShellContent
     Title="Logout"
     ContentTemplate="{DataTemplate local:SignInPage}"
-    Route="SignInPage" />
+    Route="SignInPage" 
+    Icon="logout.png"/>
 
 </Shell>

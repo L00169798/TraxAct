@@ -13,7 +13,7 @@ namespace TraxAct.ViewModels
 
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
-		private readonly UserService _userService;
+		private readonly IUserService _userService;
 		public string UserId { get; }
 		public DateTime MinimumDateTime { get; set; }
 		public bool ShowNavigationArrows { get; set; }
@@ -64,7 +64,7 @@ namespace TraxAct.ViewModels
 
 		private readonly MyDbContext _dbContext;
 
-		public TimetableViewModel(UserService userService)
+		public TimetableViewModel(IUserService userService)
 		{
 			_userService = userService;
 			_dbContext = new MyDbContext();

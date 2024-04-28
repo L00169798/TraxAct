@@ -15,9 +15,11 @@ namespace TraxAct.ViewModels
 {
 	public class AnalysisViewModel : INotifyPropertyChanged
 	{
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private UserService _userService;
+		private readonly IUserService _userService;
+		private IDbContext _dbContext;
 
 		public string UserId { get; }
 
@@ -32,20 +34,20 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		public UserService UserService
-		{
-			get { return _userService; }
-			set
-			{
-				if (_userService != value)
-				{
-					_userService = value;
-					OnPropertyChanged();
-				}
-			}
-		}
+		//public IUserService _userService
+		//{
+		//	get { return _userService; }
+		//	set
+		//	{
+		//		if (_userService != value)
+		//		{
+		//			_userService = value;
+		//			OnPropertyChanged();
+		//		}
+		//	}
+		//}
 
-		private IDbContext _dbContext;
+		
 		public IDbContext DbContext
 		{
 			get { return _dbContext; }
@@ -90,10 +92,10 @@ namespace TraxAct.ViewModels
 		public ObservableCollection<KeyValuePair<string, double>> FilteredExerciseHours { get; private set; }
 		public ObservableCollection<ExerciseByDay> TotalExerciseByDay { get; private set; }
 
-		public AnalysisViewModel()
+		public AnalysisViewModel(IUserService userService)
 		{
 			_dbContext = new MyDbContext();
-			_userService = new UserService();
+			_userService = userService;
 
 			StartDate = DateTime.Today.AddDays(-7);
 			EndDate = DateTime.Today;
@@ -102,10 +104,10 @@ namespace TraxAct.ViewModels
 
 		public ICommand ApplyCommand { get; private set; }
 
-		private bool CanExecuteApplyCommand(object parameter)
-		{
-			return StartDate <= EndDate;
-		}
+		//private bool CanExecuteApplyCommand(object parameter)
+		//{
+		//	return StartDate <= EndDate;
+		//}
 
 		private async void ExecuteApplyCommand(object parameter)
 		{

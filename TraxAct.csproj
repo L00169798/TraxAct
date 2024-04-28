@@ -50,10 +50,19 @@
 	  <None Remove="Resources\Images\analysis.jpg" />
 	  <None Remove="Resources\Images\create.png" />
 	  <None Remove="Resources\Images\details.png" />
+	  <None Remove="Resources\Images\graphicon.png" />
+	  <None Remove="Resources\Images\graphicon2.png" />
+	  <None Remove="Resources\Images\homeicion3.png" />
+	  <None Remove="Resources\Images\homeicon.png" />
 	  <None Remove="Resources\Images\logout.png" />
 	  <None Remove="Resources\Images\timetable.jpg" />
+	  <None Remove="Resources\Images\timetable2icon.png" />
+	  <None Remove="Resources\Images\timetableicon.png" />
+	  <None Remove="Resources\Images\timetableicon3.png" />
+	  <None Remove="Resources\Images\timtableicon4.png" />
 	  <None Remove="Resources\Images\traxactlogo.png" />
 	  <None Remove="Resources\Images\traxactlogo2.png" />
+	  <None Remove="Resources\Images\traxactlogoblack.png" />
 	</ItemGroup>
 
 	<ItemGroup>

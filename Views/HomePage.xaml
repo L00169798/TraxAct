@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TraxAct.Views.HomePage"
              xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             Title="TraxAct"
+             TitleisVisible="false"
              BackgroundColor="black">
 
     <ScrollView>
@@ -19,7 +19,7 @@
                    Aspect="Fill"
                    VerticalOptions="Fill"
                    HorizontalOptions="Fill"
-                   Margin="0,80,0,0"
+                   Margin="0,0,0,0"
                    Grid.Row="0" />
 
             <Frame Grid.Row="1"
