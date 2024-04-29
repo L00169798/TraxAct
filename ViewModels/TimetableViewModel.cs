@@ -73,30 +73,30 @@ namespace TraxAct.ViewModels
 			MinimumDateTime = new DateTime(2024, 01, 01);
 		}
 
-		public async Task<List<Event>> GetEventsFilteredByDateRange(DateTime startDate, DateTime endDate)
-		{
-			List<Event> filteredEvents = new List<Event>();
+		//public async Task<List<Event>> GetEventsFilteredByDateRange(DateTime startDate, DateTime endDate)
+		//{
+		//	List<Event> filteredEvents = new List<Event>();
 
-			try
-			{
-				var events = await _dbContext.GetEventsByUserId(UserId);
+		//	try
+		//	{
+		//		var events = await _dbContext.GetEventsByUserId(UserId);
 
-				if (events == null || !events.Any())
-				{
-					Console.WriteLine("No events found in the database.");
-					return filteredEvents;
-				}
+		//		if (events == null || !events.Any())
+		//		{
+		//			Console.WriteLine("No events found in the database.");
+		//			return filteredEvents;
+		//		}
 
 
-				Console.WriteLine($"Filtered {filteredEvents.Count} events based on date range.");
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Error filtering events by date range: {ex.Message}");
-			}
+		//		Console.WriteLine($"Filtered {filteredEvents.Count} events based on date range.");
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		Console.WriteLine($"Error filtering events by date range: {ex.Message}");
+		//	}
 
-			return filteredEvents;
-		}
+		//	return filteredEvents;
+		//}
 
 		public async Task LoadEventsFromDatabaseAsync()
 		{

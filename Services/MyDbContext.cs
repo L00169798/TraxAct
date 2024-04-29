@@ -40,10 +40,10 @@ namespace TraxAct.Services
 
 		private readonly UserService _userService;
 
-		public MyDbContext()
-		{
+		//public MyDbContext()
+		//{
 		
-		}
+		//}
 
 		async Task Init()
         {
@@ -66,7 +66,8 @@ namespace TraxAct.Services
                 Debug.WriteLine($"Database file exists at path: {DatabasePath}");
                 Database = new SQLiteAsyncConnection(DatabasePath, Flags);
             }
-        }
+			Debug.WriteLine($"Database location: {Database.DatabasePath}");
+		}
         public virtual async Task<List<Event>> GetEventsByUserId(string userId)
         {
             await Init();
@@ -117,7 +118,7 @@ namespace TraxAct.Services
 			}
 		}
 
-		public async Task<Event> GetById(int id)
+        public async Task<Event> GetById(int id)
         {
             await Init();
             return await Database.Table<Event>().Where(x => x.EventId == id).FirstOrDefaultAsync();

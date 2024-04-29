@@ -52,7 +52,6 @@
 	  <None Remove="Resources\Images\details.png" />
 	  <None Remove="Resources\Images\graphicon.png" />
 	  <None Remove="Resources\Images\graphicon2.png" />
-	  <None Remove="Resources\Images\homeicion3.png" />
 	  <None Remove="Resources\Images\homeicon.png" />
 	  <None Remove="Resources\Images\logout.png" />
 	  <None Remove="Resources\Images\timetable.jpg" />
@@ -76,10 +75,12 @@
 		  <TreatAsUsed>true</TreatAsUsed>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Moq" Version="4.20.70" />
 		<PackageReference Include="SQLite" Version="3.13.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="25.1.39" />
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="25.1.37" />
+		<PackageReference Include="xunit" Version="2.8.0" />
 	</ItemGroup>
 
 	<ItemGroup>
