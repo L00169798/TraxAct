@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
 using TraxAct.Services;
 
 namespace TraxAct.ViewModels

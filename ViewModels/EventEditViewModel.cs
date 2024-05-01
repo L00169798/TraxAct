@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
-using Microsoft.Maui.Controls;
 using System.Globalization;
 using TraxAct.Views;
 using System.Diagnostics;

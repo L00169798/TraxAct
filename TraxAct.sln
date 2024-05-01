@@ -5,6 +5,10 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TraxAct", "TraxAct.csproj", "{6CA4D798-18C5-4F0E-AF35-6285B96F0705}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TraxAct", "TraxAct", "{91B9BC53-0927-48DF-9C35-4B745125575D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraxActUnitTests", "..\TraxActUnitTests\TraxActUnitTests.csproj", "{0A06867F-0AF6-41F9-B1D4-B1D2DACA6157}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,9 +21,17 @@ Global
 		{6CA4D798-18C5-4F0E-AF35-6285B96F0705}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CA4D798-18C5-4F0E-AF35-6285B96F0705}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CA4D798-18C5-4F0E-AF35-6285B96F0705}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0A06867F-0AF6-41F9-B1D4-B1D2DACA6157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A06867F-0AF6-41F9-B1D4-B1D2DACA6157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A06867F-0AF6-41F9-B1D4-B1D2DACA6157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A06867F-0AF6-41F9-B1D4-B1D2DACA6157}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6CA4D798-18C5-4F0E-AF35-6285B96F0705} = {91B9BC53-0927-48DF-9C35-4B745125575D}
+		{0A06867F-0AF6-41F9-B1D4-B1D2DACA6157} = {91B9BC53-0927-48DF-9C35-4B745125575D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B125B72-3A2F-42FA-9502-2487DF30D390}

@@ -1,16 +1,14 @@
-using Microsoft.Maui.Controls;
+using TraxAct.Models;
 using TraxAct.Services;
 using TraxAct.ViewModels;
-using TraxAct.Models;
-using Microsoft.Extensions.Logging;
 
 namespace TraxAct.Views;
 
 public partial class EventDetailsPage : ContentPage
 {
-    MyDbContext dbContext;
-    EventDetailsViewModel viewModel;
-    private Event eventItem;
+	MyDbContext dbContext;
+	EventDetailsViewModel viewModel;
+	private Event eventItem;
 
 	public EventDetailsPage(int eventId)
 	{

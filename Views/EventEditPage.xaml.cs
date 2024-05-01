@@ -1,4 +1,3 @@
-using Microsoft.Maui.Controls;
 using TraxAct.Models;
 using TraxAct.ViewModels;
 using TraxAct.Services;

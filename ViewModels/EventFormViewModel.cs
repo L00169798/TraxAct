@@ -1,19 +1,11 @@
-﻿using System;
+﻿using FirebaseAdmin.Auth;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Firebase.Auth;
-using FirebaseAdmin.Auth;
-using Microsoft.Maui.Controls;
 using TraxAct.Models;
 using TraxAct.Services;
-using Firebase;
-using TraxAct.Views;
-using Firebase.Auth.Providers;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
 
 
 

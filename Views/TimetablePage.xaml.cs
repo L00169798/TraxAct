@@ -1,14 +1,7 @@
-using System;
-using System.Diagnostics;
-using Microsoft.Maui.Controls;
 using Syncfusion.Maui.Scheduler;
-using Syncfusion.Maui.Core;
-using Microsoft.Maui.Controls;
-using TraxAct.Models;
-using TraxAct.ViewModels;
-using Firebase.Auth;
-using FirebaseAdmin.Auth;
+using System.Diagnostics;
 using TraxAct.Services;
+using TraxAct.ViewModels;
 
 namespace TraxAct.Views
 {
@@ -92,17 +85,17 @@ namespace TraxAct.Views
 		{
 			try
 			{
-				
+
 				if (e.Appointments != null && e.Appointments.Any())
 				{
-					
+
 					var selectedAppointment = e.Appointments.First() as SchedulerAppointment;
 
 					if (selectedAppointment != null)
 					{
 						Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
 
-						
+
 						await NavigateToEventDetails((int)selectedAppointment.Id);
 					}
 				}

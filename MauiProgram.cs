@@ -5,6 +5,7 @@ using Firebase.Auth;
 using Firebase.Auth.Providers;
 using TraxAct.ViewModels;
 
+
 namespace TraxAct
 {
     public static class MauiProgram

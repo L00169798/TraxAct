@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
-using System.Windows.Input;
-using Microsoft.EntityFrameworkCore;
 
 namespace TraxAct.ViewModels
 {
@@ -47,7 +42,7 @@ namespace TraxAct.ViewModels
 		//	}
 		//}
 
-		
+
 		public IDbContext DbContext
 		{
 			get { return _dbContext; }

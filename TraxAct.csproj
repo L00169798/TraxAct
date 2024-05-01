@@ -81,6 +81,10 @@
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="25.1.39" />
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="25.1.37" />
 		<PackageReference Include="xunit" Version="2.8.0" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
