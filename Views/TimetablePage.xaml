@@ -35,7 +35,7 @@
             Tapped="OnSchedulerTapped">
 
             <scheduler:SfScheduler.HeaderView>
-                <scheduler:SchedulerHeaderView Background="MediumPurple" Height="60"/>
+                <scheduler:SchedulerHeaderView Background="White" Height="60"/>
             </scheduler:SfScheduler.HeaderView>
             <scheduler:SfScheduler.CellSelectionView>
                 <scheduler:SchedulerCellSelectionView Background="MediumPurple" CornerRadius="2"/>
