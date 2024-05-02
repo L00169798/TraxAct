@@ -1,0 +1,21 @@
+# This yml file does a daily check to ensure that all packages
+# are up to date for .NET 7. This file specifieds versions <8.0.0 to ensure 
+# that no .NET 8 packages are accidentally installed
+
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: "Microsoft.NET.Sdk.Maui"
+        versions: [">=8.0.0-*"]
+      - dependency-name: "*"
+        versions: ["^7.*"]
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    assignees:
+      - "L00169798"
+
