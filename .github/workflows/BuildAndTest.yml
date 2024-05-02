@@ -1,35 +1,51 @@
-name: Build and Test
+# This GitHub Actions workflow builds and tests the TraxAct application
+# It runs on push and pull requests targeting the master branch.
+# The workflow sets up the .NET environment, installs the Java Development Kit (JDK), and builds the project.
 
+name: Build and Test  
+
+# Target pull and push requests to master branch
 on:
   push:
     branches:
       - master
   pull_request:
     branches:
-      - master
+      - master   
 
+# Execute the job on a Windows runner
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-latest  
 
+# Checkout the repository code
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+    - name: Checkout code  
+      uses: actions/checkout@v2  
+      
+    - name: Setup .NET  
+      uses: actions/setup-dotnet@v1  
       with:
-        dotnet-version: '7.0.x'
-    
-    - name: Install JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '11'
+      # .NET version
+        dotnet-version: '7.0.x'  
 
-    - name: Build
+    # Install the JDK
+    - name: Install JDK  
+      uses: actions/setup-java@v2 
+      with:
+      # Specify distribution and version
+        distribution: 'adopt'  
+        java-version: '11'     
+
+    # Build the project
+    - name: Build  
+      run: |  
+        dotnet workload restore  # Restore .NET workloads
+        dotnet restore  # Restore NuGet packages
+        dotnet workload install maui-android maui-windows  # Install .NET MAUI workloads for Android and Windows
+        dotnet build --configuration Debug --no-restore  # Build the project with Debug configuration without restoring packages
+
+    # Run Tests
+    - name: Run Tests
       run: |
-        dotnet workload restore
-        dotnet restore
-        dotnet workload install maui-android maui-windows
-        dotnet build --configuration Debug --no-restore
+        dotnet test --configuration Debug --no-build --verbosity normal
