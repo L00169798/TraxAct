@@ -15,11 +15,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x'
+
       - name: Code linting and tests
         run: |
-        
+          dotnet build
+          dotnet test --no-build --verbosity normal
+
       - name: Code scanning
         run: |
+#add code scanning
 
   build_and_test:
     name: Build and Test
@@ -28,18 +37,32 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x' 
+
       - name: Build artifacts
         run: |
-         
+          dotnet build
 
   deploy_to_dev:
     name: Deploy to Development
     runs-on: ubuntu-latest
     needs: build_and_test
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x' 
+
       - name: Deploy to development environment
         run: |
-        
+          echo "Deploying to development environment..."
 
   deploy_to_staging:
     name: Deploy to Staging
@@ -47,17 +70,41 @@ jobs:
     needs: build_and_test
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x'
+
       - name: Deploy to staging environment
         run: |
-       
+          echo "Deploying to staging environment..."
 
   deploy_to_prod:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    needs: deploy_to_staging
+    needs: [deploy_to_staging, build_and_test, code_review_feedback]
     if: github.event_name == 'push' && github.ref == 'refs/tags/*'
     steps:
+      - name: Check previous job status
+        run: |
+          if [[ ${{ needs.code_review_feedback.result }} == 'success' && ${{ needs.build_and_test.result }} == 'success' ]]; then
+            echo "Previous jobs succeeded. Proceeding with deployment to production."
+          else
+            echo "Previous jobs failed. Deployment to production aborted."
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x' 
+
       - name: Deploy to production environment
         run: |
-       
-
+          echo "Deploying to production environment..."
