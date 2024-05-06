@@ -9,21 +9,21 @@ using Syncfusion.Maui.Core.Carousel;
 namespace TraxAct.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : ContentPage
+    public partial class HomePage : ContentPage
     {
-		private MainPageViewModel _viewModel;
+		private HomePageViewModel _viewModel;
 
-		public MainPage()
+		public HomePage()
 		{
 			InitializeComponent();
-			_viewModel = new MainPageViewModel();
+			_viewModel = new HomePageViewModel();
 			BindingContext = _viewModel;
 		}
 
 		protected override void OnAppearing()
         {
             base.OnAppearing();
-            Console.WriteLine("MainPage is appearing. The button should be interactable.");
+            Console.WriteLine("HomePage is appearing. The button should be interactable.");
         }
 
 
@@ -43,7 +43,7 @@ namespace TraxAct.Views
 		{
 			if (Navigation != null)
 			{
-				await Navigation.PushAsync(new MetricsPage());
+				await Navigation.PushAsync(new AnalysisPage());
 			}
 			else
 			{

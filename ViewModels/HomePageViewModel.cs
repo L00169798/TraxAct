@@ -5,11 +5,11 @@ using TraxAct.Services;
 
 namespace TraxAct.ViewModels
 {
-	public class MainPageViewModel
+	public class HomePageViewModel
 	{
 		private readonly UserService _userService;
 
-		public MainPageViewModel()
+		public HomePageViewModel()
 		{
 			_userService = UserService.Instance;
 		}

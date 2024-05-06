@@ -10,14 +10,14 @@ using Syncfusion.Maui.Core.Carousel;
 
 namespace TraxAct.Views;
 
-public partial class MetricsPage : ContentPage
+public partial class AnalysisPage : ContentPage
 {
-	private MetricsViewModel _viewModel;
+	private AnalysisViewModel _viewModel;
 
-	public MetricsPage()
+	public AnalysisPage()
 	{
 		InitializeComponent();
-		_viewModel = new MetricsViewModel();
+		_viewModel = new AnalysisViewModel();
 		BindingContext = _viewModel;
 	}
 

@@ -1,25 +1,48 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="TraxAct.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:TraxAct.Views"
-    Shell.FlyoutBehavior="Disabled">
+  x:Class="TraxAct.AppShell"
+  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns:local="clr-namespace:TraxAct.Views"
+  Shell.FlyoutBehavior="Flyout"
+  BackgroundColor="Black">
 
-   
-    <ShellContent
-        Title="Sign In"
-        ContentTemplate="{DataTemplate local:SignInPage}"
-        Route="SignIn" />
+    <Shell.FlyoutHeader>
+        <Grid RowDefinitions="Auto">
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="10" Margin="0,10,0,0">
+                <Label Text="TraxAct" FontSize="Large" VerticalOptions="Center" TextColor="DarkOrange" />
+            </StackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
 
-    <ShellContent
-     Title="Sign Up"
-     ContentTemplate="{DataTemplate local:SignUpPage}"
-     Route="SignUp" />
+        <ShellContent Title="Sign In"
+                      Shell.FlyoutBehavior="Disabled"
+                      ContentTemplate="{DataTemplate local:SignInPage}"
+                      Route="SignIn"
+                      FlyoutItemIsVisible="false"  />
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        <ShellContent Title="Sign Up"
+                      Shell.FlyoutBehavior="Disabled"
+                      ContentTemplate="{DataTemplate local:SignUpPage}"
+                      Route="SignUp"
+                      FlyoutItemIsVisible="false"/>
 
+        <ShellContent Title="Home"
+                      ContentTemplate="{DataTemplate local:HomePage}"
+                      Route="HomePage"
+                      Icon="homeicon.png"/>
+
+        <ShellContent Title="Timetable"
+                      ContentTemplate="{DataTemplate local:TimetablePage}"
+                      Route="TimetablePage" 
+                      Icon="timetableicon3.png"/>
+
+        <ShellContent Title="Analysis"
+                      ContentTemplate="{DataTemplate local:AnalysisPage}"
+                      Route="AnalysisPage" 
+                      Icon="graphicon2.png"/>
+
+    <ShellContent Title="Logout"
+                      ContentTemplate="{DataTemplate local:SignInPage}"
+                      Route="SignInPage" 
+                      Icon="logout.png"/>
 </Shell>

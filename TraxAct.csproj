@@ -51,8 +51,14 @@
 	  <None Remove="Resources\Images\analysis.jpg" />
 	  <None Remove="Resources\Images\create.png" />
 	  <None Remove="Resources\Images\details.png" />
+	  <None Remove="Resources\Images\graphicon2.png" />
+	  <None Remove="Resources\Images\homeicion3.png" />
+	  <None Remove="Resources\Images\homeicon.png" />
 	  <None Remove="Resources\Images\logout.png" />
 	  <None Remove="Resources\Images\timetable.jpg" />
+	  <None Remove="Resources\Images\timetable2icon.png" />
+	  <None Remove="Resources\Images\timetableicon.png" />
+	  <None Remove="Resources\Images\timetableicon3.png" />
 	  <None Remove="Resources\Images\traxactlogo.png" />
 	  <None Remove="Resources\Images\traxactlogo2.png" />
 	</ItemGroup>
@@ -75,8 +81,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\MetricsPage.xaml.cs">
-	    <DependentUpon>MetricsPage.xaml</DependentUpon>
+	  <Compile Update="Views\AnalysisPage.xaml.cs">
+	    <DependentUpon>AnalysisPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\HomePage.xaml.cs">
+	    <DependentUpon>HomePage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\SignUpPage.xaml.cs">
 	    <DependentUpon>SignUpPage.xaml</DependentUpon>
@@ -93,13 +102,7 @@
 	  <MauiXaml Update="Views\EventFormPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\EventPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\ExercisePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\MetricsPage.xaml">
+	  <MauiXaml Update="Views\AnalysisPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SignInPage.xaml">
