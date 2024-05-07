@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TraxAct.csproj" />
+    <ProjectReference Include="..\src\TraxAct.csproj" />
   </ItemGroup>
 
 </Project>
