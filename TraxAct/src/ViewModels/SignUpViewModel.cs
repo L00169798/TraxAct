@@ -8,13 +8,13 @@ using System.Windows.Input;
 using TraxAct.Views;
 using TraxAct.Services;
 using FirebaseAdmin.Auth;
+using System.Text.RegularExpressions;
 
 namespace TraxAct.ViewModels
 {
 	public class SignUpViewModel : INotifyPropertyChanged
 	{
 		private readonly FirebaseAuthClient _authClient;
-		private readonly UserService _userService;
 
 		public SignUpViewModel()
 		{
@@ -26,7 +26,7 @@ namespace TraxAct.ViewModels
 			};
 
 			_authClient = new FirebaseAuthClient(authConfig);
-			
+
 
 			SignUpCommand = new Command(async () => await ExecuteSignUpAsync());
 			SignInCommand = new Command(async () => await ExecuteSignInAsync());
@@ -72,6 +72,13 @@ namespace TraxAct.ViewModels
 		{
 			Debug.WriteLine("ExecuteSignUpAsync method started.");
 
+			if (!IsPasswordValid(Password))
+			{
+				Debug.WriteLine("Password validation failed.");
+				await Application.Current.MainPage.DisplayAlert("Error", "Password does not meet requirements", "OK");
+				return;
+			}
+
 			try
 			{
 				if (Password != ConfirmPassword)
@@ -85,7 +92,7 @@ namespace TraxAct.ViewModels
 
 				if (userCredential?.User != null && !string.IsNullOrEmpty(userCredential.User.Uid))
 				{
-					SaveUserId(userCredential.User.Uid);
+					await SaveUserIdAsync(userCredential.User.Uid);
 
 					await Application.Current.MainPage.DisplayAlert("Welcome", "Registration Successful!", "OK");
 
@@ -134,18 +141,26 @@ namespace TraxAct.ViewModels
 		}
 
 
-		private void SaveUserId(string firebaseUid)
+		private async Task SaveUserIdAsync(string firebaseUid)
 		{
 			try
 			{
 				var dbContext = new MyDbContext();
-				dbContext.SaveUserId(firebaseUid);
+				await dbContext.SaveUserId(firebaseUid);
 				Debug.WriteLine("Firebase UID saved to SQLite database successfully.");
 			}
 			catch (Exception ex)
 			{
 				Debug.WriteLine($"Error saving Firebase UID to SQLite database: {ex.Message}");
 			}
+		}
+
+
+		private bool IsPasswordValid(string password)
+		{
+			const string regexPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$";
+
+			return !string.IsNullOrEmpty(password) && Regex.IsMatch(password, regexPattern);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

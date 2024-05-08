@@ -7,6 +7,8 @@
              BackgroundColor="Black"
              Title="Event Form">
 
+
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="PrimaryColor">#FF5722</Color>
@@ -47,6 +49,9 @@
 
     <ScrollView>
         <StackLayout Padding="20">
+
+            <Label Text="{Binding ErrorMessage}" TextColor="Red" Style="{StaticResource HeadingLabelStyle}" />
+
             <Label Text="Name" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Subject}" Style="{StaticResource EntryStyle}"/>
 
@@ -55,7 +60,7 @@
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Walking</x:String>
-                        <x:String>Running</x:String> 
+                        <x:String>Running</x:String>
                         <x:String>Cycling</x:String>
                         <x:String>Swimming</x:String>
                         <x:String>Yoga</x:String>
@@ -67,6 +72,7 @@
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
+            <Label Text="Exercise type is required" Style="{StaticResource HeadingLabelStyle}" IsVisible="{Binding IsExerciseTypeErrorVisible}" TextColor="Red" FontSize="12" />
 
             <Label Text="Start Date" Style="{StaticResource HeadingLabelStyle}"/>
             <DatePicker Date="{Binding StartDate, Mode=TwoWay}" TextColor="White"/>
@@ -77,8 +83,10 @@
             <Label Text="End Date" Style="{StaticResource HeadingLabelStyle}"/>
             <DatePicker Date="{Binding EndDate, Mode=TwoWay}" TextColor="White"/>
 
+
             <Label Text="End Time" Style="{StaticResource HeadingLabelStyle}"/>
             <TimePicker Time="{Binding EndTime, Mode=TwoWay}" TextColor="White"/>
+            <Label Text="End Time must be later than Start Time" Style="{StaticResource HeadingLabelStyle}" IsVisible="{Binding IsEndDateErrorVisible}" TextColor="Red" FontSize="12" />
 
             <Label Text="Distance (km)" IsVisible="{Binding IsDistanceVisible}" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" Placeholder="Enter distance" Style="{StaticResource EntryStyle}" TextColor="White"/>
@@ -90,6 +98,7 @@
             <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" Placeholder="Enter sets" Style="{StaticResource EntryStyle}" TextColor="White"/>
 
             <Button Text="Save" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="DarkOrange" TextColor="White"/>
+
         </StackLayout>
     </ScrollView>
 </ContentPage>

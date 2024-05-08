@@ -26,10 +26,10 @@ namespace TraxAct.Services
 
         private readonly UserService _userService;
 
-        public MyDbContext()
-		{
+  //      public MyDbContext()
+		//{
 		
-		}
+		//}
 
 		async Task Init()
         {

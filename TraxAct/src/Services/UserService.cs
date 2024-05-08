@@ -17,7 +17,7 @@ namespace TraxAct.Services
 		public static UserService Instance => _instance ??= new UserService();
 
 
-		public string GetCurrentUserUid()
+		public virtual string GetCurrentUserUid()
 		{
 			return _currentUserUid;
 		}
