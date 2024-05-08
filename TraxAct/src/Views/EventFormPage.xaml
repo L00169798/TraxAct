@@ -7,8 +7,6 @@
              BackgroundColor="Black"
              Title="Event Form">
 
-    
-
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="PrimaryColor">#FF5722</Color>

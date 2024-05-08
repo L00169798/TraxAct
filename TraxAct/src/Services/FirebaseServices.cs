@@ -37,16 +37,16 @@ public class FirebaseServices
 		}
 	}
 
-	public async Task<UserRecord> GetUserByPhoneNumberAsync(string phoneNumber)
-	{
-		try
-		{
-			return await _firebaseAuth.GetUserByPhoneNumberAsync(phoneNumber);
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Error fetching user by phone number: {ex.Message}");
-			return null;
-		}
-	}
+	//public async Task<UserRecord> GetUserByPhoneNumberAsync(string phoneNumber)
+	//{
+	//	try
+	//	{
+	//		return await _firebaseAuth.GetUserByPhoneNumberAsync(phoneNumber);
+	//	}
+	//	catch (Exception ex)
+	//	{
+	//		Console.WriteLine($"Error fetching user by phone number: {ex.Message}");
+	//		return null;
+	//	}
+	//}
 }

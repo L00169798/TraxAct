@@ -1,81 +1,108 @@
-﻿using Moq;
-using TraxAct;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TraxAct.Models;
-using TraxAct.Services;
+﻿using TraxAct.Models;
 using TraxAct.ViewModels;
-using Xunit;
-using Microsoft.Extensions.DependencyModel;
 
-namespace TraxActUnitTests.Tests
+namespace TraxActUnitTests.UnitTests
 {
-
 	public class AnalysisViewModelTests
 	{
-
-
 		[Fact]
-		public void StartDate_PropertyChanged_Should_Raise_Event()
-		{
-
-			var viewModel = new AnalysisViewModel();
-
-			bool eventRaised = false;
-			viewModel.PropertyChanged += (sender, args) =>
-			{
-				if (args.PropertyName == nameof(AnalysisViewModel.StartDate))
-					eventRaised = true;
-			};
-
-			viewModel.StartDate = DateTime.Now;
-
-			Assert.True(eventRaised);
-		}
-
-		[Fact]
-		public void EndDate_PropertyChanged_Should_Raise_Event()
-		{
-
-
-			var viewModel = new AnalysisViewModel();
-
-			bool eventRaised = false;
-			viewModel.PropertyChanged += (sender, args) =>
-			{
-				if (args.PropertyName == nameof(AnalysisViewModel.EndDate))
-					eventRaised = true;
-			};
-
-			viewModel.EndDate = DateTime.Now;
-
-			Assert.True(eventRaised);
-		}
-
-		[Fact]
-		public void ApplyCommand_Should_Execute_Successfully()
+		public void ConvertToExerciseHours_NullEvents_ReturnsEmptyCollection()
 		{
 			// Arrange
 			var viewModel = new AnalysisViewModel();
+			List<Event> events = null;
 
 			// Act
-			viewModel.ApplyCommand.Execute(null);
+			var result = viewModel.ConvertToExerciseHours(events);
 
 			// Assert
-			Assert.NotNull(viewModel.FilteredExerciseHours);
-			Assert.NotNull(viewModel.TotalExerciseByDay);
+			Assert.Empty(result);
 		}
 
+		[Fact]
+		public void ConvertToExerciseHours_NoEventsInRange_ReturnsEmptyCollection()
+		{
+			// Arrange
+			var viewModel = new AnalysisViewModel();
+			var events = new List<Event>();
+
+			// Act
+			var result = viewModel.ConvertToExerciseHours(events);
+
+			// Assert
+			Assert.Empty(result);
+		}
 
 		[Fact]
-		public void ApplyCommand_Should_Handle_Failure()
+		public void ConvertToExerciseHours_EventsInRange_ReturnsGroupedCollection()
 		{
-
+			// Arrange
 			var viewModel = new AnalysisViewModel();
+			var events = new List<Event>
+			{
+				new Event { ExerciseType = "Running", StartTime = DateTime.Today.AddHours(8), EndTime = DateTime.Today.AddHours(10) },
+				new Event { ExerciseType = "Cycling", StartTime = DateTime.Today.AddHours(10), EndTime = DateTime.Today.AddHours(12) },
+				new Event { ExerciseType = "Running", StartTime = DateTime.Today.AddHours(14), EndTime = DateTime.Today.AddHours(15) }
+			};
 
-			Assert.Null(viewModel.FilteredExerciseHours);
-			Assert.Null(viewModel.TotalExerciseByDay);
+			// Act
+			var result = viewModel.ConvertToExerciseHours(events);
+
+			// Assert
+			Assert.Equal(2, result.Count);
+			Assert.Contains(result, kvp => kvp.Key == "Running" && kvp.Value == 3);
+			Assert.Contains(result, kvp => kvp.Key == "Cycling" && kvp.Value == 2);
+		}
+
+		[Fact]
+		public void CalculateTotalExerciseByDay_NullEvents_ReturnsEmptyCollection()
+		{
+			// Arrange
+			var viewModel = new AnalysisViewModel();
+			List<Event> events = null;
+
+			// Act
+			viewModel.CalculateTotalExerciseByDay(events);
+
+			// Assert
+			Assert.Empty(viewModel.TotalExerciseByDay);
+		}
+
+		[Fact]
+		public void CalculateTotalExerciseByDay_NoEventsInRange_ReturnsEmptyCollection()
+		{
+			// Arrange
+			var viewModel = new AnalysisViewModel();
+			var events = new List<Event>();
+
+			// Act
+			viewModel.CalculateTotalExerciseByDay(events);
+
+			// Assert
+			Assert.Empty(viewModel.TotalExerciseByDay);
+		}
+
+		[Fact]
+		public void CalculateTotalExerciseByDay_EventsInRange_ReturnsGroupedCollection()
+		{
+			// Arrange
+			var viewModel = new AnalysisViewModel();
+			viewModel.StartDate = DateTime.Today;
+			viewModel.EndDate = DateTime.Today.AddDays(1);
+			var events = new List<Event>
+			{
+				new Event { StartTime = DateTime.Today.AddHours(8), EndTime = DateTime.Today.AddHours(10) },
+				new Event { StartTime = DateTime.Today.AddHours(10), EndTime = DateTime.Today.AddHours(12) },
+				new Event { StartTime = DateTime.Today.AddDays(1).AddHours(14), EndTime = DateTime.Today.AddDays(1).AddHours(15) }
+			};
+
+			// Act
+			viewModel.CalculateTotalExerciseByDay(events);
+
+			// Assert
+			Assert.Equal(2, viewModel.TotalExerciseByDay.Count);
+			Assert.Contains(viewModel.TotalExerciseByDay, ed => ed.Date == DateTime.Today && ed.TotalExerciseHours == 4);
+			Assert.Contains(viewModel.TotalExerciseByDay, ed => ed.Date == DateTime.Today.AddDays(1) && ed.TotalExerciseHours == 1);
 		}
 	}
 }
