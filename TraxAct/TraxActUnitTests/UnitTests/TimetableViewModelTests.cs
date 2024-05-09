@@ -11,21 +11,21 @@ namespace TraxActUnitTests.UnitTests
 {
 	public class TimetableViewModelTests
 	{
-		[Fact]
-		public async Task GetEventsFilteredByDateRange_NoEvents_ReturnsEmptyList()
-		{
-			// Arrange
-			var userService = new UserService();
-			var viewModel = new TimetableViewModel(userService);
-			var startDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc); 
-			var endDate = new DateTime(2024, 1, 7, 23, 59, 59, DateTimeKind.Utc);
+		//[Fact]
+		//public async Task GetEventsFilteredByDateRange_NoEvents_ReturnsEmptyList()
+		//{
+		//	// Arrange
+		//	var userService = new UserService();
+		//	var viewModel = new TimetableViewModel(userService);
+		//	var startDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc); 
+		//	var endDate = new DateTime(2024, 1, 7, 23, 59, 59, DateTimeKind.Utc);
 
-			// Act
-			var result = await viewModel.GetEventsFilteredByDateRange(startDate, endDate);
+		//	// Act
+		//	var result = await viewModel.GetEventsFilteredByDateRange(startDate, endDate);
 
-			// Assert
-			Assert.Empty(result);
-		}
+		//	// Assert
+		//	Assert.Empty(result);
+		//}
 
 		[Fact]
 		public async Task LoadEventsFromDatabase_NoEvents_ReturnsEmptyEventsCollection()

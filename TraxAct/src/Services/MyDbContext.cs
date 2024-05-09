@@ -63,7 +63,7 @@ namespace TraxAct.Services
             return events;
         }
 
-		public async Task LoadEventsForCurrentUser()
+		public virtual async Task LoadEventsForCurrentUser()
 		{
 			try
 			{
