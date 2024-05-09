@@ -48,4 +48,4 @@ jobs:
     # Run Tests
     - name: Run Tests
       run: |
-        dotnet test TraxAct/TraxAct.sln --no-restore --verbosity normal
+        dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
