@@ -10,20 +10,22 @@ namespace TraxAct
 		public AppShell()
 		{
 			InitializeComponent();
+			Routing.RegisterRoute("HomePage", typeof(HomePage));
 		}
 
 
-	//private void RegisterRoutes()
-	//	{
-	//		Routing.RegisterRoute(nameof(TimetablePage), typeof(TimetablePage));
-	//		Routing.RegisterRoute(nameof(AnalysisPage), typeof(AnalysisPage));
-	//		Routing.RegisterRoute(nameof(EventDetailsPage), typeof(EventDetailsPage));
-	//		Routing.RegisterRoute(nameof(EventEditPage), typeof(EventEditPage));
-	//		Routing.RegisterRoute(nameof(EventFormPage), typeof(EventFormPage));
-	//		Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
-	//		Routing.RegisterRoute(nameof(SignInPage), typeof(SignInPage));
-	//		Routing.RegisterRoute(nameof(SignUpPage), typeof(SignUpPage));
-	//	}
+		private async void OnNavigating(object sender, ShellNavigatingEventArgs e)
+		{
+			if (e.Source != ShellNavigationSource.ShellItemChanged)
+			{
+				return;
+			}
 
+			if (e.Target.Location.OriginalString == "//HomePage")
+			{
+				await GoToAsync("//HomePage");
+			}
+
+		}
 	}
 }

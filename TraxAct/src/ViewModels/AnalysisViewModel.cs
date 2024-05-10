@@ -144,8 +144,11 @@ namespace TraxAct.ViewModels
 
 			events = events.Where(ev => ev.StartTime.Date >= StartDate.Date && ev.EndTime.Date <= EndDate.Date).ToList();
 
-		
-			var groupedByDate = events.GroupBy(ev => ev.StartTime.Date);
+
+			var groupedByDate = events
+	.Where(ev => ev.EndTime.Date >= StartDate.Date && ev.StartTime.Date <= EndDate.Date) 
+	.GroupBy(ev => ev.StartTime.Date);
+
 
 			foreach (var group in groupedByDate)
 			{

@@ -1,5 +1,10 @@
-﻿using TraxAct.Models;
+﻿using Moq;
+using TraxAct.Models;
 using TraxAct.ViewModels;
+using TraxAct.Services;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace TraxActUnitTests.UnitTests
 {
@@ -83,26 +88,38 @@ namespace TraxActUnitTests.UnitTests
 		}
 
 		[Fact]
-		public void CalculateTotalExerciseByDay_EventsInRange_ReturnsGroupedCollection()
+		public void CalculateTotalExerciseByDay_EventsInRange_ReturnsCorrectExerciseHours()
 		{
 			// Arrange
 			var viewModel = new AnalysisViewModel();
 			viewModel.StartDate = DateTime.Today;
 			viewModel.EndDate = DateTime.Today.AddDays(1);
+
 			var events = new List<Event>
-			{
-				new Event { StartTime = DateTime.Today.AddHours(8), EndTime = DateTime.Today.AddHours(10) },
-				new Event { StartTime = DateTime.Today.AddHours(10), EndTime = DateTime.Today.AddHours(12) },
-				new Event { StartTime = DateTime.Today.AddDays(1).AddHours(14), EndTime = DateTime.Today.AddDays(1).AddHours(15) }
-			};
+	{
+		new Event { ExerciseType = "Swimming", StartTime = DateTime.Today.AddHours(8), EndTime = DateTime.Today.AddHours(10) },
+		new Event { ExerciseType = "Running", StartTime = DateTime.Today.AddHours(12), EndTime = DateTime.Today.AddHours(13) },
+		new Event { ExerciseType = "Walking", StartTime = DateTime.Today.AddDays(1).AddHours(10), EndTime = DateTime.Today.AddDays(1).AddHours(12) }
+	};
 
 			// Act
 			viewModel.CalculateTotalExerciseByDay(events);
 
 			// Assert
 			Assert.Equal(2, viewModel.TotalExerciseByDay.Count);
-			Assert.Contains(viewModel.TotalExerciseByDay, ed => ed.Date == DateTime.Today && ed.TotalExerciseHours == 4);
-			Assert.Contains(viewModel.TotalExerciseByDay, ed => ed.Date == DateTime.Today.AddDays(1) && ed.TotalExerciseHours == 1);
+
+			var expectedHours = new Dictionary<DateTime, double>
+	{
+		{ DateTime.Today, 3 },
+		{ DateTime.Today.AddDays(1), 2 }
+	};
+
+			foreach (var exerciseDay in viewModel.TotalExerciseByDay)
+			{
+				Assert.True(expectedHours.ContainsKey(exerciseDay.Date));
+				Assert.Equal(expectedHours[exerciseDay.Date], exerciseDay.TotalExerciseHours);
+			}
 		}
+
 	}
 }

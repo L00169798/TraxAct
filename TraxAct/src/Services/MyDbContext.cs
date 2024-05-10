@@ -169,7 +169,7 @@ namespace TraxAct.Services
         }
 
 
-        public async Task<List<Event>> GetEventsInRange(DateTime startDate, DateTime endDate)
+        public virtual async Task<List<Event>> GetEventsInRange(DateTime startDate, DateTime endDate)
         {
             await Init();
             var events = await Database.Table<Event>().ToListAsync();
