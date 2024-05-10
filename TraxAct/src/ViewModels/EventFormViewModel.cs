@@ -154,7 +154,7 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		private double _distance;
+		private double _distance = 0;
 		public double Distance
 		{
 			get { return _distance; }

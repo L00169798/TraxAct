@@ -30,7 +30,7 @@
                       ContentTemplate="{DataTemplate local:HomePage}"
                       Route="HomePage"
                       Icon="homeicon.png"/>
-    
+
         <ShellContent Title="Timetable"
                       ContentTemplate="{DataTemplate local:TimetablePage}"
                       Route="TimetablePage" 

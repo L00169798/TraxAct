@@ -132,10 +132,10 @@ namespace TraxAct.ViewModels
 
 					Events.Add(schedulerAppointment);
 
-					Debug.WriteLine($"Event ID: {schedulerAppointment.Id}");
-					Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
-					Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
-					Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");
+					//Debug.WriteLine($"Event ID: {schedulerAppointment.Id}");
+					//Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
+					//Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
+					//Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");
 				}
 
 				Debug.WriteLine($"Loaded {Events.Count} events from the database for user ID: {UserId}");
@@ -159,11 +159,11 @@ namespace TraxAct.ViewModels
 			switch (subject)
 			{
 				case "Walking":
-					return Colors.Green;
+					return Colors.LightCyan;
 				case "Swimming":
 					return Colors.LightCoral;
 				case "Running":
-					return Colors.Azure;
+					return Colors.LightSteelBlue;
 				case "Cycling":
 					return Colors.BurlyWood;
 				case "Yoga":

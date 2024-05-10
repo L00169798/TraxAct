@@ -50,7 +50,7 @@
     <ScrollView>
         <StackLayout Padding="20">
 
-            <Label Text="{Binding ErrorMessage}" TextColor="Red" Style="{StaticResource HeadingLabelStyle}" />
+            <!--<Label Text="{Binding ErrorMessage}" TextColor="Red" Style="{StaticResource HeadingLabelStyle}" />-->
 
             <Label Text="Name" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Subject}" Style="{StaticResource EntryStyle}"/>
