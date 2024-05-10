@@ -113,6 +113,11 @@ namespace TraxAct.ViewModels
 					Debug.WriteLine("Account already exists");
 					await Application.Current.MainPage.DisplayAlert("Error", "Account already exists, return to sign in page", "OK");
 				}
+				else if (ex.Message.Contains("MissingPassword"))
+				{
+					Debug.WriteLine("MissingPassword");
+					await Application.Current.MainPage.DisplayAlert("Error", "Please enter password", "OK");
+				}
 				else
 				{
 					await Application.Current.MainPage.DisplayAlert("Error", "Failed to sign up. Please try again later", "OK");

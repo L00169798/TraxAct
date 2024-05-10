@@ -93,6 +93,11 @@ namespace TraxAct.ViewModels
 				{
 					await Application.Current.MainPage.DisplayAlert("Error", "Invalid credentials. Please check your credentials or sign up.", "OK");
 				}
+				else if (ex.Message.Contains("MissingPassword"))
+				{
+					Debug.WriteLine("MissingPassword");
+					await Application.Current.MainPage.DisplayAlert("Error", "Please enter password", "OK");
+				}
 				else
 				{
 					await Application.Current.MainPage.DisplayAlert("Error", "Failed to sign in. Please try again later.", "OK");

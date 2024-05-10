@@ -283,13 +283,26 @@ namespace TraxAct.ViewModels
 			"Pilates", "Strength", "HIIT", "Circuit", "Other"
 		};
 
-		public ICommand SaveCommand { get; }
+		private ICommand _saveCommand;
+		public ICommand SaveCommand
+		{
+			get
+			{
+				if (_saveCommand == null)
+				{
+					_saveCommand = new Command(
+						execute: async () => await ExecuteSaveCommand(),
+						canExecute: () => CanExecuteSaveCommand());
+				}
+				return _saveCommand;
+			}
+		}
 
 		public EventFormViewModel()
 		{
 			_dbContext = new MyDbContext();
 
-			SaveCommand = new Command(async () => await ExecuteSaveCommand(), () => CanExecuteSaveCommand());
+			//SaveCommand = new Command(async () => await ExecuteSaveCommand(), () => CanExecuteSaveCommand());
 
 			PropertyChanged += (sender, args) =>
 			{
@@ -300,6 +313,14 @@ namespace TraxAct.ViewModels
 			};
 		}
 
+		private void UpdateSaveCommandCanExecute()
+		{
+			if (SaveCommand is Command command)
+			{
+				command.ChangeCanExecute();
+			}
+		}
+
 		private bool CanExecuteSaveCommand()
 		{
 			DateTime startDateTime = StartDate.Date.Add(StartTime);
@@ -307,13 +328,13 @@ namespace TraxAct.ViewModels
 
 			bool isValidExerciseType = !string.IsNullOrWhiteSpace(SelectedExerciseType);
 			bool isValidUserUid = !string.IsNullOrWhiteSpace(UserService.Instance.GetCurrentUserUid());
-			bool isEndTimeAfterStartTime = endDateTime >= startDateTime;
+			bool isEndTimeAfterStartTime = endDateTime > startDateTime;
 
 			IsExerciseTypeErrorVisible = !isValidExerciseType;
 			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
 
 			bool canExecute = isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
-
+			
 			Debug.WriteLine($"User UID is valid: {isValidUserUid}");
 			Debug.WriteLine($"Start DateTime: {startDateTime}");
 			Debug.WriteLine($"End DateTime: {endDateTime}");
