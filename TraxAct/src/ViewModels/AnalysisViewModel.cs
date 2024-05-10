@@ -109,7 +109,7 @@ namespace TraxAct.ViewModels
 		}
 
 
-		private ObservableCollection<KeyValuePair<string, double>> ConvertToExerciseHours(List<Event> events)
+		public ObservableCollection<KeyValuePair<string, double>> ConvertToExerciseHours(List<Event> events)
 		{
 			var exerciseHours = new ObservableCollection<KeyValuePair<string, double>>();
 
@@ -131,7 +131,7 @@ namespace TraxAct.ViewModels
 			return exerciseHours;
 		}
 
-		private void CalculateTotalExerciseByDay(List<Event> events)
+		public void CalculateTotalExerciseByDay(List<Event> events)
 		{
 			TotalExerciseByDay = new ObservableCollection<ExerciseByDay>();
 

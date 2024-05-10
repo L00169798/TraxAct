@@ -6,6 +6,7 @@
              BackgroundColor="White"
              Title="TraxAct">
 
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Button" x:Key="OrangeButtonStyle">
@@ -26,33 +27,35 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-  
     <ContentPage.Content>
-        <StackLayout Spacing="10" Padding="20">
-            <Label Text="Sign Up" Style="{StaticResource HeadingLabelStyle}" HorizontalOptions="Start" Margin="10,20,40,20"/>
-            <StackLayout>
-                <Label FontAttributes="Bold" Text="Email" TextColor="Black" Margin="0,30,0,0"/>
-                <Entry Margin="0,2,0,0" Text="{Binding Email}" TextColor="Black" />
-            </StackLayout>
+        <ScrollView>
+            <StackLayout Spacing="10" Padding="20">
+                <Label Text="Sign Up" Style="{StaticResource HeadingLabelStyle}" HorizontalOptions="Start" Margin="10,20,40,20"/>
+                <StackLayout>
+                    <Label FontAttributes="Bold" Text="Email" TextColor="Black" Margin="0,30,0,0"/>
+                    <Entry Margin="0,2,0,0" Text="{Binding Email}" TextColor="Black" />
+                </StackLayout>
 
-          
-            <StackLayout>
-                <Label FontAttributes="Bold" Text="Password" TextColor="Black" />
-                <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding Password}" TextColor="Black" />
-            </StackLayout>
 
-            <StackLayout>
-                <Label FontAttributes="Bold" Text="Confirm Password" TextColor="Black" />
-                <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding ConfirmPassword}" TextColor="Black" />
-            </StackLayout>
+                <StackLayout>
+                    <Label FontAttributes="Bold" Text="Password" TextColor="Black" />
+                    <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding Password}" TextColor="Black" />
+                    <Label Text="Passwords should be a minimum of 8 characters long with at least one uppercase letter and one lowercase letter. At least one digit (0-9) should be included." Style="{StaticResource HeadingLabelStyle}" IsVisible="{Binding IsExerciseTypeErrorVisible}" TextColor="Red" FontSize="12" />
+                </StackLayout>
 
-            <Button Text="Sign Up" Command="{Binding SignUpCommand}"
+                <StackLayout>
+                    <Label FontAttributes="Bold" Text="Confirm Password" TextColor="Black" />
+                    <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding ConfirmPassword}" TextColor="Black" />
+                </StackLayout>
+
+                <Button Text="Sign Up" Command="{Binding SignUpCommand}"
                     Style="{StaticResource OrangeButtonStyle}" 
                     Margin="20,20,20,20"/>
 
-            <Button Text="Back to Sign In" Command="{Binding SignInCommand}"
+                <Button Text="Back to Sign In" Command="{Binding SignInCommand}"
                     Style="{StaticResource OrangeButtonStyle}"
                     Margin="20,0,20,20"/>
-        </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

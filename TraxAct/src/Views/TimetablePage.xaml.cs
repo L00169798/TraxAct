@@ -25,7 +25,7 @@ namespace TraxAct.Views
 			this.Appearing += OnPageAppearing;
 		}
 
-		private async void OnPageAppearing(object sender, EventArgs e)
+		private void OnPageAppearing(object sender, EventArgs e)
 		{
 			try
 			{

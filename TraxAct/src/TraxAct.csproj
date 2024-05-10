@@ -1,0 +1,126 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0;net7.0-android;net7.0-windows10.0.19041</TargetFrameworks>
+		<EnableWindowsTargeting>true</EnableWindowsTargeting>
+		<OutputType Condition="'$(TargetFramework)' != 'net7.0'">Exe</OutputType>
+		<RootNamespace>TraxAct</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<!-- Display name -->
+		<ApplicationTitle>TraxAct</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.traxact</ApplicationId>
+		<ApplicationIdGuid>3a003566-6e7e-4bd4-bac7-51a8b9009baf</ApplicationIdGuid>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Resources\Images\Activity.jpg" />
+		<None Remove="Resources\Images\addexercise.jpg" />
+		<None Remove="Resources\Images\analysis.jpg" />
+		<None Remove="Resources\Images\create.png" />
+		<None Remove="Resources\Images\details.png" />
+		<None Remove="Resources\Images\graphicon.png" />
+		<None Remove="Resources\Images\graphicon2.png" />
+		<None Remove="Resources\Images\homeicon.png" />
+		<None Remove="Resources\Images\logout.png" />
+		<None Remove="Resources\Images\timetable.jpg" />
+		<None Remove="Resources\Images\timetable2icon.png" />
+		<None Remove="Resources\Images\timetableicon.png" />
+		<None Remove="Resources\Images\timetableicon3.png" />
+		<None Remove="Resources\Images\timtableicon4.png" />
+		<None Remove="Resources\Images\traxactlogo.png" />
+		<None Remove="Resources\Images\traxactlogo2.png" />
+		<None Remove="Resources\Images\traxactlogoblack.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FirebaseAdmin" Version="2.4.1" />
+		<PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.17">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="7.0.17">
+			<TreatAsUsed>true</TreatAsUsed>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Moq" Version="4.20.70" />
+		<PackageReference Include="SQLite" Version="3.13.0" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="25.1.39" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="25.1.37" />
+		<PackageReference Include="xunit" Version="2.8.0" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Views\HomePage.xaml.cs">
+			<DependentUpon>HomePage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\AnalysisPage.xaml.cs">
+			<DependentUpon>AnalysisPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\SignUpPage.xaml.cs">
+			<DependentUpon>SignUpPage.xaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiXaml Update="Views\EventDetailsPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\EventEditPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\EventFormPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\AnalysisPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\SignInPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\SignUpPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\TimetablePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+	</ItemGroup>
+
+</Project>

@@ -1,19 +1,11 @@
-﻿using System;
+﻿using FirebaseAdmin.Auth;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Firebase.Auth;
-using FirebaseAdmin.Auth;
-using Microsoft.Maui.Controls;
 using TraxAct.Models;
 using TraxAct.Services;
-using Firebase;
-using TraxAct.Views;
-using Firebase.Auth.Providers;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
 
 
 
@@ -58,6 +50,7 @@ namespace TraxAct.ViewModels
 				{
 					_subject = value;
 					OnPropertyChanged();
+					((Command)SaveCommand).ChangeCanExecute();
 				}
 			}
 		}
@@ -76,6 +69,7 @@ namespace TraxAct.ViewModels
 				}
 			}
 		}
+
 
 		private void UpdateVisibility()
 		{
@@ -110,6 +104,7 @@ namespace TraxAct.ViewModels
 				{
 					_startDate = value;
 					OnPropertyChanged();
+					((Command)SaveCommand).ChangeCanExecute();
 				}
 			}
 		}
@@ -124,6 +119,7 @@ namespace TraxAct.ViewModels
 				{
 					_endDate = value;
 					OnPropertyChanged();
+					((Command)SaveCommand).ChangeCanExecute();
 				}
 			}
 		}
@@ -138,6 +134,7 @@ namespace TraxAct.ViewModels
 				{
 					_startTime = value;
 					OnPropertyChanged();
+					((Command)SaveCommand).ChangeCanExecute();
 				}
 			}
 		}
@@ -152,6 +149,7 @@ namespace TraxAct.ViewModels
 				{
 					_endTime = value;
 					OnPropertyChanged();
+					((Command)SaveCommand).ChangeCanExecute();
 				}
 			}
 		}
@@ -240,6 +238,34 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		private bool _isExerciseTypeErrorVisible;
+		public bool IsExerciseTypeErrorVisible
+		{
+			get { return _isExerciseTypeErrorVisible; }
+			set
+			{
+				if (_isExerciseTypeErrorVisible != value)
+				{
+					_isExerciseTypeErrorVisible = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+		private bool _isEndDateErrorVisible;
+		public bool IsEndDateErrorVisible
+		{
+			get { return _isEndDateErrorVisible; }
+			set
+			{
+				if (_isEndDateErrorVisible != value)
+				{
+					_isEndDateErrorVisible = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
 		private ObservableCollection<Event> _eventList = new ObservableCollection<Event>();
 		public ObservableCollection<Event> EventList
 		{
@@ -276,7 +302,24 @@ namespace TraxAct.ViewModels
 
 		private bool CanExecuteSaveCommand()
 		{
-			return !string.IsNullOrWhiteSpace(Subject) && !string.IsNullOrWhiteSpace(UserService.Instance.GetCurrentUserUid());
+			DateTime startDateTime = StartDate.Date.Add(StartTime);
+			DateTime endDateTime = EndDate.Date.Add(EndTime);
+
+			bool isValidExerciseType = !string.IsNullOrWhiteSpace(SelectedExerciseType);
+			bool isValidUserUid = !string.IsNullOrWhiteSpace(UserService.Instance.GetCurrentUserUid());
+			bool isEndTimeAfterStartTime = endDateTime >= startDateTime;
+
+			IsExerciseTypeErrorVisible = !isValidExerciseType;
+			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
+
+			bool canExecute = isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
+
+			Debug.WriteLine($"User UID is valid: {isValidUserUid}");
+			Debug.WriteLine($"Start DateTime: {startDateTime}");
+			Debug.WriteLine($"End DateTime: {endDateTime}");
+			Debug.WriteLine($"End DateTime is after Start DateTime: {isEndTimeAfterStartTime}");
+
+			return isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
 		}
 
 		private async Task ExecuteSaveCommand()
@@ -285,16 +328,12 @@ namespace TraxAct.ViewModels
 			{
 				Debug.WriteLine("Executing Save Command...");
 
-				if (string.IsNullOrWhiteSpace(Subject))
-				{
-					Debug.WriteLine("Validation failed. Please check your inputs.");
-					return;
-				}
-
 				string currentUserUid = UserService.Instance.GetCurrentUserUid();
 
 				DateTime startDateTime = StartDate.Date.Add(StartTime);
 				DateTime endDateTime = EndDate.Date.Add(EndTime);
+				Debug.WriteLine($"Start DateTime (before saving to database): {startDateTime}");
+				Debug.WriteLine($"End DateTime (before saving to database): {endDateTime}");
 
 				Event newEvent = new Event
 				{

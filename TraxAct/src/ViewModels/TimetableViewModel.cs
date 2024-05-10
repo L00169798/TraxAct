@@ -154,7 +154,7 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		private Color GetCategoryColor(string subject)
+		public Color GetCategoryColor(string subject)
 		{
 			switch (subject)
 			{
