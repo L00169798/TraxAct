@@ -39,7 +39,7 @@ jobs:
         dotnet workload restore  --project TraxAct/src/TraxAct.csproj # Restore .NET workloads
         dotnet restore  # Restore NuGet packages
         dotnet workload install maui-android maui-windows  # Install .NET MAUI workloads for Android and Windows
-        dotnet build TraxAct/TraxAct/TraxAct.csproj --configuration Debug  # Build the solution with Debug configuration without restoring packages
+        dotnet build TraxAct/src/TraxAct.csproj --configuration Debug  # Build the solution with Debug configuration without restoring packages
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
