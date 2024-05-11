@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
   push:
@@ -10,8 +10,7 @@ on:
 
 jobs:
   analyze:
-
-    name: analyze
+    name: Analyze Code
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,26 +19,26 @@ jobs:
         language: ['csharp']
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
 
-    - run: git checkout HEAD^2
-      if: ${{ github.event_name == 'pull_request' }}
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
+      - name: Restore .NET workloads and NuGet packages
+        run: |
+          dotnet workload restore TraxAct/src/TraxAct.csproj
+          dotnet restore TraxAct/src/TraxAct.csproj
 
-  # Build the project
-    - name: Build  
-      run: |  
-        dotnet workload restore  --project TraxAct/src/TraxAct.csproj # Restore .NET workloads
-        dotnet restore  # Restore NuGet packages
-        dotnet workload install maui-android maui-windows  # Install .NET MAUI workloads for Android and Windows
-        dotnet build TraxAct/src/TraxAct.csproj --configuration Debug  # Build the solution with Debug configuration without restoring packages
+      - name: Install .NET MAUI workloads for Android and Windows
+        run: dotnet workload install maui-android maui-windows
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      - name: Build the project
+        run: dotnet build TraxAct/src/TraxAct.csproj --configuration Debug
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
