@@ -12,8 +12,8 @@
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            
-            
+
+
 
             <Image Source="traxactlogo2.png"
                    Aspect="Fill"
@@ -38,22 +38,22 @@
                             FontSize="16"
                             BackgroundColor="MediumPurple"
                             TextColor="Black"
-                            CornerRadius="20"
+                            CornerRadius="10"
                             Clicked="OnTimetableTapped"
                             FontAttributes="Bold"
-                            Margin="10,0,0,80"
-                            HeightRequest="10"  />
+                            Margin="10,80,10,10" 
+                            Padding="15,10,15,10"/>
 
                     <Button Grid.Column="1"
                             Text="Analysis"
                             FontSize="16"
                             BackgroundColor="DarkOrange"
                             TextColor="Black"
-                            CornerRadius="20"
+                            CornerRadius="10"
                             Clicked="OnAnalysisTapped"
                             FontAttributes="Bold"
-                            Margin="20,0,0,80"
-                            HeightRequest="10" />
+                            Margin="10,80,10,10" 
+                            Padding="15,10,15,10"/>
 
                      
                 </Grid>

@@ -19,6 +19,7 @@ namespace TraxAct.ViewModels
 		{
 			var authConfig = new FirebaseAuthConfig
 			{
+
 				ApiKey = "AIzaSyBCmctzgS7IOUNUKnorKAEpezbSaWrRL_Y",
 				AuthDomain = "localhost",
 				Providers = new FirebaseAuthProvider[] { new EmailProvider() }

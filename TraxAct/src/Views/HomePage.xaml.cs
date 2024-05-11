@@ -31,8 +31,8 @@ namespace TraxAct.Views
         {
             if (Navigation != null)
             {
-                await Navigation.PushAsync(new TimetablePage());
-            }
+				await Shell.Current.GoToAsync($"///{nameof(TimetablePage)}");
+			}
             else
             {
                 await DisplayAlert("Error", "Navigation is not available.", "OK");
@@ -43,7 +43,7 @@ namespace TraxAct.Views
 		{
 			if (Navigation != null)
 			{
-				await Navigation.PushAsync(new AnalysisPage());
+				await Shell.Current.GoToAsync($"///{nameof(AnalysisPage)}");
 			}
 			else
 			{
@@ -51,17 +51,17 @@ namespace TraxAct.Views
 			}
 		}
 
-		private async void OnLogoutButtonClicked(object sender, EventArgs e)
-		{
-			if (_viewModel != null)
-			{
-				await _viewModel.OnLogoutButtonClickedAsync();
-			}
-			else
-			{
-				Console.WriteLine("_viewModel is null");
-			}
-		}
+		//private async void OnLogoutButtonClicked(object sender, EventArgs e)
+		//{
+		//	if (_viewModel != null)
+		//	{
+		//		await _viewModel.OnLogoutButtonClickedAsync();
+		//	}
+		//	else
+		//	{
+		//		Console.WriteLine("_viewModel is null");
+		//	}
+		//}
 
 
 	}

@@ -71,7 +71,7 @@ namespace TraxActUnitTests.UnitTests
 			var result = viewModel.GetCategoryColor(knownSubject);
 
 			// Assert
-			Assert.Equal(Colors.Green, result);
+			Assert.Equal(Colors.LightCyan, result);
 		}
 	}
 }
