@@ -10,8 +10,8 @@ namespace TraxAct.Views
     public partial class EventEditPage : ContentPage
     {
         MyDbContext dbContext;
-        EventEditViewModel viewModel;
-        private Event eventItem;
+        //EventEditViewModel viewModel;
+        //private Event eventItem;
         public EventEditPage(EventEditViewModel viewModel)
         {
             InitializeComponent();

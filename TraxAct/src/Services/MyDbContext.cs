@@ -24,14 +24,9 @@ namespace TraxAct.Services
 
         SQLiteAsyncConnection Database;
 
-        private readonly UserService _userService;
+		private readonly UserService _userService = new UserService();
 
-        //public MyDbContext()
-        //{
-
-        //}
-
-        async Task Init()
+		async Task Init()
         {
             if (Database != null)
             {

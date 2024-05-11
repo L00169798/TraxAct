@@ -48,7 +48,7 @@ namespace TraxAct.ViewModels
 					UpdateRepsVisibility();
 					UpdateSetsVisibility();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
@@ -82,7 +82,7 @@ namespace TraxAct.ViewModels
 					_startDate = value;
 					OnPropertyChanged();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
@@ -102,7 +102,7 @@ namespace TraxAct.ViewModels
 					_endDate = value;
 					OnPropertyChanged();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
@@ -121,7 +121,7 @@ namespace TraxAct.ViewModels
 					_startTime = value;
 					OnPropertyChanged();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
@@ -140,7 +140,7 @@ namespace TraxAct.ViewModels
 					_endTime = value;
 					OnPropertyChanged();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
@@ -154,7 +154,9 @@ namespace TraxAct.ViewModels
 			get { return _distance; }
 			set
 			{
-				if (_distance != value)
+				double tolerance = 0.0001;
+
+				if (Math.Abs(_distance - value) > tolerance)
 				{
 					_distance = value;
 					OnPropertyChanged();
@@ -317,8 +319,6 @@ namespace TraxAct.ViewModels
 
 			IsExerciseTypeErrorVisible = !isValidExerciseType;
 			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
-
-			bool canExecute = isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
 
 			Debug.WriteLine($"User UID is valid: {isValidUserUid}");
 			Debug.WriteLine($"Start DateTime: {startDateTime}");

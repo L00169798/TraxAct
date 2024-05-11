@@ -96,7 +96,7 @@ namespace TraxAct.Views
 				if (e.Appointments != null && e.Appointments.Any())
 				{
 					
-					var selectedAppointment = e.Appointments.First() as SchedulerAppointment;
+					var selectedAppointment = e.Appointments[0] as SchedulerAppointment;
 
 					if (selectedAppointment != null)
 					{

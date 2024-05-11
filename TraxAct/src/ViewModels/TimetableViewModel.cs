@@ -35,7 +35,7 @@ namespace TraxAct.ViewModels
 				{
 					_selectedDate = value;
 					OnPropertyChanged(nameof(SelectedDate));
-					LoadEventsFromDatabase();
+					_ = LoadEventsFromDatabase();
 				}
 			}
 		}
@@ -75,7 +75,7 @@ namespace TraxAct.ViewModels
 			_dbContext = new MyDbContext();
 			Events = new ObservableCollection<SchedulerAppointment>();
 			UserId = _userService.GetCurrentUserUid();
-			MinimumDateTime = new DateTime(2024, 01, 01);
+			MinimumDateTime = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc);
 		}
 
 		public async Task<List<Event>> GetEventsFilteredByDateRange(DateTime startDate, DateTime endDate)
@@ -103,7 +103,7 @@ namespace TraxAct.ViewModels
 			return filteredEvents;
 		}
 
-		public async void LoadEventsFromDatabase()
+		public async Task LoadEventsFromDatabase()
 		{
 			try
 			{

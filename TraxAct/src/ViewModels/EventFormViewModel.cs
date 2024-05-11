@@ -13,8 +13,8 @@ namespace TraxAct.ViewModels
 {
 	public class EventFormViewModel : INotifyPropertyChanged
 	{
-		private readonly FirebaseAuth _auth = FirebaseAuth.DefaultInstance;
-		private MyDbContext _dbContext;
+		//private readonly FirebaseAuth _auth = FirebaseAuth.DefaultInstance;
+		private readonly MyDbContext _dbContext;
 
 		private Firebase.Auth.User _currentUser;
 		public Firebase.Auth.User CurrentUser
@@ -160,7 +160,10 @@ namespace TraxAct.ViewModels
 			get { return _distance; }
 			set
 			{
-				if (_distance != value)
+				double tolerance = 0.0001;
+
+
+				if (Math.Abs(_distance - value) > tolerance)
 				{
 					_distance = value;
 					OnPropertyChanged();
@@ -313,13 +316,13 @@ namespace TraxAct.ViewModels
 			};
 		}
 
-		private void UpdateSaveCommandCanExecute()
-		{
-			if (SaveCommand is Command command)
-			{
-				command.ChangeCanExecute();
-			}
-		}
+		//private void UpdateSaveCommandCanExecute()
+		//{
+		//	if (SaveCommand is Command command)
+		//	{
+		//		command.ChangeCanExecute();
+		//	}
+		//}
 
 		private bool CanExecuteSaveCommand()
 		{
@@ -333,7 +336,7 @@ namespace TraxAct.ViewModels
 			IsExerciseTypeErrorVisible = !isValidExerciseType;
 			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
 
-			bool canExecute = isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
+			//bool canExecute = isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
 			
 			Debug.WriteLine($"User UID is valid: {isValidUserUid}");
 			Debug.WriteLine($"Start DateTime: {startDateTime}");

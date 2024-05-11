@@ -15,7 +15,7 @@ namespace TraxActUnitTests.UnitTests
 		{
 			// Arrange
 			var viewModel = new AnalysisViewModel();
-			List<Event> events = null;
+			List<Event>? events = null;
 
 			// Act
 			var result = viewModel.ConvertToExerciseHours(events);
@@ -55,8 +55,8 @@ namespace TraxActUnitTests.UnitTests
 
 			// Assert
 			Assert.Equal(2, result.Count);
-			Assert.Contains(result, kvp => kvp.Key == "Running" && kvp.Value == 3);
-			Assert.Contains(result, kvp => kvp.Key == "Cycling" && kvp.Value == 2);
+			Assert.Contains(result, kvp => kvp.Key == "Running" && Math.Abs(kvp.Value - 3) < 0.0001);
+			Assert.Contains(result, kvp => kvp.Key == "Cycling" && Math.Abs(kvp.Value - 2) < 0.0001);
 		}
 
 		[Fact]
@@ -64,7 +64,7 @@ namespace TraxActUnitTests.UnitTests
 		{
 			// Arrange
 			var viewModel = new AnalysisViewModel();
-			List<Event> events = null;
+			List<Event>? events = null;
 
 			// Act
 			viewModel.CalculateTotalExerciseByDay(events);
