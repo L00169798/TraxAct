@@ -24,34 +24,32 @@ namespace TraxActUnitTests.UnitTests
 			Assert.Empty(viewModel.Events);
 		}
 
-		[Fact]
-		public void GetCategoryColor_UnknownSubject_ReturnsDefaultColor()
-		{
-			// Arrange
-			var userService = new UserService();
-			var viewModel = new TimetableViewModel(userService);
-			var unknownSubject = "Unknown";
+			[Fact]
+			public void GetCategoryColor_UnknownSubject_ReturnsDefaultColor()
+			{
+				// Arrange
+				var unknownSubject = "Unknown";
 
-			// Act
-			var result = viewModel.GetCategoryColor(unknownSubject);
+				// Act
+				var result = TimetableViewModel.GetCategoryColor(unknownSubject);
 
-			// Assert
-			Assert.Equal(Colors.MistyRose, result);
+				// Assert
+				Assert.Equal(Colors.MistyRose, result);
+			}
+
+			[Fact]
+			public void GetCategoryColor_KnownSubject_ReturnsCorrectColor()
+			{
+				// Arrange
+				var knownSubject = "Walking";
+
+				// Act
+				var result = TimetableViewModel.GetCategoryColor(knownSubject);
+
+				// Assert
+				Assert.Equal(Colors.LightCyan, result);
+			}
 		}
 
-		[Fact]
-		public void GetCategoryColor_KnownSubject_ReturnsCorrectColor()
-		{
-			// Arrange
-			var userService = new UserService();
-			var viewModel = new TimetableViewModel(userService);
-			var knownSubject = "Walking";
-
-			// Act
-			var result = viewModel.GetCategoryColor(knownSubject);
-
-			// Assert
-			Assert.Equal(Colors.LightCyan, result);
-		}
 	}
-}
+

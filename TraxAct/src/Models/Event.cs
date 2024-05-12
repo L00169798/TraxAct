@@ -2,7 +2,9 @@
 using SQLite;
 
 namespace TraxAct.Models
-{
+{/// <summary>
+/// Event class properties
+/// </summary>
 	[Table("event")]
 	public class Event
 	{

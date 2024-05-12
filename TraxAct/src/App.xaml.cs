@@ -13,10 +13,9 @@ namespace TraxAct
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcd3VTQmleVEd1W0s=");
             InitializeComponent();
 
+			var userService = new UserService();
 
-			var dbContext = new MyDbContext();
-
-            MainPage = new AppShell();
-        }
+			MainPage = new AppShell(userService);
+		}
     }
 }

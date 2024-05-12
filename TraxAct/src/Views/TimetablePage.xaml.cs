@@ -15,17 +15,19 @@ namespace TraxAct.Views
 	public partial class TimetablePage : ContentPage
 	{
 		private TimetableViewModel viewModel;
-		private DateTime selectedDateTime;
-		private FirebaseServices _firebaseServices;
+		private readonly DateTime selectedDateTime = DateTime.Now;
+		//private FirebaseServices _firebaseServices;
+
 
 		public TimetablePage()
 		{
 			InitializeComponent();
-			_firebaseServices = new FirebaseServices();
+			//_firebaseServices = new FirebaseServices();
 			this.Appearing += OnPageAppearing;
 		}
 
-		private void OnPageAppearing(object sender, EventArgs e)
+
+	private async void OnPageAppearing(object sender, EventArgs e)
 		{
 			try
 			{
@@ -36,7 +38,7 @@ namespace TraxAct.Views
 					viewModel = new TimetableViewModel(userService);
 					BindingContext = viewModel;
 
-					viewModel.LoadEventsFromDatabase();
+					await viewModel.LoadEventsFromDatabase();
 
 					Debug.WriteLine($"Events count: {viewModel.Events.Count}");
 					foreach (var evt in viewModel.Events)
@@ -92,19 +94,10 @@ namespace TraxAct.Views
 		{
 			try
 			{
-				
-				if (e.Appointments != null && e.Appointments.Any())
+				if (e.Appointments?.FirstOrDefault() is SchedulerAppointment selectedAppointment)
 				{
-					
-					var selectedAppointment = e.Appointments[0] as SchedulerAppointment;
-
-					if (selectedAppointment != null)
-					{
-						Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
-
-						
-						await NavigateToEventDetails((int)selectedAppointment.Id);
-					}
+					Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
+					await NavigateToEventDetails((int)selectedAppointment.Id);
 				}
 			}
 			catch (Exception ex)
@@ -113,7 +106,7 @@ namespace TraxAct.Views
 			}
 		}
 
-		private async Task NavigateToEventDetails(int eventId)
+		private static async Task NavigateToEventDetails(int eventId)
 		{
 			try
 			{

@@ -36,6 +36,7 @@ namespace TraxAct
 			builder.Logging.AddDebug();
 	#endif
 			builder.Services.AddSingleton<MyDbContext>();
+			builder.Services.AddSingleton<UserService>();
 			return builder.Build();
 		}
 	}

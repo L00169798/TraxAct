@@ -65,7 +65,7 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		public object userService { get; }
+		public object UserService { get; }
 
 		private readonly MyDbContext _dbContext;
 
@@ -89,9 +89,8 @@ namespace TraxAct.ViewModels
 				if (events == null || !events.Any())
 				{
 					Console.WriteLine("No events found in the database.");
-					return filteredEvents;
+					return new List<Event>();
 				}
-
 
 				Console.WriteLine($"Filtered {filteredEvents.Count} events based on date range.");
 			}
@@ -146,7 +145,7 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		public void OnEventRendered(SchedulerAppointment appointment)
+		public static void OnEventRendered(SchedulerAppointment appointment)
 		{
 			if (appointment != null)
 			{
@@ -154,33 +153,22 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		public Color GetCategoryColor(string subject)
+		public static Color GetCategoryColor(string subject)
 		{
-			switch (subject)
+			return subject switch
 			{
-				case "Walking":
-					return Colors.LightCyan;
-				case "Swimming":
-					return Colors.LightCoral;
-				case "Running":
-					return Colors.LightSteelBlue;
-				case "Cycling":
-					return Colors.BurlyWood;
-				case "Yoga":
-					return Colors.LightGreen;
-				case "Pilates":
-					return Colors.LightBlue;
-				case "Strength":
-					return Colors.SandyBrown;
-				case "HIIT":
-					return Colors.Aquamarine;
-				case "Circuit":
-					return Colors.Beige;
-				case "Other":
-					return Colors.AliceBlue;
-				default:
-					return Colors.MistyRose;
-			}
+				"Walking" => Colors.LightCyan,
+				"Swimming" => Colors.LightCoral,
+				"Running" => Colors.LightSteelBlue,
+				"Cycling" => Colors.BurlyWood,
+				"Yoga" => Colors.LightGreen,
+				"Pilates" => Colors.LightBlue,
+				"Strength" => Colors.SandyBrown,
+				"HIIT" => Colors.Aquamarine,
+				"Circuit" => Colors.Beige,
+				"Other" => Colors.AliceBlue,
+				_ => Colors.MistyRose
+			};
 		}
 
 

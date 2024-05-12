@@ -36,7 +36,8 @@
                                             XBindingPath="Key"
                                             YBindingPath="Value"
                                             Label="Hours of Exercise"
-                                            Fill="DarkOrange">
+                                            Fill="DarkOrange"
+                                            ShowDataLabels="True">
                         </chart:ColumnSeries>
                     </chart:SfCartesianChart.Series>
                     <chart:SfCartesianChart.Legend>

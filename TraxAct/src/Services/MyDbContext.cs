@@ -1,63 +1,80 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TraxAct.Models;
-using System.Diagnostics;
-using Firebase.Auth.Repository;
+﻿using SQLite;
 using Syncfusion.Maui.Scheduler;
-using TraxAct.Services;
+using System.Diagnostics;
+using TraxAct.Models;
 
 namespace TraxAct.Services
 {
-    public class MyDbContext
-    {
-        const string TraxActDB = "TraxActDB.db3";
-        static string DatabasePath => Path.Combine(FileSystem.AppDataDirectory, TraxActDB);
-        const SQLite.SQLiteOpenFlags Flags =
-            SQLite.SQLiteOpenFlags.ReadWrite |
-            SQLite.SQLiteOpenFlags.Create |
-            SQLite.SQLiteOpenFlags.SharedCache;
+	/// <summary>
+	/// Provides methods to interact with the SQLite database.
+	/// </summary>
+	public class MyDbContext
+	{
+		const string TraxActDB = "TraxActDB.db3";
+		static string DatabasePath => Path.Combine(FileSystem.AppDataDirectory, TraxActDB);
+		const SQLite.SQLiteOpenFlags Flags =
+			SQLite.SQLiteOpenFlags.ReadWrite |
+			SQLite.SQLiteOpenFlags.Create |
+			SQLite.SQLiteOpenFlags.SharedCache;
 
-        SQLiteAsyncConnection Database;
+		SQLiteAsyncConnection Database;
 
 		private readonly UserService _userService = new UserService();
 
-		async Task Init()
-        {
-            if (Database != null)
-            {
-                return;
-            }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MyDbContext"/> class.
+		/// </summary>
+		public MyDbContext()
+		{
+		}
 
-            var databaseFileExists = File.Exists(DatabasePath);
-            if (!databaseFileExists)
-            {
-                Debug.WriteLine($"Database file does not exist at path: {DatabasePath}");
-                Database = new SQLiteAsyncConnection(DatabasePath, Flags);
-                await Database.CreateTableAsync<Event>();
+		/// <summary>
+		/// Initializes the SQLite database connection and creates necessary tables if they do not exist.
+		/// </summary>
+		private async Task Init()
+		{
+			if (Database != null)
+			{
+				return;
+			}
+
+			var databaseFileExists = File.Exists(DatabasePath);
+			if (!databaseFileExists)
+			{
+				Debug.WriteLine($"Database file does not exist at path: {DatabasePath}");
+				Database = new SQLiteAsyncConnection(DatabasePath, Flags);
+				await Database.CreateTableAsync<Event>();
 				await Database.CreateTableAsync<User>();
 				Debug.WriteLine($"Database created at path: {DatabasePath}");
-            }
-            else
-            {
-                Debug.WriteLine($"Database file exists at path: {DatabasePath}");
-                Database = new SQLiteAsyncConnection(DatabasePath, Flags);
-            }
-        }
-        public async Task<List<Event>> GetEventsByUserId(string userId)
-        {
-            await Init();
-            var events = await Database.Table<Event>()
-                               .Where(e => e.UserId == userId)
-                               .ToListAsync();
+			}
+			else
+			{
+				Debug.WriteLine($"Database file exists at path: {DatabasePath}");
+				Database = new SQLiteAsyncConnection(DatabasePath, Flags);
+			}
+		}
 
-            return events;
-        }
+		/// <summary>
+		/// Retrieves all events associated with a specific user ID.
+		/// </summary>
+		/// <param name="userId">The ID of the user.</param>
+		/// <returns>A list of events.</returns>
+		public async Task<List<Event>> GetEventsByUserId(string userId)
+		{
+			await Init();
+			var events = await Database.Table<Event>()
+							   .Where(e => e.UserId == userId)
+							   .ToListAsync();
 
+			return events;
+		}
+
+
+
+
+		/// <summary>
+		/// Loads events for the current user and converts them to SchedulerAppointments.
+		/// </summary>
 		public virtual async Task LoadEventsForCurrentUser()
 		{
 			try
@@ -98,79 +115,115 @@ namespace TraxAct.Services
 			}
 		}
 
+		/// <summary>
+		/// Get event by ID
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public async Task<Event> GetById(int id)
-        {
-            await Init();
-            return await Database.Table<Event>().Where(x => x.EventId == id).FirstOrDefaultAsync();
-        }
+		{
+			await Init();
+			return await Database.Table<Event>().Where(x => x.EventId == id).FirstOrDefaultAsync();
+		}
 
-        public async Task<bool> Create(Event newEvent)
-        {
-            try
-            {
-                await Init();
+		/// <summary>
+		/// Create Event
+		/// </summary>
+		/// <param name="newEvent"></param>
+		/// <returns></returns>
+		public async Task<bool> Create(Event newEvent)
+		{
+			try
+			{
+				await Init();
 
-                if (Database == null)
-                {
-                    Console.WriteLine("Error: Database is null.");
-                    return false;
-                }
+				if (Database == null)
+				{
+					Console.WriteLine("Error: Database is null.");
+					return false;
+				}
 
-                await Database.InsertAsync(newEvent);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving event: {ex.Message}");
+				await Database.InsertAsync(newEvent);
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error saving event: {ex.Message}");
 
-                Exception innerException = ex.InnerException;
-                while (innerException != null)
-                {
-                    Console.WriteLine($"Inner Exception: {innerException.Message}");
-                    innerException = innerException.InnerException;
-                }
+				Exception innerException = ex.InnerException;
+				while (innerException != null)
+				{
+					Console.WriteLine($"Inner Exception: {innerException.Message}");
+					innerException = innerException.InnerException;
+				}
 
-                if (ex.Message.Contains("format"))
-                {
-                    Console.WriteLine("Error: Data format issue occurred.");
-                }
-                else
-                {
-                    Console.WriteLine("Error: An unexpected error occurred.");
-                }
+				if (ex.Message.Contains("format"))
+				{
+					Console.WriteLine("Error: Data format issue occurred.");
+				}
+				else
+				{
+					Console.WriteLine("Error: An unexpected error occurred.");
+				}
 
-                return false;
-            }
-        }
+				return false;
+			}
+		}
 
-
-        public async Task Update(Event updatedEvent)
-        {
-            await Init();
-            await Database.UpdateAsync(updatedEvent);
-        }
-
-        public async Task Delete(Event existingEvent)
-        {
-            await Init();
-            await Database.DeleteAsync(existingEvent);
-        }
-
-        public async Task<List<Event>> GetEventsByStartDateAsync(DateTime startDate)
-        {
-            await Init();
-            var events = await Database.Table<Event>().ToListAsync();
-            return events.FindAll(e => e.StartTime >= startDate);
-        }
+		/// <summary>
+		/// Update an event
+		/// </summary>
+		/// <param name="updatedEvent"></param>
+		/// <returns></returns>
+		public async Task Update(Event updatedEvent)
+		{
+			await Init();
+			await Database.UpdateAsync(updatedEvent);
+		}
 
 
-        public virtual async Task<List<Event>> GetEventsInRange(DateTime startDate, DateTime endDate)
-        {
-            await Init();
-            var events = await Database.Table<Event>().ToListAsync();
-            return events.FindAll(e => e.StartTime >= startDate && e.StartTime <= endDate);
-        }
+		/// <summary>
+		/// Delete an event
+		/// </summary>
+		/// <param name="existingEvent"></param>
+		/// <returns></returns>
+		public async Task Delete(Event existingEvent)
+		{
+			await Init();
+			await Database.DeleteAsync(existingEvent);
+		}
 
+
+		/// <summary>
+		/// Get Events by their start date
+		/// </summary>
+		/// <param name="startDate"></param>
+		/// <returns></returns>
+		public async Task<List<Event>> GetEventsByStartDateAsync(DateTime startDate)
+		{
+			await Init();
+			var events = await Database.Table<Event>().ToListAsync();
+			return events.FindAll(e => e.StartTime >= startDate);
+		}
+
+		/// <summary>
+		/// Get events within a date range
+		/// </summary>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
+		/// <returns></returns>
+		public virtual async Task<List<Event>> GetEventsInRange(DateTime startDate, DateTime endDate)
+		{
+			await Init();
+			var events = await Database.Table<Event>().ToListAsync();
+			return events.FindAll(e => e.StartTime >= startDate && e.StartTime <= endDate);
+		}
+
+		/// <summary>
+		/// Save Firebase User Id
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
 		public async Task SaveUserId(string userId)
 		{
 			try
@@ -189,6 +242,13 @@ namespace TraxAct.Services
 			}
 		}
 
+		/// <summary>
+		/// Get Events by time
+		/// </summary>
+		/// <param name="startTime"></param>
+		/// <param name="endTime"></param>
+		/// <param name="userId"></param>
+		/// <returns></returns>
 		public async Task<List<Event>> GetEventsByTimeAsync(DateTime startTime, DateTime endTime, string userId)
 		{
 			await Init();
