@@ -37,8 +37,14 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
     
-    - name: Run Roslyn Analyzers
-      run: dotnet analyze
+    # Run .NET Code Analysis
+    - name: Run .NET Code Analysis
+      uses: ./
+      id: code-analysis
+      with:
+        project: .\sample\ClassLibrary1.sln
+        build-breaking: false
+        all-categories: all
 
     - name: Install Codacy Analysis CLI
       run: |
