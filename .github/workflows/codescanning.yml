@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Debug]
 
     runs-on: windows-latest  
     env:
@@ -33,19 +33,20 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    # Add  MSBuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
     
     # Run .NET Code Analysis
     - name: Run Code Analysis
-      run: dotnet build /p:ReportAnalyzer=true
+      run: dotnet build /p:ReportAnalyzer=true TraxAct/TraxAct.sln
 
     - name: Install Codacy Analysis CLI
       run: |
-        curl -Ls "https://api.codacy.com/downloadLatest/cli?linux" | tar zxvf - -C .
-        chmod +x codacy-coverage-reporter
-        mv codacy-coverage-reporter /usr/local/bin/
+        Invoke-WebRequest -Uri "https://api.codacy.com/downloadLatest/cli?windows" -OutFile "codacy-cli.zip"
+        Expand-Archive -Path "codacy-cli.zip" -DestinationPath "C:\codacy"
+        $env:Path += ";C:\codacy"
+        Remove-Item "codacy-cli.zip"
 
     - name: Generate Codacy report
       run: codacy-coverage-reporter analyze -r coverage.xml
