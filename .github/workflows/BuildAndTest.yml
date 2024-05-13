@@ -49,4 +49,3 @@ jobs:
     - name: Run Tests
       run: |
         dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
-        ./codeql database analyze TraxAct/codeql-db --language=csharp /path/to/your/code --format=sarif-latest --output=codeql-analysis-results.sarif
