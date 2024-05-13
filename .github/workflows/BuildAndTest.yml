@@ -45,6 +45,10 @@ jobs:
         dotnet workload install maui-android maui-windows  # Install .NET MAUI workloads for Android and Windows
         dotnet build TraxAct/TraxAct.sln --configuration Debug  # Build the solution with Debug configuration without restoring packages
 
+    # Run .NET Code Analysis
+    - name: Run Code Analysis
+      run: dotnet build /p:ReportAnalyzer=true TraxAct/TraxAct.sln
+
     # Run Tests
     - name: Run Tests
       run: |
