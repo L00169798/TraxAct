@@ -1,0 +1,23 @@
+name: Snyk Security Test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  snyk_test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Snyk CLI
+      run: npm install -g snyk
+
+    - name: Authenticate with Snyk
+      run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+    - name: Test code with Snyk
+      run: snyk test
