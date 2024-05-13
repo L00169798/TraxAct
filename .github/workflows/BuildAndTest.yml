@@ -49,6 +49,23 @@ jobs:
     - name: Run Code Analysis
       run: dotnet build /p:ReportAnalyzer=true TraxAct/TraxAct.sln
 
+    - name: Install Codacy Analysis CLI
+      run: |
+        Invoke-WebRequest -Uri "https://api.codacy.com/downloadLatest/cli?windows" -OutFile "codacy-cli.zip"
+        Expand-Archive -Path "codacy-cli.zip" -DestinationPath "C:\codacy"
+        $env:Path += ";C:\codacy"
+        Remove-Item "codacy-cli.zip"
+
+    - name: Generate Codacy report
+      run: codacy-coverage-reporter analyze -r coverage.xml
+
+    - name: Upload Codacy report
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: codacy-report
+        path: coverage.xml
+
     # Run Tests
     - name: Run Tests
       run: |
