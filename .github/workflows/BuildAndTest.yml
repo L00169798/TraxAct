@@ -49,16 +49,4 @@ jobs:
     - name: Run Tests
       run: |
         dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
-
-    - name: Download CodeQL CLI
-      run: |
-        curl -L https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql.zip -o codeql.zip
-        unzip -o codeql.zip
-
-    - name: Initialize CodeQL Database
-      run: |
-        ./codeql database init TraxAct/codeql-db
-
-    - name: Perform CodeQL Analysis
-      run: |
         ./codeql database analyze TraxAct/codeql-db --language=csharp /path/to/your/code --format=sarif-latest --output=codeql-analysis-results.sarif
