@@ -42,7 +42,7 @@ jobs:
       uses: ./
       id: code-analysis
       with:
-        project: .\sample\ClassLibrary1.sln
+        project: TraxAct/TraxAct.sln
         build-breaking: false
         all-categories: all
 
