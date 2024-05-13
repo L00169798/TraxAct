@@ -38,13 +38,8 @@ jobs:
       uses: microsoft/setup-msbuild@v2
     
     # Run .NET Code Analysis
-    - name: Run .NET Code Analysis
-      uses: ./
-      id: code-analysis
-      with:
-        project: TraxAct/TraxAct.sln
-        build-breaking: false
-        all-categories: all
+    - name: Run Code Analysis
+      run: dotnet build /p:ReportAnalyzer=true
 
     - name: Install Codacy Analysis CLI
       run: |
