@@ -33,19 +33,8 @@ jobs:
 
         
           echo "Verifying Syncfusion Scheduler component..."
-        
-
    
       - name: Cleanup
         run: |
           rm -rf backups 
-
-      
-      - name: Send Notification
-        if: always()
-        run: |
-          echo "Routine maintenance completed successfully!"
-          echo "Sending notification via email..."
-          echo "Routine maintenance for your application has been completed successfully." | mailx -s "Routine Maintenance Complete" L00169798@atu.ie
          
-
