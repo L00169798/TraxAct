@@ -49,3 +49,9 @@ jobs:
     - name: Run Tests
       run: |
         dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
+
+    - name: Initialize CodeQL
+      run: npx -p @github/codeql-cli-native codeql database init TraxAct/codeql-db
+
+    - name: Perform CodeQL Analysis
+      run: npx -p @github/codeql-cli-native codeql database analyze TraxAct/codeql-db /path/to/your/code --format=sarif-latest --output=codeql-analysis-results.sarif
