@@ -7,17 +7,19 @@
              BackgroundColor="Black"
              Title="Event Form">
 
-
-
+    <!-- Resource dictionary for defining styles -->
     <ContentPage.Resources>
         <ResourceDictionary>
+            <!-- Primary color definition -->
             <Color x:Key="PrimaryColor">#FF5722</Color>
+            <!-- Style for heading labels -->
             <Style TargetType="Label" x:Key="HeadingLabelStyle">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontFamily" Value="Arial"/>
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="0,10"/>
             </Style>
+            <!-- Style for text entries -->
             <Style TargetType="Entry" x:Key="EntryStyle">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontFamily" Value="Arial"/>
@@ -27,6 +29,7 @@
                 <Setter Property="HeightRequest" Value="40"/>
                 <Setter Property="Keyboard" Value="Text"/>
             </Style>
+            <!-- Style for picker selection -->
             <Style TargetType="Picker" x:Key="PickerStyle">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontFamily" Value="Arial"/>
@@ -35,6 +38,7 @@
                 <Setter Property="HeightRequest" Value="40"/>
                 <Setter Property="TitleColor" Value="Black"/>
             </Style>
+            <!-- Style for buttons -->
             <Style TargetType="Button" x:Key="ButtonStyle">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontFamily" Value="Arial"/>
@@ -47,17 +51,22 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <!-- Scrollable layout -->
     <ScrollView>
+        <!-- StackLayout to hold content -->
         <StackLayout Padding="20">
 
-            <!--<Label Text="{Binding ErrorMessage}" TextColor="Red" Style="{StaticResource HeadingLabelStyle}" />-->
-
+            <!-- Label for event name -->
             <Label Text="Name" Style="{StaticResource HeadingLabelStyle}"/>
+            <!-- Entry for event name -->
             <Entry Text="{Binding Subject}" Style="{StaticResource EntryStyle}"/>
 
+            <!-- Label for exercise type -->
             <Label Text="Exercise" Style="{StaticResource HeadingLabelStyle}"/>
+            <!-- Picker for selecting exercise type -->
             <Picker SelectedItem="{Binding SelectedExerciseType, Mode=TwoWay}" Style="{StaticResource PickerStyle}">
                 <Picker.ItemsSource>
+                    <!-- List of exercise types -->
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Walking</x:String>
                         <x:String>Running</x:String>
@@ -72,31 +81,32 @@
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
+            <!-- Error message for exercise type -->
             <Label Text="Exercise type is required" Style="{StaticResource HeadingLabelStyle}" IsVisible="{Binding IsExerciseTypeErrorVisible}" TextColor="Red" FontSize="12" />
 
+            <!-- Labels and pickers for start date and time -->
             <Label Text="Start Date" Style="{StaticResource HeadingLabelStyle}"/>
             <DatePicker Date="{Binding StartDate, Mode=TwoWay}" TextColor="White"/>
-
             <Label Text="Start Time" Style="{StaticResource HeadingLabelStyle}"/>
             <TimePicker Time="{Binding StartTime, Mode=TwoWay}" TextColor="White"/>
 
+            <!-- Labels and pickers for end date and time -->
             <Label Text="End Date" Style="{StaticResource HeadingLabelStyle}"/>
             <DatePicker Date="{Binding EndDate, Mode=TwoWay}" TextColor="White"/>
-
-
             <Label Text="End Time" Style="{StaticResource HeadingLabelStyle}"/>
             <TimePicker Time="{Binding EndTime, Mode=TwoWay}" TextColor="White"/>
+            <!-- Error message for end time validation -->
             <Label Text="End Time must be later than Start Time" Style="{StaticResource HeadingLabelStyle}" IsVisible="{Binding IsEndDateErrorVisible}" TextColor="Red" FontSize="12" />
 
+            <!-- Labels and entries for distance, reps, and sets -->
             <Label Text="Distance (km)" IsVisible="{Binding IsDistanceVisible}" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Distance}" IsVisible="{Binding IsDistanceVisible}" Placeholder="Enter distance" Style="{StaticResource EntryStyle}" TextColor="White"/>
-
             <Label Text="Reps" IsVisible="{Binding IsRepsVisible}" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Reps}" IsVisible="{Binding IsRepsVisible}" Placeholder="Enter reps" Style="{StaticResource EntryStyle}" TextColor="White"/>
-
             <Label Text="Sets" IsVisible="{Binding IsSetsVisible}" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Sets}" IsVisible="{Binding IsSetsVisible}" Placeholder="Enter sets" Style="{StaticResource EntryStyle}" TextColor="White"/>
 
+            <!-- Button to save changes -->
             <Button Text="Save" Command="{Binding SaveCommand}" Style="{StaticResource ButtonStyle}" BackgroundColor="DarkOrange" TextColor="White"/>
 
         </StackLayout>

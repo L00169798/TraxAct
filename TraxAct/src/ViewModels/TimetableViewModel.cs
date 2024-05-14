@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Syncfusion.Maui.Scheduler; // Importing necessary namespaces
+﻿using Syncfusion.Maui.Scheduler;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -20,11 +19,11 @@ namespace TraxAct.ViewModels
 		private readonly MyDbContext _dbContext;
 
 		// Properties for ViewModel
-		public string UserId { get; } 
-		public DateTime MinimumDateTime { get; set; } 
-		public bool ShowNavigationArrows { get; set; } 
-		public ICommand QueryAppointmentsCommand { get; set; } 
-		public bool ShowBusyIndicator { get; set; } 
+		public string UserId { get; }
+		public DateTime MinimumDateTime { get; set; }
+		public bool ShowNavigationArrows { get; set; }
+		public ICommand QueryAppointmentsCommand { get; set; }
+		public bool ShowBusyIndicator { get; set; }
 
 		/// <summary>
 		/// Property for storing the selected date

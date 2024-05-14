@@ -10,8 +10,11 @@ public partial class EventDetailsPage : ContentPage
 {
     readonly MyDbContext dbContext;
     readonly EventDetailsViewModel viewModel;
-    //private Event eventItem;
 
+	/// <summary>
+	/// Constructor
+	/// </summary>
+	/// <param name="eventId"></param>
 	public EventDetailsPage(int eventId)
 	{
 		InitializeComponent();

@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
-             x:Class="TraxAct.Views.AnalysisPage"
-             xmlns:model="clr-namespace:TraxAct.Models"
-             xmlns:viewModels="clr-namespace:TraxAct.ViewModels"
-             x:DataType="viewModels:AnalysisViewModel"
-             BackgroundColor="LightGray"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts" 
+             x:Class="TraxAct.Views.AnalysisPage" 
+             xmlns:model="clr-namespace:TraxAct.Models" 
+             xmlns:viewModels="clr-namespace:TraxAct.ViewModels" 
+             x:DataType="viewModels:AnalysisViewModel" 
+             BackgroundColor="LightGray" 
              Title="Analysis">
 
+    <!-- Content of the AnalysisPage -->
     <ContentPage.Content>
+        <!-- Scrollable layout -->
         <ScrollView>
+            <!-- StackLayout to hold content -->
             <StackLayout Spacing="20" Padding="20">
 
-
+                <!-- Date range selection section -->
                 <StackLayout BackgroundColor="GhostWhite" Padding="20" Spacing="10">
+                    <!-- Label for Date Range Selection -->
                     <Label Text="Select Date Range" TextColor="Black" FontSize="14" HorizontalOptions="Center"/>
+                    <!-- Horizontal stack layout for From date -->
                     <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Center">
                         <Label Text="From:" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Start"/>
+                        <!-- DatePicker for selecting From date -->
                         <DatePicker Date="{Binding StartDate}" MaximumWidthRequest="120" TextColor="Black"/>
                     </StackLayout>
-                    
+                    <!-- Horizontal stack layout for To date -->
                     <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Center" HorizontalOptions="Start">
                         <Label Text="To:" TextColor="Black" VerticalOptions="Center"/>
+                        <!-- DatePicker for selecting To date -->
                         <DatePicker Date="{Binding EndDate}" MaximumWidthRequest="120" TextColor="Black" Margin="12,0,0,0"/>
                     </StackLayout>
-
+                    <!-- Button to apply date range -->
                     <Button Text="Apply" Command="{Binding ApplyCommand}" FontSize="12" BackgroundColor="mediumpurple" TextColor="White" CornerRadius="20"/>
                 </StackLayout>
 
-
+                <!-- Column chart for displaying hours of exercise -->
                 <chart:SfCartesianChart IsTransposed="True">
                     <chart:SfCartesianChart.Series>
                         <chart:ColumnSeries ItemsSource="{Binding FilteredExerciseHours}"
@@ -40,18 +47,21 @@
                                             ShowDataLabels="True">
                         </chart:ColumnSeries>
                     </chart:SfCartesianChart.Series>
+                    <!-- Legend for the chart -->
                     <chart:SfCartesianChart.Legend>
                         <chart:ChartLegend/>
                     </chart:SfCartesianChart.Legend>
+                    <!-- X-axis for the chart -->
                     <chart:SfCartesianChart.XAxes>
                         <chart:CategoryAxis/>
                     </chart:SfCartesianChart.XAxes>
+                    <!-- Y-axis for the chart -->
                     <chart:SfCartesianChart.YAxes>
                         <chart:NumericalAxis/>
                     </chart:SfCartesianChart.YAxes>
                 </chart:SfCartesianChart>
 
-
+                <!-- Spline chart for displaying exercise per day -->
                 <chart:SfCartesianChart>
                     <chart:SfCartesianChart.Series>
                         <chart:SplineSeries ItemsSource="{Binding TotalExerciseByDay}"
@@ -63,12 +73,15 @@
                                             ShowMarkers="True">
                         </chart:SplineSeries>
                     </chart:SfCartesianChart.Series>
+                    <!-- Legend for the chart -->
                     <chart:SfCartesianChart.Legend>
                         <chart:ChartLegend/>
                     </chart:SfCartesianChart.Legend>
+                    <!-- X-axis for the chart (DateTime axis for dates) -->
                     <chart:SfCartesianChart.XAxes>
                         <chart:DateTimeAxis IntervalType="Days"/>
                     </chart:SfCartesianChart.XAxes>
+                    <!-- Y-axis for the chart -->
                     <chart:SfCartesianChart.YAxes>
                         <chart:NumericalAxis/>
                     </chart:SfCartesianChart.YAxes>
