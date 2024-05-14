@@ -6,6 +6,7 @@
   Shell.FlyoutBehavior="Flyout"
   BackgroundColor="Black">
 
+   <!--Flyout Header design-->
     <Shell.FlyoutHeader>
         <Grid RowDefinitions="Auto">
             <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="10" Margin="0,10,0,0">
@@ -14,33 +15,39 @@
         </Grid>
     </Shell.FlyoutHeader>
 
+    <!--Sign In page content, disabled from appearing in flyout menu-->
         <ShellContent Title="Sign In"
                       Shell.FlyoutBehavior="Disabled"
                       ContentTemplate="{DataTemplate local:SignInPage}"
                       Route="SignIn"
                       FlyoutItemIsVisible="false"  />
 
+    <!--Sign Up page content, disabled from appearing in flyout menu-->
         <ShellContent Title="Sign Up"
                       Shell.FlyoutBehavior="Disabled"
                       ContentTemplate="{DataTemplate local:SignUpPage}"
                       Route="SignUp"
                       FlyoutItemIsVisible="false"/>
 
+    <!--Home page content with associated icon-->
         <ShellContent Title="Home"
                       ContentTemplate="{DataTemplate local:HomePage}"
                       Route="HomePage"
                       Icon="homeicon.png"/>
 
+    <!--Timetable page content with associated icon-->
         <ShellContent Title="Timetable"
                       ContentTemplate="{DataTemplate local:TimetablePage}"
                       Route="TimetablePage" 
                       Icon="timetableicon3.png"/>
 
+    <!--Analysis page content with associated icon-->
         <ShellContent Title="Analysis"
                       ContentTemplate="{DataTemplate local:AnalysisPage}"
                       Route="AnalysisPage" 
                       Icon="graphicon2.png"/>
 
+    <!--Logout content with associated icon, navigates back to sign in page-->
         <ShellContent Title="Logout"
                       ContentTemplate="{DataTemplate local:SignInPage}"
                       Route="SignInPage" 

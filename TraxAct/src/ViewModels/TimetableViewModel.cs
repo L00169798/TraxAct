@@ -97,22 +97,22 @@ namespace TraxAct.ViewModels
 		{
 			List<Event> filteredEvents = new List<Event>();
 
-			try
-			{
+			//try
+			//{
 				var events = await _dbContext.GetEventsByUserId(UserId);
 
 				if (events == null || !events.Any())
 				{
-					Console.WriteLine("No events found in the database.");
+					//	Console.WriteLine("No events found in the database.");
 					return new List<Event>();
 				}
 
-				Console.WriteLine($"Filtered {filteredEvents.Count} events based on date range.");
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Error filtering events by date range: {ex.Message}");
-			}
+			//	Console.WriteLine($"Filtered {filteredEvents.Count} events based on date range.");
+			//}
+			//catch (Exception ex)
+			//{
+			//	Console.WriteLine($"Error filtering events by date range: {ex.Message}");
+			//}
 
 			return filteredEvents;
 		}
@@ -170,7 +170,7 @@ namespace TraxAct.ViewModels
 		{
 			return subject switch
 			{
-				"Walking" => Colors.LightCyan,
+				"Walking" => Colors.LightSeaGreen,
 				"Swimming" => Colors.LightCoral,
 				"Running" => Colors.LightSteelBlue,
 				"Cycling" => Colors.BurlyWood,

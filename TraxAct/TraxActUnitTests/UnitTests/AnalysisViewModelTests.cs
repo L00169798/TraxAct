@@ -1,10 +1,5 @@
-﻿using Moq;
-using TraxAct.Models;
+﻿using TraxAct.Models;
 using TraxAct.ViewModels;
-using TraxAct.Services;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 
 namespace TraxActUnitTests.UnitTests
 {
@@ -23,6 +18,7 @@ namespace TraxActUnitTests.UnitTests
 			// Assert
 			Assert.Empty(result);
 		}
+
 
 		[Fact]
 		public void ConvertToExerciseHours_NoEventsInRange_ReturnsEmptyCollection()

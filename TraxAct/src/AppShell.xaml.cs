@@ -1,7 +1,6 @@
-﻿using Microsoft.Maui.Controls;
-using TraxAct.Views;
+﻿//using System.Diagnostics;
 using TraxAct.Services;
-using System.Diagnostics;
+using TraxAct.Views;
 
 namespace TraxAct
 {
@@ -9,6 +8,10 @@ namespace TraxAct
 	{
 		private readonly UserService _userService;
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="userService"></param>
 		public AppShell(UserService userService)
 		{
 			InitializeComponent();
@@ -19,17 +22,21 @@ namespace TraxAct
 			_userService = userService;
 		}
 
-
+		/// <summary>
+		/// Method to trigger signout method and disable flyout menu when navigating back to sign in page after logout
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void OnNavigating(object sender, ShellNavigatingEventArgs e)
 		{
 			var shell = (Shell)sender;
 
 			if (e.Target.Location.OriginalString == "//SignInPage")
 			{
-				_userService.SignOutAsync();
-				Debug.WriteLine("SignOut method called.");
+				await _userService.SignOutAsync();
+				//Debug.WriteLine("SignOut method called.");
 				shell.FlyoutBehavior = FlyoutBehavior.Disabled;
-				Debug.WriteLine($"Navigating to: {e.Target.Location.OriginalString}");
+				//Debug.WriteLine($"Navigating to: {e.Target.Location.OriginalString}");
 			}
 			else
 			{
@@ -38,7 +45,7 @@ namespace TraxAct
 		}
 	}
 }
-	
+
 
 
 
