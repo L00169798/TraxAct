@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using Syncfusion.Maui.Scheduler;
-using System.Diagnostics;
 using TraxAct.Models;
+using System.Diagnostics;
 
 namespace TraxAct.Services
 {
@@ -41,7 +41,6 @@ namespace TraxAct.Services
 			var databaseFileExists = File.Exists(DatabasePath);
 			if (!databaseFileExists)
 			{
-				//	Debug.WriteLine($"Database file does not exist at path: {DatabasePath}");
 				Database = new SQLiteAsyncConnection(DatabasePath, Flags);
 				await Database.CreateTableAsync<Event>();
 				await Database.CreateTableAsync<User>();
@@ -69,49 +68,35 @@ namespace TraxAct.Services
 			return events;
 		}
 
-
-
-
 		/// <summary>
 		/// Loads events for the current user and converts them to SchedulerAppointments.
 		/// </summary>
 		public virtual async Task LoadEventsForCurrentUser()
 		{
-			try
+			string userId = _userService.GetCurrentUserUid();
+			if (string.IsNullOrEmpty(userId))
 			{
-				string userId = _userService.GetCurrentUserUid();
-				if (string.IsNullOrEmpty(userId))
-				{
-					//Debug.WriteLine("User ID is null or empty. Cannot load events.");
-					return;
-				}
-
-				List<Event> events = await GetEventsByUserId(userId);
-				if (events == null || events.Count == 0)
-				{
-					//Debug.WriteLine("No events found for the specified user.");
-					return;
-				}
-
-				List<SchedulerAppointment> Events = new List<SchedulerAppointment>();
-
-				foreach (var ev in events)
-				{
-					var schedulerAppointment = new SchedulerAppointment
-					{
-						Subject = ev.ExerciseType,
-						StartTime = ev.StartTime,
-						EndTime = ev.EndTime,
-						Id = ev.EventId
-					};
-					Events.Add(schedulerAppointment);
-				}
-
-				Debug.WriteLine($"Loaded {Events.Count} events for user ID: {userId}");
+				return;
 			}
-			catch (Exception ex)
+
+			List<Event> events = await GetEventsByUserId(userId);
+			if (events == null || events.Count == 0)
 			{
-				Debug.WriteLine($"Error loading events: {ex.Message}");
+				return;
+			}
+
+			List<SchedulerAppointment> Events = new List<SchedulerAppointment>();
+
+			foreach (var ev in events)
+			{
+				var schedulerAppointment = new SchedulerAppointment
+				{
+					Subject = ev.ExerciseType,
+					StartTime = ev.StartTime,
+					EndTime = ev.EndTime,
+					Id = ev.EventId
+				};
+				Events.Add(schedulerAppointment);
 			}
 		}
 
@@ -139,7 +124,6 @@ namespace TraxAct.Services
 
 				if (Database == null)
 				{
-					Console.WriteLine("Error: Database is null.");
 					return false;
 				}
 
@@ -148,12 +132,9 @@ namespace TraxAct.Services
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Error saving event: {ex.Message}");
-
 				Exception innerException = ex.InnerException;
 				while (innerException != null)
 				{
-					Console.WriteLine($"Inner Exception: {innerException.Message}");
 					innerException = innerException.InnerException;
 				}
 
@@ -161,11 +142,6 @@ namespace TraxAct.Services
 				{
 					Console.WriteLine("Error: Data format issue occurred.");
 				}
-				else
-				{
-					Console.WriteLine("Error: An unexpected error occurred.");
-				}
-
 				return false;
 			}
 		}
@@ -232,12 +208,9 @@ namespace TraxAct.Services
 
 				var user = new User { UserId = userId };
 				await Database.InsertOrReplaceAsync(user);
-
-				//Debug.WriteLine($"User ID '{userId}' saved to SQLite database.");
 			}
-			catch (Exception ex)
+			catch
 			{
-				//Debug.WriteLine($"Error saving user ID to SQLite database: {ex.Message}");
 				throw;
 			}
 		}

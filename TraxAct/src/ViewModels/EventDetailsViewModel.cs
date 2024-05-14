@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-//using System.Diagnostics;
 using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
@@ -52,26 +51,21 @@ namespace TraxAct.ViewModels
 		// Load event details asynchronously
 		public async Task<bool> LoadEventDetails(int eventId)
 		{
-			Console.WriteLine("LoadEventDetails method called.");
-
 			try
 			{
 				SelectedEvent = await _dbContext.GetById(eventId);
 
 				if (SelectedEvent == null)
 				{
-					Console.WriteLine($"Event with ID {eventId} not found.");
 					return false;
 				}
 				else
 				{
-					Console.WriteLine("Event details loaded successfully.");
 					return true;
 				}
 			}
-			catch (Exception ex)
+			catch
 			{
-				Console.WriteLine($"Error loading event details: {ex.Message}");
 				return false;
 			}
 		}
@@ -79,26 +73,13 @@ namespace TraxAct.ViewModels
 		// Edit button click event handler
 		private async Task EditButton_Clicked()
 		{
-			//try
-			//{
 				if (SelectedEvent != null)
 				{
-					//Debug.WriteLine($"Editing event with ID: {SelectedEvent.EventId}");
-
 					var viewModel = new EventEditViewModel(_dbContext, SelectedEvent);
 					var eventEditPage = new EventEditPage(viewModel);
 
 					await Application.Current.MainPage.Navigation.PushAsync(eventEditPage);
 				}
-				//else
-				//{
-				//	Debug.WriteLine("Cannot edit event details: SelectedEvent is null.");
-				//}
-				//}
-				//catch (Exception ex)
-				//{
-				//	Debug.WriteLine($"Error editing event details: {ex.Message}");
-			//}
 			}
 
 		// Delete button click event handler
@@ -112,23 +93,15 @@ namespace TraxAct.ViewModels
 					if (answer)
 					{
 						await _dbContext.Delete(SelectedEvent);
-						//Debug.WriteLine("Event deleted successfully.");
-
 						await Application.Current.MainPage.DisplayAlert("Success", "Event has been deleted successfully.", "OK");
 						await Shell.Current.Navigation.PopAsync();
 
 						SelectedEvent = null;
 					}
-					//else
-					//{
-					//	Debug.WriteLine("Delete operation canceled by the user.");
-					//}
 				}
-				catch /*(Exception ex)*/
+				catch
 				{
-					//	Debug.WriteLine($"Error deleting event: {ex.Message}");
 					await Application.Current.MainPage.DisplayAlert("Error", "An error occurred while deleting the event.", "OK");
-					//Console.WriteLine($"Error in DeleteButton_Clicked: {ex.Message}");
 				}
 			}
 		}

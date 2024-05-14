@@ -28,9 +28,8 @@ namespace TraxAct.Services
 			{
 				return await _firebaseAuth.GetUserAsync(uid);
 			}
-			catch (Exception ex)
+			catch
 			{
-				Console.WriteLine($"Error fetching user by UID: {ex.Message}");
 				return null;
 			}
 		}
@@ -46,9 +45,8 @@ namespace TraxAct.Services
 			{
 				return await _firebaseAuth.GetUserByEmailAsync(email);
 			}
-			catch (Exception ex)
+			catch 
 			{
-				Console.WriteLine($"Error fetching user by email: {ex.Message}");
 				return null;
 			}
 		}

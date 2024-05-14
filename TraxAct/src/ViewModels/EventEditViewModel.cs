@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-//using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TraxAct.Models;
@@ -10,12 +9,14 @@ namespace TraxAct.ViewModels
 {
 	public class EventEditViewModel : INotifyPropertyChanged
 	{
-		// Properties
+		// Fields
 		private readonly MyDbContext _dbContext;
 		private Event _selectedEvent;
 
+		//Events
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		//Properties
 		private string _subject;
 		public string Subject
 		{
@@ -30,7 +31,6 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-
 		private string _selectedExerciseType;
 		public string SelectedExerciseType
 		{
@@ -42,6 +42,7 @@ namespace TraxAct.ViewModels
 					_selectedExerciseType = value;
 					OnPropertyChanged(nameof(SelectedExerciseType));
 
+					//Updates elements based on the selected exercise
 					UpdateDistanceVisibility();
 					UpdateRepsVisibility();
 					UpdateSetsVisibility();
@@ -53,10 +54,11 @@ namespace TraxAct.ViewModels
 				}
 			}
 		}
-
+		
+		//Additional fields base on selected exercise type
 		private void UpdateDistanceVisibility()
 		{
-			IsDistanceVisible = SelectedExerciseType == "Running";
+			IsDistanceVisible = SelectedExerciseType == "Running" || SelectedExerciseType == "Walking" || SelectedExerciseType == "Cycling";
 		}
 
 		private void UpdateRepsVisibility()
@@ -87,7 +89,6 @@ namespace TraxAct.ViewModels
 				}
 			}
 		}
-
 
 		private DateTime _endDate;
 		public DateTime EndDate
@@ -291,26 +292,34 @@ namespace TraxAct.ViewModels
 		/// <exception cref="ArgumentNullException"></exception>
 		public EventEditViewModel(MyDbContext dbContext, Event selectedEvent)
 		{
-			_dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-			SelectedEvent = selectedEvent ?? throw new ArgumentNullException(nameof(selectedEvent));
-
-			Subject = selectedEvent.Title;
-			SelectedExerciseType = selectedEvent.ExerciseType;
-			StartDate = selectedEvent.StartTime;
-			EndDate = selectedEvent.EndTime;
-			Distance = selectedEvent.Distance;
-			Reps = selectedEvent.Reps;
-			Sets = selectedEvent.Sets;
-
-			SaveCommand = new Command(ExecuteSaveCommand, CanExecuteSaveCommand);
-
-			PropertyChanged += (sender, args) =>
+			try
 			{
-				if (args.PropertyName == nameof(Subject) || args.PropertyName == nameof(SelectedExerciseType))
+				_dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+				SelectedEvent = selectedEvent ?? throw new ArgumentNullException(nameof(selectedEvent));
+
+				//Assign fields
+				Subject = selectedEvent.Title;
+				SelectedExerciseType = selectedEvent.ExerciseType;
+				StartDate = selectedEvent.StartTime;
+				EndDate = selectedEvent.EndTime;
+				Distance = selectedEvent.Distance;
+				Reps = selectedEvent.Reps;
+				Sets = selectedEvent.Sets;
+
+				SaveCommand = new Command(ExecuteSaveCommand, CanExecuteSaveCommand);
+
+				PropertyChanged += (sender, args) =>
 				{
-					((Command)SaveCommand).ChangeCanExecute();
-				}
-			};
+					if (args.PropertyName == nameof(Subject) || args.PropertyName == nameof(SelectedExerciseType))
+					{
+						((Command)SaveCommand).ChangeCanExecute();
+					}
+				};
+			}
+			catch 
+			{
+				Application.Current.MainPage.DisplayAlert("Error", "An error occurred during initialization. Please try again later.", "OK");
+			}
 		}
 
 		/// <summary>
@@ -326,13 +335,9 @@ namespace TraxAct.ViewModels
 			bool isValidUserUid = !string.IsNullOrWhiteSpace(UserService.Instance.GetCurrentUserUid());
 			bool isEndTimeAfterStartTime = endDateTime > startDateTime;
 
+			//Input validation check
 			IsExerciseTypeErrorVisible = !isValidExerciseType;
 			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
-
-			//Debug.WriteLine($"User UID is valid: {isValidUserUid}");
-			//Debug.WriteLine($"Start DateTime: {startDateTime}");
-			//Debug.WriteLine($"End DateTime: {endDateTime}");
-			//Debug.WriteLine($"End DateTime is after Start DateTime: {isEndTimeAfterStartTime}");
 
 			return isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
 		}
@@ -344,13 +349,8 @@ namespace TraxAct.ViewModels
 		{
 			try
 			{
-				//	Debug.WriteLine("Executing SaveCommand...");
-
 				DateTime startDateTime = StartDate.Date.Add(StartTime);
 				DateTime endDateTime = EndDate.Date.Add(EndTime);
-
-				//Debug.WriteLine($"Start DateTime: {startDateTime}");
-				//Debug.WriteLine($"End DateTime: {endDateTime}");
 
 				SelectedEvent.Title = Subject;
 				SelectedEvent.ExerciseType = SelectedExerciseType;
@@ -360,22 +360,17 @@ namespace TraxAct.ViewModels
 				SelectedEvent.Reps = Reps;
 				SelectedEvent.Sets = Sets;
 
-				//Debug.WriteLine("Updating SelectedEvent properties...");
-
 				await _dbContext.Update(SelectedEvent);
-
-				//Debug.WriteLine("Event updated in the database.");
 
 				await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
 
+				//Navigate back to timetable after event is created
 				TimetablePage timetablePage = new TimetablePage();
 				await Application.Current.MainPage.Navigation.PushAsync(timetablePage);
 			}
 			catch (Exception ex)
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-
-				//Debug.WriteLine($"Error occurred during SaveCommand execution: {ex}");
 			}
 		}
 

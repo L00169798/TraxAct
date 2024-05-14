@@ -38,7 +38,7 @@ namespace TraxAct.ViewModels
 				{
 					_selectedDate = value;
 					OnPropertyChanged(nameof(SelectedDate));
-					_ = LoadEventsFromDatabase(); // Loads events from the database when the selected date changes
+					_ = LoadEventsFromDatabase();
 				}
 			}
 		}
@@ -97,22 +97,12 @@ namespace TraxAct.ViewModels
 		{
 			List<Event> filteredEvents = new List<Event>();
 
-			//try
-			//{
 				var events = await _dbContext.GetEventsByUserId(UserId);
 
 				if (events == null || !events.Any())
 				{
-					//	Console.WriteLine("No events found in the database.");
 					return new List<Event>();
 				}
-
-			//	Console.WriteLine($"Filtered {filteredEvents.Count} events based on date range.");
-			//}
-			//catch (Exception ex)
-			//{
-			//	Console.WriteLine($"Error filtering events by date range: {ex.Message}");
-			//}
 
 			return filteredEvents;
 		}
@@ -133,7 +123,7 @@ namespace TraxAct.ViewModels
 			Events.Clear();
 			foreach (var ev in events)
 			{
-				Color backgroundColor = GetCategoryColor(ev.ExerciseType);
+				Color backgroundColor = GetCategoryColor(ev.ExerciseType); //Each exercies type has a designated colour
 
 				var schedulerAppointment = new SchedulerAppointment
 				{

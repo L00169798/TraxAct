@@ -1,5 +1,4 @@
-﻿//using System.Diagnostics;
-using TraxAct.Services;
+﻿using TraxAct.Services;
 using TraxAct.Views;
 
 namespace TraxAct
@@ -34,9 +33,7 @@ namespace TraxAct
 			if (e.Target.Location.OriginalString == "//SignInPage")
 			{
 				await _userService.SignOutAsync();
-				//Debug.WriteLine("SignOut method called.");
 				shell.FlyoutBehavior = FlyoutBehavior.Disabled;
-				//Debug.WriteLine($"Navigating to: {e.Target.Location.OriginalString}");
 			}
 			else
 			{

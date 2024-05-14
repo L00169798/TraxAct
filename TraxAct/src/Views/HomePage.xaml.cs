@@ -23,7 +23,6 @@ namespace TraxAct.Views
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
-			Console.WriteLine("HomePage is appearing. The button should be interactable.");
 		}
 
 		/// <summary>
