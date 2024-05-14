@@ -41,7 +41,7 @@ namespace TraxAct.Services
 			var databaseFileExists = File.Exists(DatabasePath);
 			if (!databaseFileExists)
 			{
-				Debug.WriteLine($"Database file does not exist at path: {DatabasePath}");
+				//	Debug.WriteLine($"Database file does not exist at path: {DatabasePath}");
 				Database = new SQLiteAsyncConnection(DatabasePath, Flags);
 				await Database.CreateTableAsync<Event>();
 				await Database.CreateTableAsync<User>();
@@ -82,14 +82,14 @@ namespace TraxAct.Services
 				string userId = _userService.GetCurrentUserUid();
 				if (string.IsNullOrEmpty(userId))
 				{
-					Debug.WriteLine("User ID is null or empty. Cannot load events.");
+					//Debug.WriteLine("User ID is null or empty. Cannot load events.");
 					return;
 				}
 
 				List<Event> events = await GetEventsByUserId(userId);
 				if (events == null || events.Count == 0)
 				{
-					Debug.WriteLine("No events found for the specified user.");
+					//Debug.WriteLine("No events found for the specified user.");
 					return;
 				}
 
@@ -233,11 +233,11 @@ namespace TraxAct.Services
 				var user = new User { UserId = userId };
 				await Database.InsertOrReplaceAsync(user);
 
-				Debug.WriteLine($"User ID '{userId}' saved to SQLite database.");
+				//Debug.WriteLine($"User ID '{userId}' saved to SQLite database.");
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Error saving user ID to SQLite database: {ex.Message}");
+				//Debug.WriteLine($"Error saving user ID to SQLite database: {ex.Message}");
 				throw;
 			}
 		}

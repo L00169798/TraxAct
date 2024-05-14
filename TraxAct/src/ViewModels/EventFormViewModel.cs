@@ -1,7 +1,6 @@
-﻿using FirebaseAdmin.Auth;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TraxAct.Models;
@@ -13,7 +12,7 @@ namespace TraxAct.ViewModels
 {
 	public class EventFormViewModel : INotifyPropertyChanged
 	{
-		//private readonly FirebaseAuth _auth = FirebaseAuth.DefaultInstance;
+		//Properties
 		private readonly MyDbContext _dbContext;
 
 		private Firebase.Auth.User _currentUser;
@@ -70,7 +69,6 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-
 		private void UpdateVisibility()
 		{
 			if (SelectedExerciseType == "Running" || SelectedExerciseType == "Walking" || SelectedExerciseType == "Cycling")
@@ -92,7 +90,6 @@ namespace TraxAct.ViewModels
 				IsSetsVisible = false;
 			}
 		}
-
 
 		private DateTime _startDate = DateTime.Today;
 		public DateTime StartDate
@@ -269,6 +266,7 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		//Collection of events
 		private ObservableCollection<Event> _eventList = new ObservableCollection<Event>();
 		public ObservableCollection<Event> EventList
 		{
@@ -280,12 +278,16 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		//List of exercise types
 		public List<string> ExerciseTypes { get; } = new List<string>
 		{
 			"Walking", "Running", "Cycling", "Swimming", "Yoga",
 			"Pilates", "Strength", "HIIT", "Circuit", "Other"
 		};
 
+		/// <summary>
+		/// Command to save changes
+		/// </summary>
 		private ICommand _saveCommand;
 		public ICommand SaveCommand
 		{
@@ -301,11 +303,12 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public EventFormViewModel()
 		{
 			_dbContext = new MyDbContext();
-
-			//SaveCommand = new Command(async () => await ExecuteSaveCommand(), () => CanExecuteSaveCommand());
 
 			PropertyChanged += (sender, args) =>
 			{
@@ -316,14 +319,10 @@ namespace TraxAct.ViewModels
 			};
 		}
 
-		//private void UpdateSaveCommandCanExecute()
-		//{
-		//	if (SaveCommand is Command command)
-		//	{
-		//		command.ChangeCanExecute();
-		//	}
-		//}
-
+		/// <summary>
+		/// Can execute command
+		/// </summary>
+		/// <returns></returns>
 		private bool CanExecuteSaveCommand()
 		{
 			DateTime startDateTime = StartDate.Date.Add(StartTime);
@@ -336,28 +335,30 @@ namespace TraxAct.ViewModels
 			IsExerciseTypeErrorVisible = !isValidExerciseType;
 			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
 
-			//bool canExecute = isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
-			
-			Debug.WriteLine($"User UID is valid: {isValidUserUid}");
-			Debug.WriteLine($"Start DateTime: {startDateTime}");
-			Debug.WriteLine($"End DateTime: {endDateTime}");
-			Debug.WriteLine($"End DateTime is after Start DateTime: {isEndTimeAfterStartTime}");
+			//Debug.WriteLine($"User UID is valid: {isValidUserUid}");
+			//Debug.WriteLine($"Start DateTime: {startDateTime}");
+			//Debug.WriteLine($"End DateTime: {endDateTime}");
+			//Debug.WriteLine($"End DateTime is after Start DateTime: {isEndTimeAfterStartTime}");
 
 			return isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
 		}
 
+		/// <summary>
+		/// Execute Save
+		/// </summary>
+		/// <returns></returns>
 		private async Task ExecuteSaveCommand()
 		{
 			try
 			{
-				Debug.WriteLine("Executing Save Command...");
+				//	Debug.WriteLine("Executing Save Command...");
 
 				string currentUserUid = UserService.Instance.GetCurrentUserUid();
 
 				DateTime startDateTime = StartDate.Date.Add(StartTime);
 				DateTime endDateTime = EndDate.Date.Add(EndTime);
-				Debug.WriteLine($"Start DateTime (before saving to database): {startDateTime}");
-				Debug.WriteLine($"End DateTime (before saving to database): {endDateTime}");
+				//Debug.WriteLine($"Start DateTime (before saving to database): {startDateTime}");
+				//Debug.WriteLine($"End DateTime (before saving to database): {endDateTime}");
 
 				Event newEvent = new Event
 				{
@@ -375,20 +376,23 @@ namespace TraxAct.ViewModels
 
 				if (result)
 				{
-					Debug.WriteLine("Event saved successfully.");
+					//Debug.WriteLine("Event saved successfully.");
 					await Application.Current.MainPage.Navigation.PopAsync();
 				}
 				else
 				{
-					Debug.WriteLine("Failed to save event.");
+					//Debug.WriteLine("Failed to save event.");
 				}
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Error saving event: {ex.Message}");
+				//Debug.WriteLine($"Error saving event: {ex.Message}");
 			}
 		}
 
+		/// <summary>
+		/// Event Handler for property changes
+		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+//using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Diagnostics;
+using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
-using TraxAct.Views;
-using System.Windows.Input;
-using Microsoft.EntityFrameworkCore;
 
 namespace TraxAct.ViewModels
 {
@@ -18,19 +12,13 @@ namespace TraxAct.ViewModels
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		// Fields
 		private readonly UserService _userService;
 		private readonly MyDbContext _dbContext;
-		public string UserId { get; }
 
-		private Dictionary<string, double> _exerciseHours;
-		public Dictionary<string, double> ExerciseHours
-		{
-			get { return _exerciseHours; }
-			set
-			{
-				_exerciseHours = value;
-			}
-		}
+		// Properties
+		public string UserId { get; } // Consider removing if not used
+		public Dictionary<string, double> ExerciseHours { get; set; }
 
 		private DateTime _startDate;
 		public DateTime StartDate
@@ -63,6 +51,7 @@ namespace TraxAct.ViewModels
 		public ObservableCollection<KeyValuePair<string, double>> FilteredExerciseHours { get; private set; }
 		public ObservableCollection<ExerciseByDay> TotalExerciseByDay { get; private set; }
 
+		// Constructor
 		public AnalysisViewModel()
 		{
 			_dbContext = new MyDbContext();
@@ -72,6 +61,7 @@ namespace TraxAct.ViewModels
 			EndDate = DateTime.Today;
 		}
 
+		// Command
 		public ICommand ApplyCommand => new Command(ExecuteApplyCommand, CanExecuteApplyCommand);
 
 		private bool CanExecuteApplyCommand(object parameter)
@@ -81,17 +71,17 @@ namespace TraxAct.ViewModels
 
 		private async void ExecuteApplyCommand(object parameter)
 		{
-			try
-			{
+			//try
+			//{
 				string userId = UserService.Instance.GetCurrentUserUid();
 
 				if (string.IsNullOrEmpty(userId))
 				{
-					Debug.WriteLine("User ID is null or empty. Skipping filter execution.");
+					//Debug.WriteLine("User ID is null or empty. Skipping filter execution.");
 					return;
 				}
 
-				Debug.WriteLine($"User ID: {userId}");
+				//Debug.WriteLine($"User ID: {userId}");
 
 				var filteredEvents = await _dbContext.GetEventsByTimeAsync(StartDate, EndDate, userId);
 				filteredEvents.Sort((ev1, ev2) => ev1.StartTime.CompareTo(ev2.StartTime));
@@ -101,54 +91,52 @@ namespace TraxAct.ViewModels
 
 				OnPropertyChanged(nameof(FilteredExerciseHours));
 				OnPropertyChanged(nameof(TotalExerciseByDay));
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Error applying filter: {ex.Message}");
-			}
+			//}
+			//catch (Exception ex)
+			//{
+			//	Debug.WriteLine($"Error applying filter: {ex.Message}");
+			//}
 		}
 
-
+		// Converts events to exercise hours
 		public ObservableCollection<KeyValuePair<string, double>> ConvertToExerciseHours(List<Event> events)
 		{
 			var exerciseHours = new ObservableCollection<KeyValuePair<string, double>>();
 
 			if (events == null || !events.Any())
 			{
-				Console.WriteLine("No events found in the specified date range.");
+				//Debug.WriteLine("No events found in the specified date range.");
 				return exerciseHours;
 			}
 
 			var groupedExerciseHours = events
-	.Where(ev => !string.IsNullOrEmpty(ev.ExerciseType)) 
-	.GroupBy(ev => ev.ExerciseType)
-	.Select(group => new KeyValuePair<string, double>(group.Key, group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours)))
-	.ToList();
-
+				.Where(ev => !string.IsNullOrEmpty(ev.ExerciseType))
+				.GroupBy(ev => ev.ExerciseType)
+				.Select(group => new KeyValuePair<string, double>(group.Key, group.Sum(ev => (ev.EndTime - ev.StartTime).TotalHours)))
+				.ToList();
 
 			exerciseHours = new ObservableCollection<KeyValuePair<string, double>>(groupedExerciseHours);
 
 			return exerciseHours;
 		}
 
+		// Calculates total exercise hours by day
 		public void CalculateTotalExerciseByDay(List<Event> events)
 		{
 			TotalExerciseByDay = new ObservableCollection<ExerciseByDay>();
 
 			if (events == null || !events.Any())
 			{
-				Console.WriteLine("No events found in the specified date range.");
+				//Debug.WriteLine("No events found in the specified date range.");
 				OnPropertyChanged(nameof(TotalExerciseByDay));
 				return;
 			}
 
 			events = events.Where(ev => ev.StartTime.Date >= StartDate.Date && ev.EndTime.Date <= EndDate.Date).ToList();
 
-
 			var groupedByDate = events
-	.Where(ev => ev.EndTime.Date >= StartDate.Date && ev.StartTime.Date <= EndDate.Date) 
-	.GroupBy(ev => ev.StartTime.Date);
-
+				.Where(ev => ev.EndTime.Date >= StartDate.Date && ev.StartTime.Date <= EndDate.Date)
+				.GroupBy(ev => ev.StartTime.Date);
 
 			foreach (var group in groupedByDate)
 			{
@@ -162,14 +150,13 @@ namespace TraxAct.ViewModels
 
 				TotalExerciseByDay.Add(exerciseDay);
 
-				Console.WriteLine($"Exercise on {exerciseDay.Date.ToShortDateString()}: {exerciseDay.TotalExerciseHours} hours");
+				//Debug.WriteLine($"Exercise on {exerciseDay.Date.ToShortDateString()}: {exerciseDay.TotalExerciseHours} hours");
 			}
 
 			OnPropertyChanged(nameof(TotalExerciseByDay));
 		}
 
-
-
+		// Property changed event
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

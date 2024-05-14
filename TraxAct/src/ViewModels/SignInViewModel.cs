@@ -1,13 +1,10 @@
 ﻿using Firebase.Auth;
 using Firebase.Auth.Providers;
-using FirebaseAdmin;
-using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
+//using System.Diagnostics;
 using System.Windows.Input;
-using TraxAct.Views;
 using TraxAct.Services;
+using TraxAct.Views;
 
 namespace TraxAct.ViewModels
 {
@@ -15,6 +12,9 @@ namespace TraxAct.ViewModels
 	{
 		private readonly FirebaseAuthClient _authClient;
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public SignInViewModel()
 		{
 			var authConfig = new FirebaseAuthConfig
@@ -22,7 +22,7 @@ namespace TraxAct.ViewModels
 
 				ApiKey = "AIzaSyBCmctzgS7IOUNUKnorKAEpezbSaWrRL_Y",
 				AuthDomain = "localhost",
-				Providers = new FirebaseAuthProvider[] { new EmailProvider() }
+				Providers = new FirebaseAuthProvider[] { new EmailProvider() } ///Register Firebase Authentication
 			};
 
 			_authClient = new FirebaseAuthClient(authConfig);
@@ -33,6 +33,9 @@ namespace TraxAct.ViewModels
 			SignUpCommand = new Command(async () => await ExecuteSignUpAsync());
 		}
 
+		/// <summary>
+		/// Properties
+		/// </summary>
 		private string _email;
 		public string Email
 		{
@@ -58,11 +61,15 @@ namespace TraxAct.ViewModels
 		public ICommand SignInCommand { get; }
 		public ICommand SignUpCommand { get; }
 
+		/// <summary>
+		/// SignIn Method
+		/// </summary>
+		/// <returns></returns>
 		private async Task ExecuteSignInAsync()
 		{
-			Debug.WriteLine("ExecuteSignInAsync method started.");
+			//Debug.WriteLine("ExecuteSignInAsync method started.");
 
-			
+
 			if (!IsValidEmail(Email))
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", "Invalid email format. Please enter a valid email address.", "OK");
@@ -76,10 +83,10 @@ namespace TraxAct.ViewModels
 				if (user != null)
 				{
 					string userUid = user.User.Uid;
-					Debug.WriteLine($"User signed in successfully: {Email}, UID: {userUid}");
+					//Debug.WriteLine($"User signed in successfully: {Email}, UID: {userUid}");
 					UserService.Instance.SetCurrentUserUid(userUid);
 
-					Debug.WriteLine($"Current User ID: {UserService.Instance.GetCurrentUserUid()}");
+					//Debug.WriteLine($"Current User ID: {UserService.Instance.GetCurrentUserUid()}");
 
 					await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
 
@@ -88,7 +95,7 @@ namespace TraxAct.ViewModels
 			}
 			catch (FirebaseAuthException ex)
 			{
-				Debug.WriteLine($"Error during sign in: {ex.Message}");
+				//Debug.WriteLine($"Error during sign in: {ex.Message}");
 
 				if (ex.Message.Contains("INVALID_LOGIN_CREDENTIALS"))
 				{
@@ -96,7 +103,7 @@ namespace TraxAct.ViewModels
 				}
 				else if (ex.Message.Contains("MissingPassword"))
 				{
-					Debug.WriteLine("MissingPassword");
+					//Debug.WriteLine("MissingPassword");
 					await Application.Current.MainPage.DisplayAlert("Error", "Please enter password", "OK");
 				}
 				else
@@ -106,13 +113,18 @@ namespace TraxAct.ViewModels
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Unexpected error during sign in: {ex.Message}");
+				//Debug.WriteLine($"Unexpected error during sign in: {ex.Message}");
 				await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
 			}
 
-			Debug.WriteLine("ExecuteSignInAsync method completed.");
+			//Debug.WriteLine("ExecuteSignInAsync method completed.");
 		}
 
+		/// <summary>
+		/// Method to validate email format
+		/// </summary>
+		/// <param name="email"></param>
+		/// <returns></returns>
 		private bool IsValidEmail(string email)
 		{
 			try
@@ -126,19 +138,27 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-
-
+		/// <summary>
+		/// Method to execute sign in form
+		/// </summary>
+		/// <returns></returns>
 		private async Task ExecuteSignUpAsync()
 		{
 			await Shell.Current.GoToAsync($"//SignUp");
 		}
 
+		/// <summary>
+		/// Method to clear sign in form
+		/// </summary>
 		private void ClearForm()
 		{
 			Email = string.Empty;
 			Password = string.Empty;
 		}
 
+		/// <summary>
+		/// Method to handle property changes
+		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		protected virtual void OnPropertyChanged(string propertyName)

@@ -1,30 +1,34 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Syncfusion.Maui.Scheduler; // Importing necessary namespaces
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Linq;
-using System.Threading.Tasks;
-using Syncfusion.Maui.Core;
+using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
-using Syncfusion.Maui.Scheduler;
-using TraxAct.Views;
-using System.Windows.Input;
 
 namespace TraxAct.ViewModels
 {
+	// ViewModel class for handling the display of events on the timetable
 	public class TimetableViewModel : INotifyPropertyChanged
-
 	{
+		// Event handler for property changes
 		public event PropertyChangedEventHandler PropertyChanged;
-		private readonly UserService _userService;
-		public string UserId { get; }
-		public DateTime MinimumDateTime { get; set; }
-		public bool ShowNavigationArrows { get; set; }
-		public ICommand QueryAppointmentsCommand { get; set; }
-		public bool ShowBusyIndicator { get; set; }
 
+		// Readonly fields for UserService and DbContext
+		private readonly UserService _userService;
+		private readonly MyDbContext _dbContext;
+
+		// Properties for ViewModel
+		public string UserId { get; } 
+		public DateTime MinimumDateTime { get; set; } 
+		public bool ShowNavigationArrows { get; set; } 
+		public ICommand QueryAppointmentsCommand { get; set; } 
+		public bool ShowBusyIndicator { get; set; } 
+
+		/// <summary>
+		/// Property for storing the selected date
+		/// </summary>
 		private DateTime _selectedDate = DateTime.Today;
 		public DateTime SelectedDate
 		{
@@ -35,11 +39,14 @@ namespace TraxAct.ViewModels
 				{
 					_selectedDate = value;
 					OnPropertyChanged(nameof(SelectedDate));
-					_ = LoadEventsFromDatabase();
+					_ = LoadEventsFromDatabase(); // Loads events from the database when the selected date changes
 				}
 			}
 		}
 
+		/// <summary>
+		/// Property for storing the background color of events
+		/// </summary>
 		private Color _eventBackgroundColor;
 		public Color EventBackgroundColor
 		{
@@ -51,6 +58,9 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Collection to hold events displayed on the timetable
+		/// </summary>
 		private ObservableCollection<SchedulerAppointment> _events;
 		public ObservableCollection<SchedulerAppointment> Events
 		{
@@ -65,19 +75,25 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		public object UserService { get; }
-
-		private readonly MyDbContext _dbContext;
-
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="userService"></param>
 		public TimetableViewModel(UserService userService)
 		{
 			_userService = userService;
 			_dbContext = new MyDbContext();
 			Events = new ObservableCollection<SchedulerAppointment>();
 			UserId = _userService.GetCurrentUserUid();
-			MinimumDateTime = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc);
+			MinimumDateTime = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc); // Sets the minimum date
 		}
 
+		/// <summary>
+		/// Method to get events filtered by date range from the database
+		/// </summary>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
+		/// <returns></returns>
 		public async Task<List<Event>> GetEventsFilteredByDateRange(DateTime startDate, DateTime endDate)
 		{
 			List<Event> filteredEvents = new List<Event>();
@@ -102,49 +118,42 @@ namespace TraxAct.ViewModels
 			return filteredEvents;
 		}
 
+		/// <summary>
+		/// Method to load events from the database
+		/// </summary>
+		/// <returns></returns>
 		public async Task LoadEventsFromDatabase()
 		{
-			try
+			var events = await _dbContext.GetEventsByUserId(UserId);
+
+			if (events == null || !events.Any())
 			{
-				var events = await _dbContext.GetEventsByUserId(UserId);
-
-				if (events == null || !events.Any())
-				{
-					Debug.WriteLine("No events found for the specified UserId.");
-					return;
-				}
-
-				Events.Clear();
-				foreach (var ev in events)
-				{
-					Color backgroundColor = GetCategoryColor(ev.ExerciseType);
-
-					var schedulerAppointment = new SchedulerAppointment
-					{
-						Subject = ev.ExerciseType,
-						StartTime = ev.StartTime,
-						EndTime = ev.EndTime,
-						Id = ev.EventId,
-						Background = backgroundColor,
-						TextColor = Colors.Black
-					};
-
-					Events.Add(schedulerAppointment);
-
-					//Debug.WriteLine($"Event ID: {schedulerAppointment.Id}");
-					//Debug.WriteLine($"Event Subject: {schedulerAppointment.Subject}");
-					//Debug.WriteLine($"StartTime: {schedulerAppointment.StartTime}");
-					//Debug.WriteLine($"EndTime: {schedulerAppointment.EndTime}");
-				}
-
-				Debug.WriteLine($"Loaded {Events.Count} events from the database for user ID: {UserId}");
+				return;
 			}
-			catch (Exception ex)
+
+			Events.Clear();
+			foreach (var ev in events)
 			{
-				Debug.WriteLine($"Error loading events from the database: {ex.Message}");
+				Color backgroundColor = GetCategoryColor(ev.ExerciseType);
+
+				var schedulerAppointment = new SchedulerAppointment
+				{
+					Subject = ev.ExerciseType,
+					StartTime = ev.StartTime,
+					EndTime = ev.EndTime,
+					Id = ev.EventId,
+					Background = backgroundColor,
+					TextColor = Colors.Black
+				};
+
+				Events.Add(schedulerAppointment);
 			}
 		}
 
+		/// <summary>
+		/// Method to set event background color based on event type
+		/// </summary>
+		/// <param name="appointment"></param>
 		public static void OnEventRendered(SchedulerAppointment appointment)
 		{
 			if (appointment != null)
@@ -153,6 +162,11 @@ namespace TraxAct.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Method to get category color based on event type
+		/// </summary>
+		/// <param name="subject"></param>
+		/// <returns></returns>
 		public static Color GetCategoryColor(string subject)
 		{
 			return subject switch
@@ -171,11 +185,13 @@ namespace TraxAct.ViewModels
 			};
 		}
 
-
+		/// <summary>
+		/// Method to invoke property changed event
+		/// </summary>
+		/// <param name="propertyName"></param>
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-			Debug.WriteLine($"PropertyChanged event invoked for property: {propertyName}");
 		}
 	}
 }

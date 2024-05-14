@@ -1,18 +1,16 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+//using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
-using System.Globalization;
 using TraxAct.Views;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TraxAct.ViewModels
 {
 	public class EventEditViewModel : INotifyPropertyChanged
 	{
+		// Properties
 		private readonly MyDbContext _dbContext;
 		private Event _selectedEvent;
 
@@ -281,9 +279,16 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-
+		//Command to save changes
 		public ICommand SaveCommand { get; private set; }
 
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="dbContext"></param>
+		/// <param name="selectedEvent"></param>
+		/// <exception cref="ArgumentNullException"></exception>
 		public EventEditViewModel(MyDbContext dbContext, Event selectedEvent)
 		{
 			_dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
@@ -308,6 +313,10 @@ namespace TraxAct.ViewModels
 			};
 		}
 
+		/// <summary>
+		/// Can Execute command
+		/// </summary>
+		/// <returns></returns>
 		private bool CanExecuteSaveCommand()
 		{
 			DateTime startDateTime = StartDate.Date.Add(StartTime);
@@ -320,25 +329,28 @@ namespace TraxAct.ViewModels
 			IsExerciseTypeErrorVisible = !isValidExerciseType;
 			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
 
-			Debug.WriteLine($"User UID is valid: {isValidUserUid}");
-			Debug.WriteLine($"Start DateTime: {startDateTime}");
-			Debug.WriteLine($"End DateTime: {endDateTime}");
-			Debug.WriteLine($"End DateTime is after Start DateTime: {isEndTimeAfterStartTime}");
+			//Debug.WriteLine($"User UID is valid: {isValidUserUid}");
+			//Debug.WriteLine($"Start DateTime: {startDateTime}");
+			//Debug.WriteLine($"End DateTime: {endDateTime}");
+			//Debug.WriteLine($"End DateTime is after Start DateTime: {isEndTimeAfterStartTime}");
 
 			return isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
 		}
 
+		/// <summary>
+		/// Save Command execution
+		/// </summary>
 		private async void ExecuteSaveCommand()
 		{
 			try
 			{
-				Debug.WriteLine("Executing SaveCommand...");
+				//	Debug.WriteLine("Executing SaveCommand...");
 
 				DateTime startDateTime = StartDate.Date.Add(StartTime);
 				DateTime endDateTime = EndDate.Date.Add(EndTime);
 
-				Debug.WriteLine($"Start DateTime: {startDateTime}");
-				Debug.WriteLine($"End DateTime: {endDateTime}");
+				//Debug.WriteLine($"Start DateTime: {startDateTime}");
+				//Debug.WriteLine($"End DateTime: {endDateTime}");
 
 				SelectedEvent.Title = Subject;
 				SelectedEvent.ExerciseType = SelectedExerciseType;
@@ -348,11 +360,11 @@ namespace TraxAct.ViewModels
 				SelectedEvent.Reps = Reps;
 				SelectedEvent.Sets = Sets;
 
-				Debug.WriteLine("Updating SelectedEvent properties...");
+				//Debug.WriteLine("Updating SelectedEvent properties...");
 
 				await _dbContext.Update(SelectedEvent);
 
-				Debug.WriteLine("Event updated in the database.");
+				//Debug.WriteLine("Event updated in the database.");
 
 				await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
 
@@ -363,11 +375,14 @@ namespace TraxAct.ViewModels
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
 
-				Debug.WriteLine($"Error occurred during SaveCommand execution: {ex}");
+				//Debug.WriteLine($"Error occurred during SaveCommand execution: {ex}");
 			}
 		}
 
-
+		/// <summary>
+		/// Event handler for property change event
+		/// </summary>
+		/// <param name="propertyName"></param>
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
