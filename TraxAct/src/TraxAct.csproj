@@ -32,7 +32,7 @@
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		 <MauiSplashScreen Include="Resources\Splash\splash.svg" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -47,16 +47,10 @@
 	<ItemGroup>
 		<None Remove="Resources\Images\Activity.jpg" />
 		<None Remove="Resources\Images\addexercise.jpg" />
-		<None Remove="Resources\Images\analysis.jpg" />
-		<None Remove="Resources\Images\create.png" />
-		<None Remove="Resources\Images\details.png" />
 		<None Remove="Resources\Images\graphicon.png" />
 		<None Remove="Resources\Images\graphicon2.png" />
 		<None Remove="Resources\Images\homeicon.png" />
 		<None Remove="Resources\Images\logout.png" />
-		<None Remove="Resources\Images\timetable.jpg" />
-		<None Remove="Resources\Images\timetable2icon.png" />
-		<None Remove="Resources\Images\timetableicon.png" />
 		<None Remove="Resources\Images\timetableicon3.png" />
 		<None Remove="Resources\Images\timtableicon4.png" />
 		<None Remove="Resources\Images\traxactlogo.png" />
@@ -67,6 +61,10 @@
 	<ItemGroup>
 		<PackageReference Include="FirebaseAdmin" Version="2.4.1" />
 		<PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.17">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

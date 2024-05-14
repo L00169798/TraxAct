@@ -1,6 +1,4 @@
-using Firebase.Auth;
 using TraxAct.ViewModels;
-using TraxAct.Services;
 
 namespace TraxAct.Views
 {
@@ -8,6 +6,10 @@ namespace TraxAct.Views
 	{
 		private readonly SignUpViewModel _viewModel;
 
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public SignUpPage()
 		{
 			InitializeComponent();

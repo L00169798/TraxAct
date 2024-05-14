@@ -8,46 +8,52 @@
              BackgroundColor="White">
 
     <Grid>
+        <!-- Define a grid layout -->
 
         <Grid.RowDefinitions>
+            <!-- Define row definitions for the grid -->
             <RowDefinition Height="*" />
-            
+            <!-- First row takes remaining space -->
+
             <RowDefinition Height="Auto" />
-        
+            <!-- Second row takes height based on content -->
+
         </Grid.RowDefinitions>
 
-        
-        <scheduler:SfScheduler
-            x:Name="scheduler"
-            Grid.Row="0"
-            ShowWeekNumber="True"
-            FirstDayOfWeek="Monday"
-            AllowedViews="Day,Week,WorkWeek,Month,Agenda"
-            MinimumDateTime="{Binding MinimumDateTime, Mode=TwoWay}"
-            SelectedDate="{Binding SelectedDate}"
-            TodayHighlightBrush="DarkOrange"
-            AppointmentsSource="{Binding Events}"
-            QueryAppointmentsCommand="{Binding QueryAppointmentsCommand}"
-            ShowBusyIndicator="{Binding ShowBusyIndicator}"
-            View="Week"
-            AllowViewNavigation="True"
-            AllowAppointmentDrag="false"
-            Tapped="OnSchedulerTapped">
+        <!-- Syncfusion Scheduler control -->
+        <scheduler:SfScheduler 
+             x:Name="scheduler"
+             Grid.Row="0"
+             ShowWeekNumber="True"
+             FirstDayOfWeek="Monday"
+             AllowedViews="Day,Week,WorkWeek,Month,Agenda"
+             MinimumDateTime="{Binding MinimumDateTime, Mode=TwoWay}"
+             SelectedDate="{Binding SelectedDate}"
+             TodayHighlightBrush="DarkOrange"
+             AppointmentsSource="{Binding Events}"
+             QueryAppointmentsCommand="{Binding QueryAppointmentsCommand}"
+             ShowBusyIndicator="{Binding ShowBusyIndicator}"
+             View="Week"
+             AllowViewNavigation="True"
+             AllowAppointmentDrag="false"
+             Tapped="OnSchedulerTapped">
 
             <scheduler:SfScheduler.HeaderView>
+                <!-- Header view customization -->
                 <scheduler:SchedulerHeaderView Background="White" Height="60"/>
             </scheduler:SfScheduler.HeaderView>
             <scheduler:SfScheduler.CellSelectionView>
+                <!-- Cell selection view customization -->
                 <scheduler:SchedulerCellSelectionView Background="LightGray" CornerRadius="2"/>
             </scheduler:SfScheduler.CellSelectionView>
         </scheduler:SfScheduler>
 
-      
+        <!-- ImageButton to add new exercise -->
         <ImageButton 
             Source="addexercise.jpg"
             Grid.Row="0"
-             Clicked="OnCreateEventButtonClicked"
-             HorizontalOptions="End"
+            Clicked="OnCreateEventButtonClicked"
+            HorizontalOptions="End"
              VerticalOptions="End"
              HeightRequest="60"
              WidthRequest="200"

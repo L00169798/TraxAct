@@ -1,52 +1,54 @@
-﻿using System.Threading.Tasks;
-using Firebase.Auth;
-using FirebaseAdmin.Auth;
+﻿using FirebaseAdmin.Auth;
 
-public class FirebaseServices
+namespace TraxAct.Services
 {
-	private readonly FirebaseAuth _firebaseAuth;
-
-	public FirebaseServices()
+	/// <summary>
+	/// Provides services for interacting with Firebase Authentication.
+	/// </summary>
+	public class FirebaseServices
 	{
-		_firebaseAuth = FirebaseAuth.DefaultInstance;
-	}
+		private readonly FirebaseAuth _firebaseAuth;
 
-	public async Task<UserRecord> GetUserByUidAsync(string uid)
-	{
-		try
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FirebaseServices"/> class.
+		/// </summary>
+		public FirebaseServices()
 		{
-			return await _firebaseAuth.GetUserAsync(uid);
+			_firebaseAuth = FirebaseAuth.DefaultInstance;
 		}
-		catch (Exception ex)
+
+		/// <summary>
+		/// Retrieves a user record based on the specified UID asynchronously.
+		/// </summary>
+		/// <param name="uid">The UID of the user.</param>
+		/// <returns>A <see cref="UserRecord"/> object representing the user with the specified UID.</returns>
+		public async Task<UserRecord> GetUserByUidAsync(string uid)
 		{
-			Console.WriteLine($"Error fetching user by UID: {ex.Message}");
-			return null;
+			try
+			{
+				return await _firebaseAuth.GetUserAsync(uid);
+			}
+			catch
+			{
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Retrieves a user record based on the specified email asynchronously.
+		/// </summary>
+		/// <param name="email">The email address of the user.</param>
+		/// <returns>A <see cref="UserRecord"/> object representing the user with the specified email.</returns>
+		public async Task<UserRecord> GetUserByEmailAsync(string email)
+		{
+			try
+			{
+				return await _firebaseAuth.GetUserByEmailAsync(email);
+			}
+			catch 
+			{
+				return null;
+			}
 		}
 	}
-
-	public async Task<UserRecord> GetUserByEmailAsync(string email)
-	{
-		try
-		{
-			return await _firebaseAuth.GetUserByEmailAsync(email);
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Error fetching user by email: {ex.Message}");
-			return null;
-		}
-	}
-
-	//public async Task<UserRecord> GetUserByPhoneNumberAsync(string phoneNumber)
-	//{
-	//	try
-	//	{
-	//		return await _firebaseAuth.GetUserByPhoneNumberAsync(phoneNumber);
-	//	}
-	//	catch (Exception ex)
-	//	{
-	//		Console.WriteLine($"Error fetching user by phone number: {ex.Message}");
-	//		return null;
-	//	}
-	//}
 }

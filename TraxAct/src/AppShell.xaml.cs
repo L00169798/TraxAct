@@ -1,29 +1,49 @@
-﻿using Microsoft.Maui.Controls;
+﻿using TraxAct.Services;
 using TraxAct.Views;
-using TraxAct.Services;
 
 namespace TraxAct
 {
 	public partial class AppShell : Shell
 	{
+		private readonly UserService _userService;
 
-		public AppShell()
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="userService"></param>
+		public AppShell(UserService userService)
 		{
 			InitializeComponent();
+			Routing.RegisterRoute("HomePage", typeof(HomePage));
+			Routing.RegisterRoute("SignInPage", typeof(SignInPage));
+			Navigating += OnNavigating;
+
+			_userService = userService;
 		}
 
+		/// <summary>
+		/// Method to trigger signout method and disable flyout menu when navigating back to sign in page after logout
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private async void OnNavigating(object sender, ShellNavigatingEventArgs e)
+		{
+			var shell = (Shell)sender;
 
-	//private void RegisterRoutes()
-	//	{
-	//		Routing.RegisterRoute(nameof(TimetablePage), typeof(TimetablePage));
-	//		Routing.RegisterRoute(nameof(AnalysisPage), typeof(AnalysisPage));
-	//		Routing.RegisterRoute(nameof(EventDetailsPage), typeof(EventDetailsPage));
-	//		Routing.RegisterRoute(nameof(EventEditPage), typeof(EventEditPage));
-	//		Routing.RegisterRoute(nameof(EventFormPage), typeof(EventFormPage));
-	//		Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
-	//		Routing.RegisterRoute(nameof(SignInPage), typeof(SignInPage));
-	//		Routing.RegisterRoute(nameof(SignUpPage), typeof(SignUpPage));
-	//	}
-
+			if (e.Target.Location.OriginalString == "//SignInPage")
+			{
+				await _userService.SignOutAsync();
+				shell.FlyoutBehavior = FlyoutBehavior.Disabled;
+			}
+			else
+			{
+				shell.FlyoutBehavior = FlyoutBehavior.Flyout;
+			}
+		}
 	}
 }
+
+
+
+
+

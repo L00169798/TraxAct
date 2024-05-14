@@ -8,10 +8,13 @@ namespace TraxAct.Views;
 
 public partial class EventDetailsPage : ContentPage
 {
-    MyDbContext dbContext;
-    EventDetailsViewModel viewModel;
-    private Event eventItem;
+    readonly MyDbContext dbContext;
+    readonly EventDetailsViewModel viewModel;
 
+	/// <summary>
+	/// Constructor
+	/// </summary>
+	/// <param name="eventId"></param>
 	public EventDetailsPage(int eventId)
 	{
 		InitializeComponent();

@@ -8,7 +8,9 @@
 
 
     <ContentPage.Resources>
+        <!-- Define resources for the page -->
         <ResourceDictionary>
+            <!-- Style for orange buttons -->
             <Style TargetType="Button" x:Key="OrangeButtonStyle">
                 <Setter Property="BackgroundColor" Value="DarkOrange" />
                 <Setter Property="TextColor" Value="White" />
@@ -17,6 +19,7 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="Padding" Value="12,8" />
             </Style>
+            <!-- Style for heading labels -->
             <Style TargetType="Label" x:Key="HeadingLabelStyle">
                 <Setter Property="FontSize" Value="24" />
                 <Setter Property="FontAttributes" Value="Bold" />
@@ -28,33 +31,41 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
+        <!-- Define the content of the page -->
         <ScrollView>
+            <!-- ScrollView to enable scrolling for content -->
             <StackLayout Spacing="10" Padding="20">
+                <!-- StackLayout to hold content with padding and spacing -->
                 <Label Text="Sign Up" Style="{StaticResource HeadingLabelStyle}" HorizontalOptions="Start" Margin="10,20,40,20"/>
+                <!-- Heading label for sign up -->
                 <StackLayout>
+                    <!-- StackLayout for email input -->
                     <Label FontAttributes="Bold" Text="Email" TextColor="Black" Margin="0,30,0,0"/>
                     <Entry Margin="0,2,0,0" Text="{Binding Email}" TextColor="Black" />
                 </StackLayout>
 
-
                 <StackLayout>
+                    <!-- StackLayout for password input -->
                     <Label FontAttributes="Bold" Text="Password" TextColor="Black" />
                     <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding Password}" TextColor="Black" />
                     <Label Text="Passwords should be a minimum of 8 characters long with at least one uppercase letter and one lowercase letter. At least one digit (0-9) should be included." Style="{StaticResource HeadingLabelStyle}" IsVisible="{Binding IsExerciseTypeErrorVisible}" TextColor="Red" FontSize="12" />
                 </StackLayout>
 
                 <StackLayout>
+                    <!-- StackLayout for confirming password -->
                     <Label FontAttributes="Bold" Text="Confirm Password" TextColor="Black" />
                     <Entry Margin="0,2,0,0" IsPassword="True" Text="{Binding ConfirmPassword}" TextColor="Black" />
                 </StackLayout>
 
-                <Button Text="Sign Up" Command="{Binding SignUpCommand}"
-                    Style="{StaticResource OrangeButtonStyle}" 
-                    Margin="20,20,20,20"/>
+                <!-- Button for navigating to SignUp Page -->
+                <Button Text="Sign Up" Command="{Binding SignUpCommand}" 
+                     Style="{StaticResource OrangeButtonStyle}" 
+                     Margin="20,20,20,20"/>
 
-                <Button Text="Back to Sign In" Command="{Binding SignInCommand}"
-                    Style="{StaticResource OrangeButtonStyle}"
-                    Margin="20,0,20,20"/>
+                <!-- Button for navigating to Sign In page -->
+                    <Button Text="Back to Sign In" Command="{Binding SignInCommand}" 
+                         Style="{StaticResource OrangeButtonStyle}"
+                         Margin="20,0,20,20"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

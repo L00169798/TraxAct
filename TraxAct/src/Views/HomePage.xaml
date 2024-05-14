@@ -6,56 +6,64 @@
              Title="TraxAct"
              BackgroundColor="black">
 
+    <!-- Scrollable layout -->
     <ScrollView>
+        <!-- Grid layout to organize content -->
         <Grid>
+            <!-- Define two rows -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            
-            
 
+            <!-- Image in the first row -->
             <Image Source="traxactlogo2.png"
                    Aspect="Fill"
                    VerticalOptions="Fill"
                    HorizontalOptions="Fill"
-                   Margin="0,80,0,0"
+                   Margin="0,0,0,0"
                    Grid.Row="0" />
 
+            <!-- Frame containing buttons in the second row -->
             <Frame Grid.Row="1"
                    Padding="20"
                    CornerRadius="0" 
-                BackgroundColor="black">
+                   BackgroundColor="black">
 
+                <!-- Grid layout for buttons -->
                 <Grid>
+                    <!-- Define two columns -->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
+                    <!-- Button for Timetable in the first column -->
                     <Button Grid.Column="0"
                             Text="Timetable"
                             FontSize="16"
                             BackgroundColor="MediumPurple"
                             TextColor="Black"
-                            CornerRadius="20"
+                            CornerRadius="10"
                             Clicked="OnTimetableTapped"
                             FontAttributes="Bold"
-                            Margin="10,0,0,80"
-                            HeightRequest="10"  />
+                            Margin="10,0,10,10" 
+                            Padding="15,10,15,10"
+                            HeightRequest="50"/>
 
+                    <!-- Button for Analysis in the second column -->
                     <Button Grid.Column="1"
                             Text="Analysis"
                             FontSize="16"
                             BackgroundColor="DarkOrange"
                             TextColor="Black"
-                            CornerRadius="20"
+                            CornerRadius="10"
                             Clicked="OnAnalysisTapped"
                             FontAttributes="Bold"
-                            Margin="20,0,0,80"
-                            HeightRequest="10" />
+                            Margin="10,0,10,10" 
+                            Padding="15,10,15,10"
+                            HeightRequest="50"/>
 
-                     
                 </Grid>
             </Frame>
         </Grid>

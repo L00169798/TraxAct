@@ -1,139 +1,122 @@
-using System;
-using System.Diagnostics;
-using Microsoft.Maui.Controls;
 using Syncfusion.Maui.Scheduler;
-using Syncfusion.Maui.Core;
-using Microsoft.Maui.Controls;
-using TraxAct.Models;
-using TraxAct.ViewModels;
-using Firebase.Auth;
-using FirebaseAdmin.Auth;
 using TraxAct.Services;
+using TraxAct.ViewModels;
 
 namespace TraxAct.Views
 {
 	public partial class TimetablePage : ContentPage
 	{
 		private TimetableViewModel viewModel;
-		private DateTime selectedDateTime;
-		private FirebaseServices _firebaseServices;
+		private readonly DateTime selectedDateTime = DateTime.Now;
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public TimetablePage()
 		{
 			InitializeComponent();
-			_firebaseServices = new FirebaseServices();
 			this.Appearing += OnPageAppearing;
 		}
 
-		private void OnPageAppearing(object sender, EventArgs e)
+
+		/// <summary>
+		/// Method to handle page appearing event
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private async void OnPageAppearing(object sender, EventArgs e)
 		{
-			try
+			await LoadTimetableViewModel();
+		}
+
+		private async Task LoadTimetableViewModel()
+		{
+			var userService = UserService.Instance;
+
+			if (userService != null)
 			{
-				var userService = UserService.Instance;
+				viewModel = new TimetableViewModel(userService);
+				BindingContext = viewModel;
 
-				if (userService != null)
-				{
-					viewModel = new TimetableViewModel(userService);
-					BindingContext = viewModel;
-
-					viewModel.LoadEventsFromDatabase();
-
-					Debug.WriteLine($"Events count: {viewModel.Events.Count}");
-					foreach (var evt in viewModel.Events)
-					{
-						Debug.WriteLine($"Event Subject: {evt.Subject}, Start Time: {evt.StartTime}, End Time: {evt.EndTime}");
-					}
-				}
-				else
-				{
-					Debug.WriteLine("UserService instance is null.");
-				}
+				await viewModel.LoadEventsFromDatabase();
 			}
-			catch (Exception ex)
+			else
 			{
-				Debug.WriteLine($"Exception while loading events: {ex.Message}");
+				await Application.Current.MainPage.DisplayAlert("Error", "Please try again later.", "OK");
 			}
 		}
 
 
+		/// <summary>
+		/// Method to handle create event button click
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void OnCreateEventButtonClicked(object sender, EventArgs e)
 		{
 			await NavigateToEventFormPage(selectedDateTime);
 		}
 
-
+		/// <summary>
+		/// Method to navigate to event form page when create event button is clicked
+		/// </summary>
+		/// <param name="selectedDateTime"></param>
+		/// <returns></returns>
 		private async Task NavigateToEventFormPage(DateTime selectedDateTime)
 		{
-			try
-			{
 				if (viewModel?.Events?.Any(evt => evt.StartTime <= selectedDateTime && evt.EndTime > selectedDateTime) ?? false)
 				{
-					Debug.WriteLine("There are existing appointments in the selected timeslot. EventFormPage will not be opened.");
 					return;
 				}
 
 				if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
 				{
 					await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventFormPage());
-					Debug.WriteLine("Navigated to EventFormPage successfully.");
 				}
-				else
-				{
-					Debug.WriteLine("Shell navigation is not available. Navigation to EventFormPage failed.");
-				}
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine($"Error navigating to EventFormPage: {ex.Message}");
-			}
+			    else
+			    {
+				await Application.Current.MainPage.DisplayAlert("Error", "Navigation failed, Please try again later.", "OK");
+			    }
 		}
 
+		/// <summary>
+		/// Method to navigate to event details when scheduler is tapped
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void OnSchedulerTapped(object sender, SchedulerTappedEventArgs e)
 		{
-			try
-			{
-				
-				if (e.Appointments != null && e.Appointments.Any())
+				if (e.Appointments?.FirstOrDefault() is SchedulerAppointment selectedAppointment)
 				{
-					
-					var selectedAppointment = e.Appointments.First() as SchedulerAppointment;
-
-					if (selectedAppointment != null)
-					{
-						Debug.WriteLine($"Executing DetailsCommand for event: {selectedAppointment}");
-
-						
-						await NavigateToEventDetails((int)selectedAppointment.Id);
-					}
+					await NavigateToEventDetails((int)selectedAppointment.Id);
 				}
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine($"Error handling SchedulerTapped event: {ex.Message}");
-			}
+			    else
+			    {
+				await Application.Current.MainPage.DisplayAlert("Error", "Please try again later.", "OK");
+			    }
 		}
 
-		private async Task NavigateToEventDetails(int eventId)
+		/// <summary>
+		/// Method to navigate to event details page
+		/// </summary>
+		/// <param name="eventId"></param>
+		/// <returns></returns>
+		private static async Task NavigateToEventDetails(int eventId)
 		{
-			try
+			if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
 			{
-				if (Application.Current.MainPage is Shell shell && shell.CurrentItem?.CurrentItem?.CurrentItem?.Navigation != null)
-				{
-					await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventDetailsPage(eventId));
-					Debug.WriteLine($"Navigated to EventDetailsPage for event ID: {eventId}");
-				}
-				else
-				{
-					Debug.WriteLine("Shell navigation is not available. Navigation to EventDetailsPage failed.");
-				}
+				await shell.CurrentItem.CurrentItem.CurrentItem.Navigation.PushAsync(new EventDetailsPage(eventId));
 			}
-			catch (Exception ex)
+			else
 			{
-				Debug.WriteLine($"Error navigating to EventDetailsPage: {ex.Message}");
+				await Application.Current.MainPage.DisplayAlert("Error", "Navigation failed. Please try again later.", "OK");
 			}
 		}
 	}
 }
+	
+	
+
 
 
 

@@ -2,7 +2,9 @@
 
 namespace TraxAct.Models
 {
-
+	/// <summary>
+	/// User class properties
+	/// </summary>
 	[Table("user")]
 	public class User
 	{

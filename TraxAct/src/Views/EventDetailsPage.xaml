@@ -8,8 +8,10 @@
              Title="Workout Details"
              BackgroundColor="lightgray">
 
+    <!-- Resource dictionary for defining styles -->
     <ContentPage.Resources>
         <ResourceDictionary>
+            <!-- Style for labels -->
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="Black"/>
                 <Setter Property="FontFamily" Value="Arial"/>
@@ -18,6 +20,7 @@
                 <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
                 <Setter Property="Margin" Value="0,10"/>
             </Style>
+            <!-- Style for buttons -->
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="FontFamily" Value="Arial"/>
@@ -31,24 +34,21 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <!-- Scrollable layout -->
     <ScrollView>
+        <!-- Vertical stack layout to hold content -->
         <VerticalStackLayout Spacing="20" Padding="20">
-        <Label Text="Workout Details" FontSize="24" FontAttributes="Bold" />
-
-        <Label Text="{Binding SelectedEvent.Title}" FontSize="20" />
-
-        <Label Text="{Binding SelectedEvent.ExerciseType}" FontSize="18" />
-
-        <Label Text="{Binding SelectedEvent.StartTime, StringFormat='Start Date: {0:dd/MM/yy HH:mm}'}" />
-
-        <Label Text="{Binding SelectedEvent.EndTime, StringFormat='End Date: {0:dd/MM/yy HH:mm}'}" />
-
-        <Label Text="{Binding SelectedEvent.Reps, StringFormat='Reps: {0}'}" IsVisible="{Binding SelectedEvent.Reps}" />
-
-        <Label Text="{Binding SelectedEvent.Sets, StringFormat='Sets: {0}'}" IsVisible="{Binding SelectedEvent.Sets}" />
-
-        <Label Text="{Binding SelectedEvent.Distance, StringFormat='Distance: {0} km'}" IsVisible="{Binding SelectedEvent.Distance}" />
-
+            <!-- Title label -->
+            <Label Text="Workout Details" FontSize="24" FontAttributes="Bold" />
+            <!-- Labels for displaying workout details -->
+            <Label Text="{Binding SelectedEvent.Title}" FontSize="20" />
+            <Label Text="{Binding SelectedEvent.ExerciseType}" FontSize="18" />
+            <Label Text="{Binding SelectedEvent.StartTime, StringFormat='Start Date: {0:dd/MM/yy HH:mm}'}" />
+            <Label Text="{Binding SelectedEvent.EndTime, StringFormat='End Date: {0:dd/MM/yy HH:mm}'}" />
+            <Label Text="{Binding SelectedEvent.Reps, StringFormat='Reps: {0}'}" IsVisible="{Binding SelectedEvent.Reps}" />
+            <Label Text="{Binding SelectedEvent.Sets, StringFormat='Sets: {0}'}" IsVisible="{Binding SelectedEvent.Sets}" />
+            <Label Text="{Binding SelectedEvent.Distance, StringFormat='Distance: {0} km'}" IsVisible="{Binding SelectedEvent.Distance}" />
+            <!-- Grid layout for buttons -->
             <Grid ColumnDefinitions="*,*">
                 <Button Text="Edit" Command="{Binding EditCommand}" BackgroundColor="DarkOrange" Padding="10"
                         FontSize="16" />

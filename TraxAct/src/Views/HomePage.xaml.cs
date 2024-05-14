@@ -1,18 +1,15 @@
-﻿using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls;
-using TraxAct.Services;
-using TraxAct.ViewModels;
-using TraxAct.Models;
-using Firebase.Auth;
-using Syncfusion.Maui.Core.Carousel;
+﻿using TraxAct.ViewModels;
 
 namespace TraxAct.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HomePage : ContentPage
-    {
+	[XamlCompilation(XamlCompilationOptions.Compile)]
+	public partial class HomePage : ContentPage
+	{
 		private HomePageViewModel _viewModel;
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public HomePage()
 		{
 			InitializeComponent();
@@ -20,30 +17,24 @@ namespace TraxAct.Views
 			BindingContext = _viewModel;
 		}
 
+		/// <summary>
+		/// Method invoked when the page is appearing on the screen
+		/// </summary>
 		protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            Console.WriteLine("HomePage is appearing. The button should be interactable.");
-        }
+		{
+			base.OnAppearing();
+		}
 
-
-        private async void OnTimetableTapped(object sender, EventArgs e)
-        {
-            if (Navigation != null)
-            {
-                await Navigation.PushAsync(new TimetablePage());
-            }
-            else
-            {
-                await DisplayAlert("Error", "Navigation is not available.", "OK");
-            }
-        }
-
-		private async void OnAnalysisTapped(object sender, EventArgs e)
+		/// <summary>
+		/// Event handler for the timetable button
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private async void OnTimetableTapped(object sender, EventArgs e)
 		{
 			if (Navigation != null)
 			{
-				await Navigation.PushAsync(new AnalysisPage());
+				await Shell.Current.GoToAsync($"///{nameof(TimetablePage)}");
 			}
 			else
 			{
@@ -51,20 +42,23 @@ namespace TraxAct.Views
 			}
 		}
 
-		private async void OnLogoutButtonClicked(object sender, EventArgs e)
+		/// <summary>
+		/// Event handler for the analysis button
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private async void OnAnalysisTapped(object sender, EventArgs e)
 		{
-			if (_viewModel != null)
+			if (Navigation != null)
 			{
-				await _viewModel.OnLogoutButtonClickedAsync();
+				await Shell.Current.GoToAsync($"///{nameof(AnalysisPage)}");
 			}
 			else
 			{
-				Console.WriteLine("_viewModel is null");
+				await DisplayAlert("Error", "Navigation is not available.", "OK");
 			}
 		}
-
-
 	}
 }
-    
+
 

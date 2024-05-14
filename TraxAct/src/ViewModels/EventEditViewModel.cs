@@ -1,23 +1,22 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TraxAct.Models;
 using TraxAct.Services;
-using System.Globalization;
 using TraxAct.Views;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TraxAct.ViewModels
 {
 	public class EventEditViewModel : INotifyPropertyChanged
 	{
+		// Fields
 		private readonly MyDbContext _dbContext;
 		private Event _selectedEvent;
 
+		//Events
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		//Properties
 		private string _subject;
 		public string Subject
 		{
@@ -32,7 +31,6 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-
 		private string _selectedExerciseType;
 		public string SelectedExerciseType
 		{
@@ -44,21 +42,23 @@ namespace TraxAct.ViewModels
 					_selectedExerciseType = value;
 					OnPropertyChanged(nameof(SelectedExerciseType));
 
+					//Updates elements based on the selected exercise
 					UpdateDistanceVisibility();
 					UpdateRepsVisibility();
 					UpdateSetsVisibility();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
 				}
 			}
 		}
-
+		
+		//Additional fields base on selected exercise type
 		private void UpdateDistanceVisibility()
 		{
-			IsDistanceVisible = SelectedExerciseType == "Running";
+			IsDistanceVisible = SelectedExerciseType == "Running" || SelectedExerciseType == "Walking" || SelectedExerciseType == "Cycling";
 		}
 
 		private void UpdateRepsVisibility()
@@ -82,14 +82,13 @@ namespace TraxAct.ViewModels
 					_startDate = value;
 					OnPropertyChanged();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
 				}
 			}
 		}
-
 
 		private DateTime _endDate;
 		public DateTime EndDate
@@ -102,7 +101,7 @@ namespace TraxAct.ViewModels
 					_endDate = value;
 					OnPropertyChanged();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
@@ -121,7 +120,7 @@ namespace TraxAct.ViewModels
 					_startTime = value;
 					OnPropertyChanged();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
@@ -140,7 +139,7 @@ namespace TraxAct.ViewModels
 					_endTime = value;
 					OnPropertyChanged();
 
-					if (SaveCommand != null && SaveCommand is Command saveCommand)
+					if (SaveCommand is Command saveCommand)
 					{
 						saveCommand.ChangeCanExecute();
 					}
@@ -154,7 +153,9 @@ namespace TraxAct.ViewModels
 			get { return _distance; }
 			set
 			{
-				if (_distance != value)
+				double tolerance = 0.0001;
+
+				if (Math.Abs(_distance - value) > tolerance)
 				{
 					_distance = value;
 					OnPropertyChanged();
@@ -279,33 +280,52 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-
+		//Command to save changes
 		public ICommand SaveCommand { get; private set; }
 
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="dbContext"></param>
+		/// <param name="selectedEvent"></param>
+		/// <exception cref="ArgumentNullException"></exception>
 		public EventEditViewModel(MyDbContext dbContext, Event selectedEvent)
 		{
-			_dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-			SelectedEvent = selectedEvent ?? throw new ArgumentNullException(nameof(selectedEvent));
-
-			Subject = selectedEvent.Title;
-			SelectedExerciseType = selectedEvent.ExerciseType;
-			StartDate = selectedEvent.StartTime;
-			EndDate = selectedEvent.EndTime;
-			Distance = selectedEvent.Distance;
-			Reps = selectedEvent.Reps;
-			Sets = selectedEvent.Sets;
-
-			SaveCommand = new Command(ExecuteSaveCommand, CanExecuteSaveCommand);
-
-			PropertyChanged += (sender, args) =>
+			try
 			{
-				if (args.PropertyName == nameof(Subject) || args.PropertyName == nameof(SelectedExerciseType))
+				_dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+				SelectedEvent = selectedEvent ?? throw new ArgumentNullException(nameof(selectedEvent));
+
+				//Assign fields
+				Subject = selectedEvent.Title;
+				SelectedExerciseType = selectedEvent.ExerciseType;
+				StartDate = selectedEvent.StartTime;
+				EndDate = selectedEvent.EndTime;
+				Distance = selectedEvent.Distance;
+				Reps = selectedEvent.Reps;
+				Sets = selectedEvent.Sets;
+
+				SaveCommand = new Command(ExecuteSaveCommand, CanExecuteSaveCommand);
+
+				PropertyChanged += (sender, args) =>
 				{
-					((Command)SaveCommand).ChangeCanExecute();
-				}
-			};
+					if (args.PropertyName == nameof(Subject) || args.PropertyName == nameof(SelectedExerciseType))
+					{
+						((Command)SaveCommand).ChangeCanExecute();
+					}
+				};
+			}
+			catch 
+			{
+				Application.Current.MainPage.DisplayAlert("Error", "An error occurred during initialization. Please try again later.", "OK");
+			}
 		}
 
+		/// <summary>
+		/// Can Execute command
+		/// </summary>
+		/// <returns></returns>
 		private bool CanExecuteSaveCommand()
 		{
 			DateTime startDateTime = StartDate.Date.Add(StartTime);
@@ -315,30 +335,22 @@ namespace TraxAct.ViewModels
 			bool isValidUserUid = !string.IsNullOrWhiteSpace(UserService.Instance.GetCurrentUserUid());
 			bool isEndTimeAfterStartTime = endDateTime > startDateTime;
 
+			//Input validation check
 			IsExerciseTypeErrorVisible = !isValidExerciseType;
 			IsEndDateErrorVisible = !isEndTimeAfterStartTime;
-
-			bool canExecute = isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
-
-			Debug.WriteLine($"User UID is valid: {isValidUserUid}");
-			Debug.WriteLine($"Start DateTime: {startDateTime}");
-			Debug.WriteLine($"End DateTime: {endDateTime}");
-			Debug.WriteLine($"End DateTime is after Start DateTime: {isEndTimeAfterStartTime}");
 
 			return isValidExerciseType && isValidUserUid && isEndTimeAfterStartTime;
 		}
 
+		/// <summary>
+		/// Save Command execution
+		/// </summary>
 		private async void ExecuteSaveCommand()
 		{
 			try
 			{
-				Debug.WriteLine("Executing SaveCommand...");
-
 				DateTime startDateTime = StartDate.Date.Add(StartTime);
 				DateTime endDateTime = EndDate.Date.Add(EndTime);
-
-				Debug.WriteLine($"Start DateTime: {startDateTime}");
-				Debug.WriteLine($"End DateTime: {endDateTime}");
 
 				SelectedEvent.Title = Subject;
 				SelectedEvent.ExerciseType = SelectedExerciseType;
@@ -348,26 +360,24 @@ namespace TraxAct.ViewModels
 				SelectedEvent.Reps = Reps;
 				SelectedEvent.Sets = Sets;
 
-				Debug.WriteLine("Updating SelectedEvent properties...");
-
 				await _dbContext.Update(SelectedEvent);
-
-				Debug.WriteLine("Event updated in the database.");
 
 				await Application.Current.MainPage.DisplayAlert("Success", "Event updated successfully.", "OK");
 
+				//Navigate back to timetable after event is created
 				TimetablePage timetablePage = new TimetablePage();
 				await Application.Current.MainPage.Navigation.PushAsync(timetablePage);
 			}
 			catch (Exception ex)
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-
-				Debug.WriteLine($"Error occurred during SaveCommand execution: {ex}");
 			}
 		}
 
-
+		/// <summary>
+		/// Event handler for property change event
+		/// </summary>
+		/// <param name="propertyName"></param>
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
