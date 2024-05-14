@@ -152,16 +152,13 @@ namespace TraxAct.ViewModels
 			}
 		}
 
-		private double _distance = 0;
+		private double _distance;
 		public double Distance
 		{
 			get { return _distance; }
 			set
 			{
-				double tolerance = 0.0001;
-
-
-				if (Math.Abs(_distance - value) > tolerance)
+				if (Math.Abs(_distance - value) > double.Epsilon)
 				{
 					_distance = value;
 					OnPropertyChanged();

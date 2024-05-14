@@ -22,13 +22,6 @@ namespace TraxAct.Services
 		private readonly UserService _userService = new UserService();
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="MyDbContext"/> class.
-		/// </summary>
-		public MyDbContext()
-		{
-		}
-
-		/// <summary>
 		/// Initializes the SQLite database connection and creates necessary tables if they do not exist.
 		/// </summary>
 		private async Task Init()
@@ -209,9 +202,10 @@ namespace TraxAct.Services
 				var user = new User { UserId = userId };
 				await Database.InsertOrReplaceAsync(user);
 			}
-			catch
+			catch (Exception ex)
 			{
-				throw;
+				string errorMessage = "An error occurred while saving the user ID. Please try again later.";
+				throw new Exception(errorMessage, ex);
 			}
 		}
 

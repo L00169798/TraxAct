@@ -21,7 +21,7 @@ namespace TraxAct.ViewModels
 				//Register Firebase Authentication
 				ApiKey = "AIzaSyBCmctzgS7IOUNUKnorKAEpezbSaWrRL_Y",
 				AuthDomain = "localhost",
-				Providers = new FirebaseAuthProvider[] { new EmailProvider() } 
+				Providers = new FirebaseAuthProvider[] { new EmailProvider() }
 			};
 
 			_authClient = new FirebaseAuthClient(authConfig);
