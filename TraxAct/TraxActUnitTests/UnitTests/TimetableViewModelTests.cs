@@ -1,4 +1,5 @@
-﻿using TraxAct.Services;
+﻿using Microsoft.Maui.Graphics;
+using TraxAct.Services;
 using TraxAct.ViewModels;
 
 namespace TraxActUnitTests.UnitTests
