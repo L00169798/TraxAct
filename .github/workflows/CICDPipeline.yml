@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Build artifacts
         run: |
-          dotnet build --configuration Release
+          dotnet build TraxAct/src/TraxAct.csproj --c Release -f net7.0-android --no restore
           # Run unit tests
           dotnet test
          
