@@ -10,12 +10,10 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "Microsoft.NET.Sdk.Maui"
-        versions: [">=8.0.0-*"]
-      - dependency-name: "*"
-        versions: ["^7.*"]
-    open-pull-requests-limit: 10
+        versions: [">=8.0.0"]
     labels:
       - "dependencies"
     assignees:
       - "L00169798"
+
 
