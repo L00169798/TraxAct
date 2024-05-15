@@ -20,4 +20,4 @@ jobs:
       run: snyk auth ${{ secrets.SNYK_TOKEN }}
 
     - name: Test code with Snyk
-      run: snyk test /TraxAct/src
+      run: snyk test TraxAct
