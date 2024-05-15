@@ -19,8 +19,5 @@ jobs:
     - name: Authenticate with Snyk
       run: snyk auth ${{ secrets.SNYK_TOKEN }}
 
-    - name: Change directory to TraxAct
-      run: cd TraxAct
-
     - name: Test code with Snyk
-      run: snyk test --packages-folder= ..TraxAct/src/TraxAct.csproj
+      run: snyk test --packages-folder= ..TraxAct/src
