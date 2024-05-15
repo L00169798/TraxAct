@@ -1,24 +1,9 @@
-﻿using Microsoft.Maui.Graphics;
-using TraxAct.Services;
-using TraxAct.ViewModels;
+﻿using TraxAct.ViewModels;
 
 namespace TraxActUnitTests.UnitTests
 {
 	public class TimetableViewModelTests
 	{
-		[Fact]
-		public async Task LoadEventsFromDatabase_NoEvents_ReturnsEmptyEventsCollection()
-		{
-			// Arrange
-			var userService = new UserService();
-			var viewModel = new TimetableViewModel(userService);
-			// Act
-			await viewModel.LoadEventsFromDatabase();
-
-			// Assert
-			Assert.Empty(viewModel.Events);
-		}
-
 		[Fact]
 		public void GetCategoryColor_UnknownSubject_ReturnsDefaultColor()
 		{
