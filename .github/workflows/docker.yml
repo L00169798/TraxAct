@@ -46,7 +46,7 @@ jobs:
         dotnet build TraxAct/TraxAct.sln --configuration Debug  # Build the solution with Debug configuration without restoring packages
 
     - name: Build Docker image
-      run: docker build -t traxact-app .
+      run: docker build -t traxact-app . -f TraxAct/TraxAct.sln
 
     - name: Push Docker image to registry
       run: |
