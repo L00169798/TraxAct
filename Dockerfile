@@ -15,4 +15,4 @@ RUN dotnet build -c Release
 EXPOSE 80
 
 # Command to run the application
-ENTRYPOINT ["dotnet", "TraxAct.csproj"]
+ENTRYPOINT ["dotnet", "TraxAct\TraxAct\src\bin\Debug\net7.0\TraxAct.dll"]
