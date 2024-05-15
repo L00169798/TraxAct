@@ -1,5 +1,5 @@
 # Use the .NET MAUI base image
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0
 
 # Set the working directory inside the container
 WORKDIR /app
