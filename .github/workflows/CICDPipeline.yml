@@ -9,22 +9,10 @@ on:
       - master
 
 jobs:
-  code_review_feedback:
-    name: Code Review and Feedback
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Code linting and tests
-        run: | 
-          npm install
-          npm run lint
-          npm test
 
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-latest
-    needs: code_review_feedback
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
