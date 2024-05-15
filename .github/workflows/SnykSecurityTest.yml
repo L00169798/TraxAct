@@ -20,7 +20,7 @@ jobs:
       run: snyk auth ${{ secrets.SNYK_TOKEN }}
 
     - name: Change directory to TraxAct
-      run: cd TraxAct/TraxAct.sln
+      run: cd cd TraxAct/
 
     - name: Test code with Snyk
       run: snyk test
