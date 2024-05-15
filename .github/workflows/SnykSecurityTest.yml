@@ -23,4 +23,4 @@ jobs:
       run: cd TraxAct
 
     - name: Test code with Snyk
-      run: snyk test --file=TraxAct.sln
+      run: snyk test --packages-folder= ..TraxAct/src/TraxAct.csproj
