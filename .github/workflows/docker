@@ -2,7 +2,7 @@
 # It runs on push and pull requests targeting the master branch.
 # The workflow sets up the .NET environment, installs the Java Development Kit (JDK), and builds the project.
 
-name: Build and Test  
+name: Docker
 
 # Target pull and push requests to master branch
 on:
