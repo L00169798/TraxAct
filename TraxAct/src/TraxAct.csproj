@@ -27,6 +27,40 @@
 
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+	  <WarningLevel>3</WarningLevel>
+	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+	  <WarningsAsErrors />
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
+	  <WarningLevel>3</WarningLevel>
+	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+	  <WarningsAsErrors />
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.19041|AnyCPU'">
+	  <WarningLevel>3</WarningLevel>
+	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+	  <WarningLevel>3</WarningLevel>
+	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+	  <WarningsAsErrors />
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
+	  <WarningLevel>3</WarningLevel>
+	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+	  <WarningsAsErrors />
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.19041|AnyCPU'">
+	  <WarningLevel>3</WarningLevel>
+	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -78,13 +112,11 @@
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="25.1.39" />
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="25.1.37" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.18" />
 		<PackageReference Include="xunit" Version="2.8.0" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.0" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<Compile Update="Views\HomePage.xaml.cs">
 			<DependentUpon>HomePage.xaml</DependentUpon>
