@@ -1,5 +1,5 @@
 # Use the .NET MAUI base image
-FROM mcr.microsoft.com/dotnet/maui/sdk:latest AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN dotnet restore
 RUN dotnet build -c Release
 
 # Expose the port used by your application
-EXPOSE 8080
+EXPOSE 80
 
-# Run the application
-CMD ["dotnet", "run", "--urls", "http://0.0.0.0:8080"]
+# Command to run the application
+ENTRYPOINT ["dotnet", "TraxAct.csproj"]
