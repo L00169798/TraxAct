@@ -4,7 +4,7 @@
 
 Traxact is a cross-platform mobile application developed using .NET MAUI (Multi-platform App UI). It's designed to run on Android and Windows platforms supported by .NET MAUI. Traxact provides users with the ability to log physical activities and analyse data.
 
-![TraxAct Logo](images/traxact-logo.png)
+![TraxAct Logo](TraxAct/src/Resources/Images/traxactlogo2.png)
 
 ## Features
 
