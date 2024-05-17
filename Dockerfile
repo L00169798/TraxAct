@@ -5,11 +5,14 @@ WORKDIR /app
 # Copy the project files into the container
 COPY TraxAct/src/TraxAct.csproj ./
 
-# Restore dependencies and build the application
-dotnet workload restore  
-        dotnet restore  
-        dotnet workload install maui-android maui-windows  
-        dotnet build TraxAct/TraxAct.sln --configuration Release 
+# Restore dependencies
+RUN dotnet restore
+
+# Install .NET MAUI workloads (if needed)
+RUN dotnet workload install maui-android maui-windows
+
+# Build the application
+RUN dotnet build -c Release
 
 # Publish the application
 RUN dotnet publish -c Release -o out
@@ -20,4 +23,3 @@ WORKDIR /app
 COPY --from=build /app/out .
 EXPOSE 80
 ENTRYPOINT ["dotnet", "TraxAct.dll"]
-
