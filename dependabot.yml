@@ -1,14 +1,14 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
-    directory: "/TraxAct"
+    directory: "/TraxAct/src"
     schedule:
       interval: "weekly"
     ignore:
       - dependency-name: "Microsoft.NET.Sdk.WindowsDesktop"
         versions: ["5.0.*"]
   - package-ecosystem: "nuget"
-    directory: "/"
+    directory: "/TraxAct/src"
     schedule:
       interval: "weekly"
     allow:
