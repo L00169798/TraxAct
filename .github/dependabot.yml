@@ -15,3 +15,5 @@ updates:
       - dependency-name: "*"
         versions: ["[!8.*]"]
 
+on:
+  workflow_dispatch:
