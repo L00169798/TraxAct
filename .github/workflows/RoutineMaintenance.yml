@@ -14,20 +14,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Find Database File
-        run: |
-          echo "Searching for TraxActDB.db3..."
-          find . -type f -name "TraxActDB.db3" -exec ls -l {} \;
-
       - name: Database Backup
         run: |
-          DB_PATH=$(find . -type f -name "TraxActDB.db3" | head -n 1)
-          if [ -z "$DB_PATH" ]; then
-            echo "Database file not found!"
+          $DB_PATH = "AppData\Local\Packages\3a003566-6e7e-4bd4-bac7-51a8b9009baf_9zz4h110yvjzm\LocalState\TraxActDB.db3"
+          if (-not (Test-Path $DB_PATH)) {
+            Write-Error "Database file not found!"
             exit 1
-          fi
-          mkdir -p backups
-          cp "$DB_PATH" backups/database_$(date +'%Y%m%d_%H%M%S').db
+          }
+          New-Item -ItemType Directory -Force -Path backups
+          Copy-Item $DB_PATH -Destination "backups/database_$(Get-Date -Format 'yyyyMMdd_HHmmss').db"
    
       - name: Update Dependencies
         run: |
