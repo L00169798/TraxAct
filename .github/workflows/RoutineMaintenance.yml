@@ -16,12 +16,12 @@ jobs:
 
       - name: Find Database File
         run: |
-          echo "Searching for TraxActDB.db3..."
+          echo "Searching for TraxActDB2.db3..."
           find . -type f -name "TraxActDB.db3" -exec ls -l {} \;
 
       - name: Database Backup
         run: |
-          DB_PATH=$(find . -type f -name "TraxActDB.db3" | head -n 1)
+          DB_PATH=$(find . -type f -name "TraxActDB2.db3" | head -n 1)
           if [ -z "$DB_PATH" ]; then
             echo "Database file not found!"
             exit 1
