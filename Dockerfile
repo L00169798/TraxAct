@@ -8,7 +8,7 @@ COPY TraxAct/src/TraxAct.csproj ./
 # Restore dependencies
 RUN dotnet restore
 
-# Install .NET MAUI workloads (if needed)
+# Install .NET MAUI workloads
 RUN dotnet workload install maui-android maui-windows
 
 # Build the application
