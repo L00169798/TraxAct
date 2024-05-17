@@ -24,7 +24,7 @@ jobs:
       uses: actions/checkout@v4  
       
     - name: Setup .NET  
-      uses: actions/setup-dotnet@v1  
+      uses: actions/setup-dotnet@v4  
       with:
         # .NET version
         dotnet-version: '7.0.x'  
