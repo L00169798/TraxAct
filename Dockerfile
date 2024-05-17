@@ -6,8 +6,10 @@ WORKDIR /app
 COPY TraxAct/src/TraxAct.csproj ./
 
 # Restore dependencies and build the application
-RUN dotnet restore
-RUN dotnet build -c Release
+dotnet workload restore  
+        dotnet restore  
+        dotnet workload install maui-android maui-windows  
+        dotnet build TraxAct/TraxAct.sln --configuration Release 
 
 # Publish the application
 RUN dotnet publish -c Release -o out
