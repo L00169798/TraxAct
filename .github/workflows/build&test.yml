@@ -31,7 +31,9 @@ jobs:
       run: dotnet restore TraxAct/src/TraxAct.csproj
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore TraxAct/src/TraxAct.csproj
+      run: | 
+       dotnet workload install maui-android maui-windows  # Install .NET MAUI workloads for Android and Windows
+       dotnet build --configuration Release --no-restore TraxAct/src/TraxAct.csproj
 
     - name: Test
       run: dotnet test --no-restore --verbosity normal TraxAct/src/TraxAct.csproj
