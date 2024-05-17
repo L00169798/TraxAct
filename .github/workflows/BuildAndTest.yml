@@ -39,9 +39,7 @@ jobs:
 
     # Build the project
     - name: Build  
-      run: |  
-        dotnet workload restore  # Restore .NET workloads
-        dotnet restore  # Restore NuGet packages
+      run: | 
         dotnet workload install maui-android maui-windows  # Install .NET MAUI workloads for Android and Windows
         dotnet build TraxAct/TraxAct.sln --configuration Debug  # Build the solution with Debug configuration without restoring packages
       
