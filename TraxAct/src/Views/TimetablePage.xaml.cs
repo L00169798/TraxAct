@@ -90,10 +90,6 @@ namespace TraxAct.Views
 				{
 					await NavigateToEventDetails((int)selectedAppointment.Id);
 				}
-			    else
-			    {
-				await Application.Current.MainPage.DisplayAlert("Error", "Please try again later.", "OK");
-			    }
 		}
 
 		/// <summary>

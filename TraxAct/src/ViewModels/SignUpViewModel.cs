@@ -133,7 +133,7 @@ namespace TraxAct.ViewModels
 		/// Sign In method
 		/// </summary>
 		/// <returns></returns>
-		private async Task ExecuteSignInAsync()
+		private static async Task ExecuteSignInAsync()
 		{
 			try
 			{
