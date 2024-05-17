@@ -13,39 +13,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-    
+      - name: Find Database File
+        run: |
+          echo "Searching for TraxActDB.db3..."
+          find . -type f -name "TraxActDB.db3" -exec ls -l {} \;
+
       - name: Database Backup
         run: |
-          mkdir backups
-          cp AppData\Local\Packages\3a003566-6e7e-4bd4-bac7-51a8b9009baf_9zz4h110yvjzm\LocalState\TraxActDB.db3 backups/database_$(date +'%Y%m%d_%H%M%S').db
-
+          DB_PATH=$(find . -type f -name "TraxActDB.db3" | head -n 1)
+          if [ -z "$DB_PATH" ]; then
+            echo "Database file not found!"
+            exit 1
+          fi
+          mkdir -p backups
+          cp "$DB_PATH" backups/database_$(date +'%Y%m%d_%H%M%S').db
    
       - name: Update Dependencies
         run: |
           dotnet restore
           dotnet nuget update -p
-
     
       - name: Health Check
         run: |
+          DB_PATH=$(find . -type f -name "TraxActDB.db3" | head -n 1)
+          if [ -z "$DB_PATH" ]; then
+            echo "Database file not found!"
+            exit 1
+          fi
           echo "Checking SQLite database connection..."
-          sqlite3 AppData\Local\Packages\3a003566-6e7e-4bd4-bac7-51a8b9009baf_9zz4h110yvjzm\LocalState\TraxActDB.db3 ".tables"
-
+          sqlite3 "$DB_PATH" ".tables"
         
-          echo "Verifying Syncfusion Scheduler component..."
-        
+          echo "Verifying Syncfusion Scheduler component...
 
-   
-      - name: Cleanup
-        run: |
-          rm -rf backups 
-
-      
       - name: Send Notification
         if: always()
         run: |
-          echo "Routine maintenance completed successfully!"
-          echo "Sending notification via email..."
-          echo "Routine maintenance for your application has been completed successfully." | mailx -s "Routine Maintenance Complete" L00169798@atu.ie
+          echo "Routine maintenance completed successfully!" | mail -s "Routine Maintenance Completed" L00169798@atu.iee
          
 
