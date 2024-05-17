@@ -18,22 +18,22 @@ jobs:
   build:
     runs-on: windows-latest  
 
-# Checkout the repository code
+    # Checkout the repository code
     steps:
     - name: Checkout code  
-      uses: actions/checkout@v2  
+      uses: actions/checkout@v4  
       
     - name: Setup .NET  
-      uses: actions/setup-dotnet@v1  
+      uses: actions/setup-dotnet@v4  
       with:
-      # .NET version
+        # .NET version
         dotnet-version: '7.0.x'  
 
     # Install the JDK
     - name: Install JDK  
-      uses: actions/setup-java@v2 
+      uses: actions/setup-java@v4 
       with:
-      # Specify distribution and version
+        # Specify distribution and version
         distribution: 'adopt'  
         java-version: '11'     
 
@@ -44,7 +44,7 @@ jobs:
         dotnet restore  # Restore NuGet packages
         dotnet workload install maui-android maui-windows  # Install .NET MAUI workloads for Android and Windows
         dotnet build TraxAct/TraxAct.sln --configuration Debug  # Build the solution with Debug configuration without restoring packages
-
+      
     # Run .NET Code Analysis
     - name: Run Code Analysis
       run: dotnet build /p:ReportAnalyzer=true TraxAct/TraxAct.sln
@@ -54,9 +54,11 @@ jobs:
       run: |
         dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
 
+    # Build Docker image
     - name: Build Docker image
       run: docker build -t traxact-app .
 
+    # Push Docker image to registry
     - name: Push Docker image to registry
       run: |
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin

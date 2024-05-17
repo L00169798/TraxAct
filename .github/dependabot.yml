@@ -1,10 +1,9 @@
 version: 2
 updates:
-  - package-ecosystem: "dotnet"
+
+  # Maintain GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-    ignore:
-      - dependency-name: "*"
-        versions: ["<7.0.0"]
-      - dependency-type: "all"
+      interval: "daily"
+    open-pull-requests-limit: 10
