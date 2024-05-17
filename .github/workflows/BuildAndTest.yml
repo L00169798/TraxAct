@@ -55,7 +55,7 @@ jobs:
         dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
 
     - name: Build Docker image
-      run: docker build -t traxact-app TraxAct/
+      run: docker build -t traxact-app .
 
     - name: Push Docker image to registry
       run: |
