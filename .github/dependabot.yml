@@ -1,10 +1,17 @@
 version: 2
 updates:
-  - package-ecosystem: "dotnet"
+  - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "weekly"
     ignore:
+      - dependency-name: "Microsoft.NET.Sdk.WindowsDesktop"
+        versions: ["5.0.*"]
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    allow:
       - dependency-name: "*"
-        versions: ["<7.0.0"]
-      - dependency-type: "all"
+        versions: ["[!8.*]"]
+
