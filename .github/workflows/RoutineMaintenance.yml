@@ -3,6 +3,7 @@ name: Routine Maintenance
 on:
   schedule:
     - cron: '0 2 * * *' 
+  workflow_dispatch: # Adding workflow_dispatch for on-demand trigger
 
 jobs:
   maintenance:
@@ -49,6 +50,3 @@ jobs:
         if: always()
         run: |
           echo "Routine maintenance completed successfully!" | mail -s "Routine Maintenance Completed" L00169798@atu.iee
-         
-         
-
