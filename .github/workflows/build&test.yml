@@ -27,9 +27,6 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Install dependencies
-      run: dotnet restore TraxAct/src/TraxAct.csproj
-
     - name: Build
       run: | 
        dotnet workload install maui-android maui-windows  # Install .NET MAUI workloads for Android and Windows
