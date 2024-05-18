@@ -50,6 +50,7 @@ jobs:
 
     # Build Docker image
     - name: Build Docker image
+      working-directory: TraxAct 
       run: docker build -t traxact-app .
 
     # Push Docker image to registry
