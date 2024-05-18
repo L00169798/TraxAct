@@ -5,6 +5,7 @@ WORKDIR /app
 # Copy the project files into the container
 COPY TraxAct.sln ./
 COPY src/ ./src/
+COPY TraxActUnitTests/ ./TraxActUnitTests/
 
 # Restore dependencies
 RUN dotnet restore
