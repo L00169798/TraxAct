@@ -8,7 +8,7 @@ COPY src/ ./src/
 COPY TraxActUnitTests/ ./TraxActUnitTests/
 
 # Ensure permissions before installing workloads
-RUN chmod -R 777 /usr/share/dotnet/sdk-manifests
+RUN icacls "C:\Program Files\dotnet\sdk-manifests\7.0.100\microsoft.net.sdk.android\WorkloadManifest.json" /grant Everyone:F
 
 # Install the required .NET MAUI workloads
 RUN dotnet workload install maui
