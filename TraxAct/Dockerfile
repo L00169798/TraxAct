@@ -3,8 +3,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
 # Copy the project files into the container
-COPY TraxAct/TraxAct.sln ./TraxAct
-COPY TraxAct/src/TraxAct.csproj ./src/
+COPY TraxAct.sln ./
+COPY src/ ./src/
 
 # Restore dependencies
 RUN dotnet restore
