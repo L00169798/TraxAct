@@ -3,8 +3,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
 # Copy the project files into the container
-COPY TraxAct.sln ./TraxAct.sln
-COPY src/TraxAct/TraxAct.csproj ./TraxAct/TraxAct.csproj
+COPY TraxAct.sln ./
+COPY src/ ./src/
 
 # Restore dependencies
 RUN dotnet workload install maui-android maui-windows
