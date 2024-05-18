@@ -7,6 +7,9 @@ COPY TraxAct.sln ./
 COPY src/ ./src/
 COPY TraxActUnitTests/ ./TraxActUnitTests/
 
+# Ensure permissions before installing workloads
+RUN chmod -R 777 /usr/share/dotnet/sdk-manifests
+
 # Install the required .NET MAUI workloads
 RUN dotnet workload install maui
 RUN dotnet workload restore
