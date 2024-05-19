@@ -44,16 +44,12 @@ jobs:
           dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
 
       - name: Build Docker image
-        working-directory: TraxAct
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+         GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          # Convert repository name to lowercase
-          $GITHUB_REPOSITORY_LOWERCASE = $env:GITHUB_REPOSITORY.ToLower()
-    
-          echo $GH_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker build -t traxact-app .
-          docker tag traxact-app ghcr.io/${GITHUB_REPOSITORY_LOWERCASE}/traxact-app:latest
+         echo $GH_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+         docker build -t traxact-app TraxAct/
+         docker tag traxact-app ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/traxact-app:latest
           
       - name: Push Docker image to registry
         run: |
