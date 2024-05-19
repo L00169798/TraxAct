@@ -37,7 +37,7 @@ jobs:
 
       - name: Build and Run Code Analysis
         run: |
-          dotnet build TraxAct/TraxAct.sln --configuration Releease /p:ReportAnalyzer=true
+          dotnet build TraxAct/TraxAct.sln --configuration Release /p:ReportAnalyzer=true
 
       - name: Run Tests
         run: |
