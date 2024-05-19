@@ -51,7 +51,7 @@ jobs:
 
 
     - name: Install .NET MAUI workloads
-      run: dotnet workload install
+      run: dotnet workload install maui
 
     - name: Build the code
       shell: bash
