@@ -45,7 +45,7 @@ jobs:
         working-directory: TraxAct
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_REPOSITORY_LOWERCASE: ${{ github.repository | lower }}
+          GITHUB_REPOSITORY_LOWERCASE: ${{ github.repository }}
         run: |
           echo $GH_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker build -t traxact-app .
