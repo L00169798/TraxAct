@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
 # Install MAUI Workloads
-RUN dotnet workload install maui-android maui-windows maui-tizen
+RUN dotnet workload install maui
 
 # Copy the project files into the container
 COPY TraxAct.sln ./
