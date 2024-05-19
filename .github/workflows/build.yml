@@ -24,7 +24,14 @@ jobs:
         #dotnet-version: ['7.0.x','8.0.x']
         dotnet-version: ['7.0.x']
 
+      
+
     steps:
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '11'
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup .NET
