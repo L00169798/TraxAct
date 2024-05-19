@@ -33,7 +33,7 @@ jobs:
 
       - name: Build and Run Code Analysis
         run: |
-          dotnet workload install maui-android maui-windows
+          dotnet workload install maui-android maui-windows maui-tizen
 
           dotnet build TraxAct/TraxAct.sln --configuration Debug /p:ReportAnalyzer=true
 
@@ -44,13 +44,15 @@ jobs:
       - name: Build Docker image
         working-directory: TraxAct
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_REPOSITORY_LOWERCASE: ${{ github.repository }}
+         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+         GITHUB_REPOSITORY_LOWERCASE: ${{ github.repository }}
         run: |
-          echo $GH_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker build -t traxact-app .
-          docker tag traxact-app ghcr.io/${{ env.GITHUB_REPOSITORY_LOWERCASE }}/traxact-app:latest
-
+         # Convert repository name to lowercase
+         GITHUB_REPOSITORY_LOWERCASE=$(echo "${GITHUB_REPOSITORY_LOWERCASE}" | tr '[:upper:]' '[:lower:]')
+    
+         echo $GH_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+         docker build -t traxact-app .
+         docker tag traxact-app ghcr.io/${GITHUB_REPOSITORY_LOWERCASE}/traxact-app:latest
 
       - name: Push Docker image to registry
         run: |
