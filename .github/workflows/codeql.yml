@@ -11,8 +11,8 @@ on:
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    runs-on: windows-latest
+    timeout-minutes: 360
     permissions:
       security-events: write
       packages: read
@@ -25,31 +25,45 @@ jobs:
         include:
         - language: csharp
           build-mode: manual
-          
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
       with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
+        dotnet-version: '7.0.x'
+        
+    - name: Install JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'adopt'
+        java-version: '11'
 
-    - if: matrix.build-mode == 'manual'
-      name: Build the code
+    - name: Install Android SDK
+      run: choco install -y android-sdk
+
+    - name: Set up Android SDK
+      run: |
+        echo "ANDROID_SDK_ROOT=C:\\Program Files (x86)\\Android\\android-sdk" >> $GITHUB_ENV
+        echo "PATH=$PATH:$ANDROID_SDK_ROOT\\tools:$ANDROID_SDK_ROOT\\platform-tools" >> $GITHUB_ENV
+
+    - name: Install .NET MAUI workloads
+      run: dotnet workload install maui-android maui-windows
+
+    - name: Build the code
       shell: bash
       run: |
-        # Install .NET
-        dotnet workload install maui-android maui-windows
-        
-        # Build the project
         dotnet build TraxAct/TraxAct.sln --configuration Debug /p:ReportAnalyzer=true
-        
-        # Run tests
-        dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
-        
-        # Build Docker image
+
+    - name: Run tests
+      run: dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
+
+    - name: Build Docker image
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
         echo $GH_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
         docker build -t traxact-app TraxAct/
         docker tag traxact-app ghcr.io/${{ github.repository }}/traxact-app:latest
