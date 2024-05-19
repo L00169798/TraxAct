@@ -6,7 +6,7 @@ WORKDIR /app
 USER root
 
 # Install MAUI Workloads (if required)
-RUN dotnet workload install maui-windows
+RUN dotnet workload install maui
 
 # Copy the project files into the container
 COPY TraxAct.sln ./
