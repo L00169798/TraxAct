@@ -48,10 +48,14 @@ jobs:
       run: |
         dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
 
-    # Build Docker image
     - name: Build Docker image
       working-directory: TraxAct 
-      run: docker build -t traxact-app .
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        echo $GH_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        docker build -t traxact-app .
+        docker tag traxact-app ghcr.io/${{ github.repository }}/traxact-app:latest
 
     # Push Docker image to registry
     - name: Push Docker image to registry
