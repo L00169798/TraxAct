@@ -15,6 +15,8 @@ RUN dotnet restore
 RUN dotnet build --no-restore -c Release
 RUN dotnet publish --no-restore -c Release -o out
 
+RUN chmod -R 755 /app/out
+
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
