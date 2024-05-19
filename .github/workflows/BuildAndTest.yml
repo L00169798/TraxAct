@@ -51,6 +51,7 @@ jobs:
           docker build -t traxact-app .
           docker tag traxact-app ghcr.io/${{ env.GITHUB_REPOSITORY_LOWERCASE }}/traxact-app:latest
 
+
       - name: Push Docker image to registry
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
