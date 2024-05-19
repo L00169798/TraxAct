@@ -56,7 +56,7 @@ jobs:
     - name: Build the code
       shell: bash
       run: |
-       dotnet build TraxAct/TraxAct.csproj --configuration Debug --p:ReportAnalyzer=true
+       dotnet build TraxAct/src/TraxAct.csproj --configuration Debug --p:ReportAnalyzer=true
 
     - name: Build Docker image
       env:
