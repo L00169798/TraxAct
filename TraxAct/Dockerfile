@@ -7,9 +7,6 @@ COPY TraxAct.sln ./
 COPY src/ ./src/
 COPY TraxActUnitTests/ ./TraxActUnitTests/
 
-# Install required workloads for Windows and Android
-RUN dotnet workload install maui-windows maui-android
-
 # Restore, build, and publish commands
 RUN dotnet restore
 RUN dotnet build --no-restore -c Release
