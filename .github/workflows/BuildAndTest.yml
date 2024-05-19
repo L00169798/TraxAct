@@ -34,12 +34,12 @@ jobs:
       - name: Install .NET MAUI workloads
         run: |
           dotnet workload install maui-android maui-windows maui-tizen
-
+          
       - name: Build and Run Code Analysis
         run: |
           dotnet clean
           dotnet build TraxAct/TraxAct.sln /p:ReportAnalyzer=true
-
+          
       - name: Run Tests
         run: |
           dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
@@ -49,7 +49,7 @@ jobs:
          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
          echo $GH_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-         docker build -t traxact-app TraxAct/
+         docker build -t traxact-app .
          docker tag traxact-app ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/traxact-app:latest
           
       - name: Push Docker image to registry
@@ -76,10 +76,9 @@ jobs:
 
     - name: Build the code
       run: |
-        # Add the commands to build your code
-        dotnet workload install maui
+        dotnet workload install maui-android maui-windows maui-tizen
         dotnet build TraxAct/TraxAct.sln --configuration Release
-
+        
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
 
@@ -113,3 +112,5 @@ jobs:
       - name: Deploy to production environment
         run: |
           echo "Deploying to production environment..."
+          # Add deployment scripts/commands here
+
