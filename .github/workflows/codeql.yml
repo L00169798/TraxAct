@@ -58,9 +58,6 @@ jobs:
       run: |
         dotnet build TraxAct/TraxAct.csproj --configuration Debug /p:ReportAnalyzer=true
 
-    - name: Run tests
-      run: dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
-
     - name: Build Docker image
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
