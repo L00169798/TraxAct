@@ -48,6 +48,7 @@ jobs:
         run: |
           icacls "C:\Program Files\dotnet\sdk-manifests\7.0.100\microsoft.net.sdk.android\WorkloadManifest.json" /grant Everyone:(F)
 
+
       - name: Login to GitHub Container Registry
         run: |
           echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
