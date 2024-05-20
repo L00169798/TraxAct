@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [android, windows]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -23,22 +23,11 @@ jobs:
         with:
           dotnet-version: 7.x
 
-      - name: Install MAUI Workload
-        run: dotnet workload install maui
-
       - name: Install Dependencies
         run: dotnet restore
 
       - name: Build Solution
         run: dotnet build --configuration Release
-
-      - name: Build MAUI App
-        if: matrix.os == 'android'
-        run: dotnet build -t:Run -f net7.0-android
-
-      - name: Build Windows App
-        if: matrix.os == 'windows'
-        run: dotnet build -t:Run -f net7.0-windows
 
       - name: Archive Artifacts
         if: success()
