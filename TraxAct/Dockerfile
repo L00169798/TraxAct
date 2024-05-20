@@ -11,7 +11,6 @@ USER ContainerUser
 
 # Copy the project files into the container
 COPY TraxAct/TraxAct.sln ./TraxAct/
-COPY src/ ./src/
 
 # Restore, build, and publish commands
 RUN dotnet restore
