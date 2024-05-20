@@ -67,8 +67,7 @@ jobs:
 
     - name: Build the code
       run: |
-        dotnet workload install maui
-        dotnet build TraxAct/TraxAct.sln --configuration Release
+       dotnet build TraxAct/TraxAct.sln --configuration Release
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
@@ -104,5 +103,3 @@ jobs:
         run: |
           echo "Deploying to production environment..."
           # Add deployment scripts/commands here
-
-
