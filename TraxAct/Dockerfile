@@ -2,8 +2,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY TraxAct/src/*.csproj .TraxAct/src/
-RUN dotnet restore TraxAct/src/*.csproj .TraxAct/src/
+COPY TraxAct/src/*.csproj ./TraxAct/src/
+RUN for file in ./TraxAct/src/*.csproj; do dotnet restore "$file"; done
 
 # Copy everything else and build
 COPY . ./
