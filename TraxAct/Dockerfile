@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY TraxAct/src/*.csproj .TraxAct/src/
-RUN dotnet restore
+RUN dotnet restore TraxAct/src/TraxAct.csproj
 
 # Copy everything else and build
 COPY . ./
