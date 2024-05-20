@@ -76,7 +76,6 @@ jobs:
       - name: Deploy to development environment
         run: |
           echo "Deploying to development environment..."
-          # Add deployment scripts/commands here
 
   deploy_to_staging:
     name: Deploy to Staging
@@ -87,7 +86,6 @@ jobs:
       - name: Deploy to staging environment
         run: |
           echo "Deploying to staging environment..."
-          # Add deployment scripts/commands here
 
   deploy_to_prod:
     name: Deploy to Production
@@ -98,4 +96,3 @@ jobs:
       - name: Deploy to production environment
         run: |
           echo "Deploying to production environment..."
-          # Add deployment scripts/commands here
