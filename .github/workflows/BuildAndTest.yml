@@ -65,6 +65,9 @@ jobs:
        dotnet workload install dotnet maui
        dotnet build TraxAct/TraxAct.sln --configuration Release
 
+    - name: Run Roslyn Analyzers
+      run: dotnet roslyn-analyzers analyze TraxAct/TraxAct.sln
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
 
