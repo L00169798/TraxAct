@@ -31,12 +31,7 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Clean Up Existing Workloads
-        run: |
-          dotnet workload uninstall maui --skip-manifest-update
-          dotnet workload clean
-
-      - name: Install .NET MAUI workloads with Elevated Privileges
+      - name: Install .NET MAUI
         run: |
           dotnet workload install maui
 
