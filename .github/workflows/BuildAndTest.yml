@@ -62,7 +62,7 @@ jobs:
 
     - name: Build the code
       run: |
-       dotnet workload install dotnet maui
+       dotnet workload install maui
        dotnet build TraxAct/TraxAct.sln --configuration Release
 
     - name: Run Roslyn Analyzers
