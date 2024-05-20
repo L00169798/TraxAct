@@ -2,6 +2,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
+dotnet workloads install maui
+
 # Copy the project files into the container
 COPY TraxAct.sln ./
 COPY src/ ./src/
