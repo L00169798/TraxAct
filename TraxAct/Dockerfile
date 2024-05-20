@@ -1,9 +1,11 @@
-# Use the .NET SDK base image
+# Use the .NET SDK base image (Windows variant)
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
-# Create a non-root user and group
-RUN groupadd -r appgroup && useradd -r -g appgroup appuser
+# Create a non-root user and group using PowerShell
+SHELL ["powershell", "-Command"]
+RUN New-LocalGroup -Name 'appgroup' -Description 'Application Group'; \
+    New-LocalUser -Name 'appuser' -Group 'appgroup' -NoPassword
 
 # Install MAUI Workloads (if required)
 RUN dotnet workload install maui
@@ -14,10 +16,7 @@ COPY src/ ./src/
 COPY TraxActUnitTests/ ./TraxActUnitTests/
 
 # Ensure the files have the correct permissions
-RUN chown -R appuser:appgroup /app
-
-# Switch to the non-root user
-USER appuser
+# Note: Windows does not support chown, permissions are managed differently
 
 # Restore, build, and publish commands
 RUN dotnet restore
@@ -28,15 +27,8 @@ RUN dotnet publish --no-restore -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 
-# Copy the non-root user and group from the build stage
-COPY --from=build /etc/passwd /etc/passwd
-COPY --from=build /etc/group /etc/group
-
-# Ensure the output directory has the correct permissions
+# Copy the app files from the build stage
 COPY --from=build /app/out .
-
-# Set the ownership of the app directory to the non-root user
-RUN chown -R appuser:appgroup /app
 
 # Switch to the non-root user
 USER appuser
