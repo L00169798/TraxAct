@@ -1,31 +1,16 @@
-# Use the .NET SDK base image (Windows variant)
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:7.0 AS build-env
 WORKDIR /app
 
-USER ContainerAdministrator
-
-RUN dotnet workload install maui
-
-USER ContainerUser
-
-
-# Copy the project files into the container
-COPY TraxAct/TraxAct.sln ./TraxAct/
-
-# Restore, build, and publish commands
+# Copy csproj and restore as distinct layers
+COPY src/*.csproj ./src/
 RUN dotnet restore
-RUN dotnet build --no-restore -c Release
-RUN dotnet publish --no-restore -c Release -o out
+
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/core/aspnet:7.0
 WORKDIR /app
-
-# Copy the app files from the build stage
-COPY --from=build /app/out .
-
-# Switch to the non-root user
-USER appuser
-
-EXPOSE 80
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "TraxAct.dll"]
