@@ -2,8 +2,6 @@ name: Lint Code Base
 run-name: ${{ github.actor }} is linting the code 
 
 on:
-  push:
-    branches-ignore: [ "master" ]
   pull_request:
     branches: [ "master" ]
   #schedule:
