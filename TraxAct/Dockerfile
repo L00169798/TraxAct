@@ -2,7 +2,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
+USER ContainerAdministrator
+
 RUN dotnet workload install maui
+
+USER ContainerUser
+
 
 # Copy the project files into the container
 COPY TraxAct.sln ./
