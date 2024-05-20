@@ -62,7 +62,7 @@ jobs:
 
     - name: Build the code
       run: |
-       dotnet workload install .net maui
+       dotnet workload install dotnet maui
        dotnet build TraxAct/TraxAct.sln --configuration Release
 
     - name: Perform CodeQL Analysis
