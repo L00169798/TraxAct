@@ -1,9 +1,18 @@
 version: 2
+
+# Configuration for Dependabot updates
 updates:
 
   # Maintain GitHub Actions dependencies
   - package-ecosystem: "github-actions"
+    # Look for updates to GitHub Actions workflows
+    
     directory: "/"
+    # Root directory to look for dependency files
+    
     schedule:
       interval: "daily"
+      # Checks completed daily
+    
     open-pull-requests-limit: 10
+    # Limit the number of open pull requests created by Dependabot to 10
