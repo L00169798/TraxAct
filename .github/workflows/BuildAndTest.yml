@@ -46,6 +46,7 @@ jobs:
       - name: Run Tests
         run: |
           dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
+          
   codeql-analysis:
     runs-on: windows-latest
     needs: build
@@ -82,13 +83,6 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
-
-    - name: Install Roslyn Analyzers
-      run: |
-        dotnet tool install --global dotnet-roslyn-analyzers
-
-    - name: Run Roslyn Analyzers
-      run: dotnet roslyn-analyzers analyze TraxAct/TraxAct.sln
 
   deploy_to_dev:
     name: Deploy to Development
