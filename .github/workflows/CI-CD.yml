@@ -1,54 +1,142 @@
-# This GitHub Actions workflow builds, tests, and deploys the TraxAct application.
-# It runs on push and pull requests targeting the master branch and handles deployments.
+# This GitHub Actions workflow builds and tests the TraxAct application.
+# It runs on push and pull requests targeting the master branch.
+# The workflow sets up the .NET environment, installs the Java Development Kit (JDK),
+# adds Roslyn analyzers, installs .NET MAUI, builds the project, runs code analysis,
+# runs tests, performs CodeQL analysis, and handles deployment to different environments.
 
 name: CI-CD
 
+# Trigger the workflow on push or pull request events to the master branch.
 on:
   push:
     branches:
       - master
-      - 'release/*'
   pull_request:
     branches:
       - master
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [development, staging, production]
+    # Run the build job on the latest version of Windows.
+    runs-on: windows-latest
 
     steps:
+      # Step 1: Checkout the code from the repository.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the .NET environment with the specified version.
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '7.0.x'
+
+      # Step 3: Install the Java Development Kit (JDK) with the specified version.
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      # Step 4: Add Roslyn Analyzers to the project for static code analysis.
+      - name: Add Roslyn Analyzers
+        run: |
+          dotnet add TraxAct/src/TraxAct.csproj package Microsoft.CodeAnalysis.FxCopAnalyzers
+          dotnet add TraxAct/src/TraxAct.csproj package Microsoft.CodeAnalysis.NetAnalyzers
+
+      # Step 5: Install .NET MAUI workload, required for building MAUI applications.
+      - name: Install .NET MAUI
+        run: |
+          dotnet workload install maui
+
+      # Step 6: Clean the solution, build the project, and run code analysis.
+      - name: Build and Run Code Analysis
+        run: |
+          dotnet clean
+          dotnet build TraxAct/TraxAct.sln /p:ReportAnalyzer=true
+
+      # Step 7: Run the unit tests for the project.
+      - name: Run Tests
+        run: |
+          dotnet test TraxAct/TraxActUnitTests/TraxActUnitTests.csproj --no-restore --verbosity normal
+
+  codeql-analysis:
+    # Run the CodeQL analysis job after the build job completes successfully.
+    runs-on: windows-latest
+    needs: build
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      
+    steps:
+    # Step 1: Checkout the code from the repository.
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    # Define your build steps here
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
+    # Step 2: Initialize CodeQL for analysis.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+
+    # Step 3: Set up the .NET environment with the specified version.
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
       with:
-        java-version: '11'
+          dotnet-version: '7.0.x'
 
-    - name: Build and Test
+    # Step 4: Install the Java Development Kit (JDK) with the specified version.
+    - name: Install JDK
+      uses: actions/setup-java@v4
+      with:
+          distribution: 'adopt'
+          java-version: '11'
+
+    # Step 5: Install .NET MAUI workload, required for building MAUI applications.
+    - name: Install .NET MAUI
       run: |
-        echo "Building and testing for ${{ matrix.environment }}"
-        # Insert build and test commands here
+          dotnet workload install maui
 
-    - name: Deploy to Development
-      if: matrix.environment == 'development'
+    # Step 6: Clean the solution, build the project, and run code analysis.
+    - name: Build and Run Code Analysis
       run: |
-        echo "Deploying to Development environment"
-        # Insert deployment commands here
+          dotnet clean
+          dotnet build TraxAct/TraxAct.sln /p:ReportAnalyzer=true
 
-    - name: Deploy to Staging
-      if: matrix.environment == 'staging' && github.event_name == 'push' && github.ref == 'refs/heads/master'
-      run: |
-        echo "Deploying to Staging environment"
-        # Insert deployment commands here
+    # Step 7: Perform CodeQL analysis to detect security vulnerabilities and other issues.
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
 
-    - name: Deploy to Production
-      if: matrix.environment == 'production' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-      run: |
-        echo "Deploying to Production environment"
-        # Insert deployment commands here
+  deploy_to_dev:
+    # Job to deploy to the development environment.
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Step 1: Print a message indicating deployment to the development environment.
+      - name: Deploy to development environment
+        run: |
+          echo "Deploying to development environment..."
 
+  deploy_to_staging:
+    # Job to deploy to the staging environment.
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      # Step 1: Print a message indicating deployment to the staging environment.
+      - name: Deploy to staging environment
+        run: |
+          echo "Deploying to staging environment..."
+
+  deploy_to_prod:
+    # Job to deploy to the production environment.
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: deploy_to_staging
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    steps:
+      # Step 1: Print a message indicating deployment to the production environment.
+      - name: Deploy to production environment
+        run: |
+          echo "Deploying to production environment..."
