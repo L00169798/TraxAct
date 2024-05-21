@@ -31,6 +31,11 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
+      - name: Add Roslyn Analyzers
+        run: |
+          dotnet add package Microsoft.CodeAnalysis.FxCopAnalyzers
+          dotnet add package Microsoft.CodeAnalysis.NetAnalyzers
+
       - name: Install .NET MAUI
         run: |
           dotnet workload install maui
