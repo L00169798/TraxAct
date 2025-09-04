@@ -27,7 +27,7 @@ jobs:
 
       # Step 2: Set up the .NET environment with the specified version.
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '7.0.x'
 
@@ -80,7 +80,7 @@ jobs:
 
     # Step 3: Set up the .NET environment with the specified version.
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
           dotnet-version: '7.0.x'
 
