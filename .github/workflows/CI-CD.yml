@@ -76,7 +76,7 @@ jobs:
 
     # Step 2: Initialize CodeQL for analysis.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
 
     # Step 3: Set up the .NET environment with the specified version.
     - name: Setup .NET
@@ -104,7 +104,7 @@ jobs:
 
     # Step 7: Perform CodeQL analysis to detect security vulnerabilities and other issues.
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
 
   deploy_to_dev:
     # Job to deploy to the development environment.
