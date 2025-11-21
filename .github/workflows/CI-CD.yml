@@ -23,7 +23,7 @@ jobs:
     steps:
       # Step 1: Checkout the code from the repository.
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Step 2: Set up the .NET environment with the specified version.
       - name: Setup .NET
@@ -72,7 +72,7 @@ jobs:
     steps:
     # Step 1: Checkout the code from the repository.
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     # Step 2: Initialize CodeQL for analysis.
     - name: Initialize CodeQL
